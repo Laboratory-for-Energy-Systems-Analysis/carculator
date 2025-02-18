@@ -276,10 +276,14 @@ class CarModel(VehicleModel):
             2030: "NMC-955",
         }
 
+        powertrains = self.array.coords["powertrain"].values
+        sizes = self.array.coords["size"].values
+        years = self.array.coords["year"].values
+
         for x in product(
-            self.array.coords["powertrain"].values,
-            self.array.coords["size"].values,
-            self.array.year.values,
+            list(powertrains) if isinstance(powertrains, str) else powertrains,
+            list(sizes) if isinstance(sizes, str) else sizes,
+            list(years) if isinstance(years, int) else years
         ):
             if x not in self.energy_storage["electric"]:
                 if x[-1] in default_chemistries:
