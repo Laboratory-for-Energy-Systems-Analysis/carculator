@@ -48,8 +48,6 @@ class InventoryCar(Inventory):
             * -1
         )
 
-
-
         # For ICEVs
         self.A[
             :,
@@ -58,36 +56,43 @@ class InventoryCar(Inventory):
                 x
                 for x, y in self.rev_inputs.items()
                 if y[0].startswith("transport, car") and "BEV" not in y[0]
-            ]
+            ],
         ] = (
             self.array.sel(
                 parameter="curb mass",
                 combined_dim=[
-                    d for d in self.array.coords["combined_dim"].values if "BEV" not in d
-                ]
-            ) / 1240 / 150000 * -1
+                    d
+                    for d in self.array.coords["combined_dim"].values
+                    if "BEV" not in d
+                ],
+            )
+            / 1240
+            / 150000
+            * -1
         )
 
         # For BEVs, we assume the maintenance requirements to be half
         # that of ICEVs, thanks to regenrative braking, no need for oil changes, etc.
         # See https://www.transportationenergy.org/wp-content/uploads/2022/10/FI_Report_Lifecycle_FINAL.pdf
         self.A[
-        :,
-        self.find_input_indices(("maintenance, passenger car",)),
-        [
-            x
-            for x, y in self.rev_inputs.items()
-            if y[0].startswith("transport, car") and "BEV" in y[0]
-        ]
+            :,
+            self.find_input_indices(("maintenance, passenger car",)),
+            [
+                x
+                for x, y in self.rev_inputs.items()
+                if y[0].startswith("transport, car") and "BEV" in y[0]
+            ],
         ] = (
-                self.array.sel(
-                    parameter="curb mass",
-                    combined_dim=[
-                        d for d in self.array.coords["combined_dim"].values if "BEV" in d
-                    ]
-                ) / 1240 / 150000 * -1
+            self.array.sel(
+                parameter="curb mass",
+                combined_dim=[
+                    d for d in self.array.coords["combined_dim"].values if "BEV" in d
+                ],
+            )
+            / 1240
+            / 150000
+            * -1
         ) / 2
-
 
         # Fuel tank EoL
         self.A[
