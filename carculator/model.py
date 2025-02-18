@@ -283,7 +283,7 @@ class CarModel(VehicleModel):
         for x in product(
             list(powertrains) if isinstance(powertrains, str) else powertrains,
             list(sizes) if isinstance(sizes, str) else sizes,
-            list(years) if isinstance(years, int) else years
+            list(years) if isinstance(years, int) else years,
         ):
             if x not in self.energy_storage["electric"]:
                 if x[-1] in default_chemistries:
