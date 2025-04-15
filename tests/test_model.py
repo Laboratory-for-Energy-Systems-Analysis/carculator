@@ -445,6 +445,4 @@ class TestCarModel(unittest.TestCase):
         )
 
 
-
-
 TestCarModel()
