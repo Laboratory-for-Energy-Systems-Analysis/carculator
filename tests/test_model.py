@@ -265,6 +265,16 @@ class TestCarModel(unittest.TestCase):
             (cm["fuel mass"] / (cm["range"]) / _(cm["fuel density per kg"])),
         )
 
+    def test_stochastic_calculations(self):
+        cip = CarInputParameters()
+        cip.stochastic(50)
+        dcts, arr = fill_xarray_from_input_parameters(
+            cip,
+            scope={"size": ["Medium"], "powertrain": ["BEV", "ICEV-p"], "year": [2020]},
+        )
+        cm = CarModel(arr, cycle="WLTC")
+        cm.set_all()
+
     def test_setting_power(self):
         cip = CarInputParameters()
         cip.static()
@@ -433,6 +443,8 @@ class TestCarModel(unittest.TestCase):
         self.assertEqual(
             self.cm["TtW energy"].sel(year=2010, powertrain="BEV").sum(), 0
         )
+
+
 
 
 TestCarModel()
