@@ -286,6 +286,19 @@ def test_custom_electricity_mix():
 
 def test_export_to_bw():
     """Test that inventories export successfully"""
+    # generate vehicle parameters
+    cip = CarInputParameters()
+    cip.static()
+
+    # fill in array with vehicle parameters
+    scope = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
+    _, array = fill_xarray_from_input_parameters(cip, scope=scope)
+
+    # build CarModel object
+    cm = CarModel(array, cycle="WLTC")
+    # build vehicles
+    cm.set_all()
+
     ic = InventoryCar(
         cm,
     )
