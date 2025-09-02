@@ -211,7 +211,7 @@ class CarModel(VehicleModel):
 
         while diff > 0.00001:
             old_driving_mass = self["driving mass"].sum().values
-            self.set_vehicle_mass()
+            self.set_vehicle_masses()
             self.set_power_parameters()
             self.set_component_masses()
             self.set_auxiliaries()
@@ -253,7 +253,7 @@ class CarModel(VehicleModel):
         self.set_hot_emissions()
         self.set_particulates_emission()
         self.set_noise_emissions()
-        self.set_vehicle_mass()
+        self.set_vehicle_masses()
         self.create_PHEV()
         if self.drop_hybrids:
             self.drop_hybrid()
@@ -488,7 +488,7 @@ class CarModel(VehicleModel):
             self.energy.sel(parameter="auxiliary energy").sum(dim="second") / distance
         ).T
 
-    def set_vehicle_mass(self) -> None:
+    def set_vehicle_masses(self) -> None:
         """
         Define ``curb mass``, ``driving mass``, and ``total cargo mass``.
 

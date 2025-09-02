@@ -423,7 +423,7 @@ class TestCarModel(unittest.TestCase):
         ] = np.array([100, 120, 140])
 
         # Perform the mass calculation
-        self.cm.set_vehicle_mass()
+        self.cm.set_vehicle_masses()
 
         # Verify the mass has been set correctly
         self.assertIn("driving mass", self.cm.array.coords["parameter"].values)
