@@ -252,5 +252,6 @@
   "road wear emissions",
   "road dust emissions",
   "fuel density per kg",
+   "energy battery cost per kWh",
   "fuel consumption"
 ]
