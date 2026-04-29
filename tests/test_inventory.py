@@ -212,7 +212,9 @@ def test_cng_leakage_adds_direct_methane_emissions():
     cm.set_all()
     ic = InventoryCar(cm)
 
-    methane_supply_indices = ic.find_input_indices(("fuel supply for methane vehicles",))
+    methane_supply_indices = ic.find_input_indices(
+        ("fuel supply for methane vehicles",)
+    )
     transport_indices = ic.find_input_indices((f"transport, {ic.vm.vehicle_type}, ",))
     methane_flow_index = ic.inputs[("Methane, fossil", ("air",), "kilogram")]
     leakage = ic.array.sel(parameter="CNG pump-to-tank leakage")
@@ -263,7 +265,9 @@ def test_endpoint(car_model):
 
 def test_static_scenario(car_model):
     """Test if the static scenario works as expected"""
-    ic = InventoryCar(car_model, method="recipe", indicator="midpoint", scenario="static")
+    ic = InventoryCar(
+        car_model, method="recipe", indicator="midpoint", scenario="static"
+    )
     ic.calculate_impacts()
 
 

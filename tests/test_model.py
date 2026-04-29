@@ -9,7 +9,6 @@ from carculator.model import CarModel
 
 
 class TestCarModel(unittest.TestCase):
-
     DATA = Path(__file__, "..").resolve() / "fixtures" / "cars_values.xlsx"
     ref = pd.read_excel(DATA, index_col=0)
 
@@ -472,13 +471,11 @@ class TestCarModel(unittest.TestCase):
         self.assertGreater(self.cm["driving mass"].sum(), 0)
 
     def test_set_electric_utility_factor(self):
-
         # Check if the electric utility factor is set within expected limits
         self.assertGreaterEqual(self.cm["electric utility factor"].min(), 0)
         self.assertLessEqual(self.cm["electric utility factor"].max(), 0.75)
 
     def test_remove_energy_consumption_from_unavailable_vehicles(self):
-
         self.cm.remove_energy_consumption_from_unavailable_vehicles()
 
         # Check that energy consumption is set to 0 for vehicles that should be unavailable

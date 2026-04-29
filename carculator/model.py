@@ -644,10 +644,7 @@ class CarModel(VehicleModel):
             safe_interest_rate
             + (
                 safe_interest_rate
-                / (
-                    (np.array(1) + safe_interest_rate) ** safe_lifetime
-                    - np.array(1)
-                )
+                / ((np.array(1) + safe_interest_rate) ** safe_lifetime - np.array(1))
             ),
         )
         amortisation_factor = np.where(valid_lifetime, amortisation_factor, 0)
