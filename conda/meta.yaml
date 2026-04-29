@@ -16,9 +16,11 @@ build:
 requirements:
   build:
     - python
+    - pip
     - setuptools
   run:
-    - carculator_utils
+    - python
+    - carculator_utils >=1.3.5
 
 test:
   imports:
