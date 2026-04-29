@@ -21,6 +21,33 @@ class InventoryCar(Inventory):
 
     """
 
+    def __init__(
+        self,
+        vm,
+        background_configuration: dict = None,
+        scenario: str = "SSP2-NPi",
+        method: str = "recipe",
+        indicator: str = "midpoint",
+        functional_unit: str = "vkm",
+    ) -> None:
+        valid_methods = {"recipe", "ef"}
+        valid_indicators = {"midpoint", "endpoint"}
+
+        if method not in valid_methods:
+            raise ValueError(f"method must be one of {sorted(valid_methods)}")
+
+        if indicator not in valid_indicators:
+            raise ValueError(f"indicator must be one of {sorted(valid_indicators)}")
+
+        super().__init__(
+            vm=vm,
+            background_configuration=background_configuration,
+            scenario=scenario,
+            method=method,
+            indicator=indicator,
+            functional_unit=functional_unit,
+        )
+
     def fill_in_A_matrix(self):
         """
         Fill-in the A matrix. Does not return anything. Modifies in place.
