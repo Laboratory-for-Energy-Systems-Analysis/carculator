@@ -8,35 +8,31 @@ from carculator import (
     fill_xarray_from_input_parameters,
 )
 
-# generate vehicle parameters
-cip = CarInputParameters()
-cip.static()
+DEFAULT_SCOPE = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
 
-# fill in array with vehicle parameters
-scope = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
-_, array = fill_xarray_from_input_parameters(cip, scope=scope)
 
-# build CarModel object
-cm = CarModel(array, cycle="WLTC")
-# build vehicles
-cm.set_all()
+def build_vehicle_array(scope=None):
+    cip = CarInputParameters()
+    cip.static()
+    _, array = fill_xarray_from_input_parameters(cip, scope=scope or DEFAULT_SCOPE)
+    return array
+
+
+def build_car_model(scope=None, **kwargs):
+    cm = CarModel(build_vehicle_array(scope), cycle="WLTC", **kwargs)
+    cm.set_all()
+    return cm
+
+
+@pytest.fixture
+def car_model():
+    return build_car_model()
 
 
 def test_scope():
     """Test if scope works as expected"""
 
-    # generate vehicle parameters
-    cip = CarInputParameters()
-    cip.static()
-
-    # fill in array with vehicle parameters
-    scope = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
-    _, array = fill_xarray_from_input_parameters(cip, scope=scope)
-
-    # build CarModel object
-    cm = CarModel(array, cycle="WLTC")
-    # build vehicles
-    cm.set_all()
+    cm = build_car_model()
 
     ic = InventoryCar(
         cm,
@@ -49,11 +45,11 @@ def test_scope():
     assert "FCEV" not in results.coords["powertrain"].values
 
 
-def test_plausibility_of_GWP():
+def test_plausibility_of_GWP(car_model):
     """Test if GWP scores make sense"""
 
     for method in ["recipe", "ef"]:
-        ic = InventoryCar(cm, method=method, indicator="midpoint")
+        ic = InventoryCar(car_model, method=method, indicator="midpoint")
         results = ic.calculate_impacts()
 
         m = "climate change"
@@ -127,8 +123,7 @@ def test_fuel_blend():
         },
     }
 
-    cm = CarModel(array, cycle="WLTC", fuel_blend=bc)
-    cm.set_all()
+    cm = build_car_model(fuel_blend=bc)
 
     assert np.array_equal(
         cm.fuel_blend["petrol"]["primary"]["share"],
@@ -202,8 +197,7 @@ def test_fuel_blend():
         bc["hydrogen"]["primary"]["type"] = fuels[2]
         bc["methane"]["primary"]["type"] = fuels[3]
 
-        cm = CarModel(array, cycle="WLTC", fuel_blend=bc)
-        cm.set_all()
+        cm = build_car_model(fuel_blend=bc)
         ic = InventoryCar(cm)
         ic.calculate_impacts()
 
@@ -231,7 +225,7 @@ def test_cng_leakage_adds_direct_methane_emissions():
     np.testing.assert_allclose(methane_emissions, expected_leakage)
 
 
-def test_countries():
+def test_countries(car_model):
     """Test that calculation works with all countries"""
     for c in [
         "AO",
@@ -240,7 +234,7 @@ def test_countries():
         "BE",
     ]:
         ic = InventoryCar(
-            cm,
+            car_model,
             method="recipe",
             indicator="midpoint",
             background_configuration={
@@ -251,9 +245,9 @@ def test_countries():
         ic.calculate_impacts()
 
 
-def test_endpoint():
+def test_endpoint(car_model):
     """Test if the correct impact categories are considered"""
-    ic = InventoryCar(cm, method="recipe", indicator="endpoint")
+    ic = InventoryCar(car_model, method="recipe", indicator="endpoint")
     results = ic.calculate_impacts()
     assert "human toxicity: carcinogenic" in [
         i.lower() for i in results.impact_category.values
@@ -262,34 +256,34 @@ def test_endpoint():
     #
     #     """Test if it errors properly if an incorrect method type is give"""
     with pytest.raises(ValueError) as wrapped_error:
-        ic = InventoryCar(cm, method="recipe", indicator="endpint")
+        ic = InventoryCar(car_model, method="recipe", indicator="endpint")
         ic.calculate_impacts()
     assert wrapped_error.type == ValueError
 
 
-def test_static_scenario():
+def test_static_scenario(car_model):
     """Test if the static scenario works as expected"""
-    ic = InventoryCar(cm, method="recipe", indicator="midpoint", scenario="static")
+    ic = InventoryCar(car_model, method="recipe", indicator="midpoint", scenario="static")
     ic.calculate_impacts()
 
 
-def test_EF_indicators():
+def test_EF_indicators(car_model):
     ic = InventoryCar(
-        cm,
+        car_model,
         method="ef",
         indicator="midpoint",
     )
     ic.calculate_impacts()
 
 
-def test_sulfur_concentration():
+def test_sulfur_concentration(car_model):
     ic = InventoryCar(
-        cm,
+        car_model,
     )
     ic.get_sulfur_content(location="FR", fuel="diesel")
 
 
-def test_custom_electricity_mix():
+def test_custom_electricity_mix(car_model):
     """Test if a wrong number of electricity mixes throws an error"""
 
     # Passing four mixes instead of 6
@@ -301,7 +295,7 @@ def test_custom_electricity_mix():
     for mix in mixes:
         with pytest.raises(ValueError) as wrapped_error:
             InventoryCar(
-                cm,
+                car_model,
                 background_configuration={"custom electricity mix": mix},
             )
         assert wrapped_error.type == ValueError
@@ -309,18 +303,7 @@ def test_custom_electricity_mix():
 
 def test_export_to_bw():
     """Test that inventories export successfully"""
-    # generate vehicle parameters
-    cip = CarInputParameters()
-    cip.static()
-
-    # fill in array with vehicle parameters
-    scope = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
-    _, array = fill_xarray_from_input_parameters(cip, scope=scope)
-
-    # build CarModel object
-    cm = CarModel(array, cycle="WLTC")
-    # build vehicles
-    cm.set_all()
+    cm = build_car_model()
 
     ic = InventoryCar(
         cm,
@@ -333,20 +316,9 @@ def test_export_to_bw():
         )
 
 
-def test_export_to_excel():
+def test_export_to_excel(tmp_path):
     """Test that inventories export successfully to Excel/CSV"""
-    # generate vehicle parameters
-    cip = CarInputParameters()
-    cip.static()
-
-    # fill in array with vehicle parameters
-    scope = {"powertrain": ["ICEV-d", "ICEV-p", "BEV"], "size": ["Medium"]}
-    _, array = fill_xarray_from_input_parameters(cip, scope=scope)
-
-    # build CarModel object
-    cm = CarModel(array, cycle="WLTC")
-    # build vehicles
-    cm.set_all()
+    cm = build_car_model()
     ic = InventoryCar(cm, method="recipe", indicator="endpoint")
 
     for s in ("brightway2", "simapro"):
@@ -355,5 +327,5 @@ def test_export_to_excel():
                 ecoinvent_version="3.10",
                 format=d,
                 software=s,
-                directory="directory",
+                directory=str(tmp_path),
             )

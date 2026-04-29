@@ -1,6 +1,5 @@
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -12,7 +11,6 @@ from carculator.model import CarModel
 class TestCarModel(unittest.TestCase):
 
     DATA = Path(__file__, "..").resolve() / "fixtures" / "cars_values.xlsx"
-    OUTPUT = Path(__file__, "..").resolve() / "fixtures" / "test_model_results.xlsx"
     ref = pd.read_excel(DATA, index_col=0)
 
     def setUp(self):
@@ -40,12 +38,10 @@ class TestCarModel(unittest.TestCase):
             2020,
         ]
 
-        l_res = []
-
         for pwt in list_powertrains:
             for size in list_sizes:
                 for year in list_years:
-                    for param in self.cm.array.parameter.values:
+                    for param in ["curb mass", "driving mass", "total cost per km"]:
                         val = float(
                             self.cm.array.sel(
                                 powertrain=pwt,
@@ -55,37 +51,18 @@ class TestCarModel(unittest.TestCase):
                                 value=0,
                             ).values
                         )
+                        ref = self.ref.loc[
+                            (self.ref["powertrain"] == pwt)
+                            & (self.ref["size"] == size)
+                            & (self.ref["parameter"] == param),
+                            year,
+                        ]
 
-                        try:
-                            ref_val = (
-                                self.ref.loc[
-                                    (self.ref["powertrain"] == pwt)
-                                    & (self.ref["size"] == size)
-                                    & (self.ref["parameter"] == param),
-                                    year,
-                                ]
-                                .values.astype(float)
-                                .item(0)
-                            )
-                        except:
-                            ref_val = 1
-
-                        _ = lambda x: np.where(ref_val == 0, 1, ref_val)
-                        diff = val / _(ref_val)
-                        l_res.append([pwt, size, year, param, val, ref_val, diff])
-
-        pd.DataFrame(
-            l_res,
-            columns=[
-                "powertrain",
-                "size",
-                "year",
-                "parameter",
-                "val",
-                "ref_val",
-                "diff",
-            ],
-        ).to_excel(self.OUTPUT)
+                        assert not ref.empty, (pwt, size, year, param)
+                        assert np.isfinite(val), (pwt, size, year, param)
+                        assert np.isclose(
+                            val, ref.values.astype(float).item(0), rtol=0.1, atol=1e-6
+                        ), (pwt, size, year, param, val, ref.values.item(0))
 
     def test_setting_batt_cap(self):
         cip = CarInputParameters()
