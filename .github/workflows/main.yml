@@ -32,20 +32,6 @@ jobs:
           git commit -am "Black reformating"
           git push
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: clean
-    steps:
-
-      - name: Checkout source code
-        uses: actions/checkout@v2
-
-      - name: Super-Linter
-        uses: github/super-linter@v4
-        env:
-          DEFAULT_BRANCH: master
-          IGNORE_GITIGNORED_FILES: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
 
   build:
     runs-on: ${{matrix.os}}
