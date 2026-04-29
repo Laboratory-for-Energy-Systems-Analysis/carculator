@@ -347,6 +347,71 @@ class TestCarModel(unittest.TestCase):
 
         assert cm.energy_storage["origin"] == "FR"
 
+    def test_adjust_cost_updates_fcev_cost_parameters(self):
+        cip = CarInputParameters()
+        cip.static()
+        _, arr = fill_xarray_from_input_parameters(
+            cip,
+            scope={"size": ["Medium"], "powertrain": ["FCEV"], "year": [2020, 2030]},
+        )
+
+        cm = CarModel(arr, cycle="WLTC")
+        cm.adjust_cost()
+
+        years = cm.array.year.values
+        np.testing.assert_allclose(
+            cm.array.sel(
+                powertrain="FCEV",
+                size="Medium",
+                parameter="fuel tank cost per kg",
+                value=0,
+            ).values,
+            1.078e58 * np.exp(-6.32e-2 * years) + 3.43e2,
+            rtol=1e-6,
+        )
+        np.testing.assert_allclose(
+            cm.array.sel(
+                powertrain="FCEV",
+                size="Medium",
+                parameter="fuel cell cost per kW",
+                value=0,
+            ).values,
+            3.15e66 * np.exp(-7.35e-2 * years) + 2.39e1,
+            rtol=1e-6,
+        )
+
+    def test_purchase_cost_uses_lifetime_years_for_amortisation(self):
+        lifetime = self.cm["lifetime kilometers"] / self.cm["kilometers per year"]
+        interest_rate = self.cm["interest rate"]
+        valid_lifetime = lifetime > 0
+        safe_lifetime = lifetime.where(valid_lifetime, 1)
+        safe_kilometers_per_year = self.cm["kilometers per year"].where(
+            self.cm["kilometers per year"] > 0, 1
+        )
+        safe_interest_rate = interest_rate.where(interest_rate != 0, 1)
+        amortisation_factor = np.where(
+            interest_rate == 0,
+            np.array(1) / safe_lifetime,
+            safe_interest_rate
+            + (
+                safe_interest_rate
+                / ((np.array(1) + safe_interest_rate) ** safe_lifetime - np.array(1))
+            ),
+        )
+        amortisation_factor = np.where(valid_lifetime, amortisation_factor, 0)
+        expected = np.where(
+            valid_lifetime,
+            self.cm["purchase cost"] * amortisation_factor / safe_kilometers_per_year,
+            0,
+        )
+
+        np.testing.assert_allclose(
+            self.cm["amortised purchase cost"].values,
+            expected,
+            rtol=1e-6,
+            equal_nan=True,
+        )
+
     # New tests start here
 
     def test_set_all(self):

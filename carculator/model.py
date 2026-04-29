@@ -329,7 +329,7 @@ class CarModel(VehicleModel):
             )
 
             self.array.loc[
-                dict(powertrain="FCEV", parameter="fuel tank cost per kg")
+                dict(powertrain="FCEV", parameter="fuel cell cost per kW")
             ] = np.reshape(
                 (3.15e66 * np.exp(-7.35e-2 * self.array.year.values) + 2.39e1)
                 * cost_factor,
@@ -632,15 +632,29 @@ class CarModel(VehicleModel):
 
         self["purchase cost"] = self[purchase_cost_params].sum(axis=2)
         # per km
-        amortisation_factor = self["interest rate"] + (
-            self["interest rate"]
-            / (
-                (np.array(1) + self["interest rate"]) ** self["lifetime kilometers"]
-                - np.array(1)
-            )
+        valid_lifetime = self["lifetime"] > 0
+        safe_lifetime = self["lifetime"].where(valid_lifetime, 1)
+        safe_kilometers_per_year = self["kilometers per year"].where(
+            self["kilometers per year"] > 0, 1
         )
-        self["amortised purchase cost"] = (
-            self["purchase cost"] * amortisation_factor / self["kilometers per year"]
+        safe_interest_rate = self["interest rate"].where(self["interest rate"] != 0, 1)
+        amortisation_factor = np.where(
+            self["interest rate"] == 0,
+            np.array(1) / safe_lifetime,
+            safe_interest_rate
+            + (
+                safe_interest_rate
+                / (
+                    (np.array(1) + safe_interest_rate) ** safe_lifetime
+                    - np.array(1)
+                )
+            ),
+        )
+        amortisation_factor = np.where(valid_lifetime, amortisation_factor, 0)
+        self["amortised purchase cost"] = np.where(
+            valid_lifetime,
+            self["purchase cost"] * amortisation_factor / safe_kilometers_per_year,
+            0,
         )
 
         # per km
@@ -655,13 +669,14 @@ class CarModel(VehicleModel):
         self["amortised component replacement cost"] = (
             (
                 self["component replacement cost"]
-                * (
-                    (np.array(1) - self["interest rate"]) ** self["lifetime kilometers"]
-                    / 2
+                * np.where(
+                    self["interest rate"] == 0,
+                    1,
+                    (np.array(1) + safe_interest_rate) ** (-safe_lifetime / 2),
                 )
             )
             * amortisation_factor
-            / self["kilometers per year"]
+            / safe_kilometers_per_year
         )
 
         self["total cost per km"] = (
