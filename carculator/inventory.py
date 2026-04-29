@@ -231,19 +231,25 @@ class InventoryCar(Inventory):
 
         self.add_fuel_to_vehicles("methane", ["ICEV-g"], "EV-g")
 
+        methane_supply_indices = self.find_input_indices(
+            ("fuel supply for methane vehicles",)
+        )
+        transport_indices = self.find_input_indices(
+            (f"transport, {self.vm.vehicle_type}, ",)
+        )
+        methane_supply = self.A[:, methane_supply_indices, transport_indices].copy()
+
         # Gas leakage to air
-        self.A[
-            :,
-            self.find_input_indices(("fuel supply for methane vehicles",)),
-            self.find_input_indices((f"transport, {self.vm.vehicle_type}, ",)),
-        ] *= 1 + self.array.sel(parameter="CNG pump-to-tank leakage")
+        self.A[:, methane_supply_indices, transport_indices] = methane_supply * (
+            1 + self.array.sel(parameter="CNG pump-to-tank leakage")
+        )
 
         # Gas leakage to air
         self.A[
             :,
             self.inputs[("Methane, fossil", ("air",), "kilogram")],
-            self.find_input_indices((f"transport, {self.vm.vehicle_type}, ",)),
-        ] *= self.array.sel(parameter="CNG pump-to-tank leakage")
+            transport_indices,
+        ] += methane_supply * self.array.sel(parameter="CNG pump-to-tank leakage")
 
         self.add_fuel_to_vehicles("diesel", ["ICEV-d", "PHEV-d", "HEV-d"], "EV-d")
 

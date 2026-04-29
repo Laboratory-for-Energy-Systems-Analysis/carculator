@@ -208,6 +208,29 @@ def test_fuel_blend():
         ic.calculate_impacts()
 
 
+def test_cng_leakage_adds_direct_methane_emissions():
+    cip = CarInputParameters()
+    cip.static()
+    _, array = fill_xarray_from_input_parameters(
+        cip, scope={"powertrain": ["ICEV-g"], "size": ["Medium"], "year": [2020]}
+    )
+    cm = CarModel(array, cycle="WLTC")
+    cm.set_all()
+    ic = InventoryCar(cm)
+
+    methane_supply_indices = ic.find_input_indices(("fuel supply for methane vehicles",))
+    transport_indices = ic.find_input_indices((f"transport, {ic.vm.vehicle_type}, ",))
+    methane_flow_index = ic.inputs[("Methane, fossil", ("air",), "kilogram")]
+    leakage = ic.array.sel(parameter="CNG pump-to-tank leakage")
+
+    methane_supply = ic.A[:, methane_supply_indices, transport_indices]
+    expected_leakage = methane_supply / (1 + leakage) * leakage
+    methane_emissions = ic.A[:, methane_flow_index, transport_indices]
+
+    assert (methane_emissions < 0).any()
+    np.testing.assert_allclose(methane_emissions, expected_leakage)
+
+
 def test_countries():
     """Test that calculation works with all countries"""
     for c in [
