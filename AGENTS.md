@@ -39,7 +39,7 @@ Main modules:
 
 ## Environment
 
-The package declares Python `>=3.9` in `setup.py`.
+The package declares Python `>=3.9` in `pyproject.toml`.
 
 The local conda environment named `carculator` can be used to access all needed
 dependencies:
@@ -65,7 +65,7 @@ python -m pip install -e .
 
 When dependencies or version metadata change, keep the relevant files aligned:
 
-- `setup.py`
+- `pyproject.toml`
 - `requirements.txt`
 - `conda/meta.yaml`
 - `carculator/__init__.py`
@@ -158,7 +158,7 @@ conservative when editing files under `carculator/data/`.
 - Prefer text formats such as JSON, CSV, and YAML for new data when possible,
   matching the existing repository style.
 - If adding a new data file type or directory, update `MANIFEST.in` and verify
-  that `setup.py` package data includes it.
+  that `pyproject.toml` package data includes it.
 - Use small fixtures in `tests/fixtures/` for new tests instead of depending on
   large production data where possible.
 - Some tests and development scripts may generate Excel or notebook artifacts;
@@ -189,12 +189,12 @@ conservative when editing files under `carculator/data/`.
 
 ## Packaging and Release Guidance
 
-- Keep version metadata synchronized between `setup.py` and
+- Keep version metadata synchronized between `pyproject.toml` and
   `carculator/__init__.py`.
 - `conda/meta.yaml` uses the `VERSION` environment variable during publication;
   keep the conda recipe aligned with runtime dependencies.
 - Keep `requirements.txt` aligned with the lower-level dependency expectations
-  declared in `setup.py` and the conda recipe.
+  declared in `pyproject.toml` and the conda recipe.
 - When changing packaged data, verify source distributions and conda builds still
   include the required files.
 
@@ -206,4 +206,3 @@ conservative when editing files under `carculator/data/`.
 - Avoid broad refactors while making targeted scientific or data-model changes;
   this package has implicit compatibility expectations with `carculator_utils`
   and user workflows.
-

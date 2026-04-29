@@ -24,7 +24,7 @@ copyright = "2019, Paul Scherrer Institut"
 author = "Chris Mutel, Brian Cox, Romain Sacchi"
 
 # The full version, including alpha/beta/rc tags
-release = "1.9.4"
+release = "1.9.5"
 
 
 # -- General configuration ---------------------------------------------------

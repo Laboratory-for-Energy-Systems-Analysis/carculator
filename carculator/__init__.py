@@ -16,7 +16,7 @@ __all__ = (
     "InventoryCar",
     "get_standard_driving_cycle_and_gradient",
 )
-__version__ = (1, 9, 4)
+__version__ = (1, 9, 5)
 
 from pathlib import Path
 

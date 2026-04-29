@@ -2,6 +2,7 @@ include *.md
 include *.txt
 include *.yml
 include *.yaml
+include *.toml
 include *.rst
 include *.ini
 include *.csv
