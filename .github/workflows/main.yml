@@ -119,7 +119,9 @@ jobs:
           export VERSION=`date +%Y.%m.%d`
           conda build "conda/" --old-build-string
           ls $CONDA_BLD_PATH/noarch/
-          anaconda -t ${{ secrets.ANACONDA_CLOUD }} upload -u $USER $CONDA_BLD_PATH/noarch/$PKG_NAME-$VERSION-py_0.tar.bz2 --force
+          PACKAGE_PATH=$(find "$CONDA_BLD_PATH/noarch" -name "$PKG_NAME-$VERSION-py_0.*" \( -name "*.conda" -o -name "*.tar.bz2" \) -print -quit)
+          test -n "$PACKAGE_PATH"
+          anaconda -t ${{ secrets.ANACONDA_CLOUD }} upload -u $USER "$PACKAGE_PATH" --force
 
   Pypi:
     runs-on: ubuntu-latest
@@ -157,4 +159,3 @@ jobs:
           password: ${{ secrets.TEST_PYPI_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
-

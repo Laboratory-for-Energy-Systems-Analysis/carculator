@@ -26,5 +26,6 @@ All notable changes to `carculator` are documented in this file.
 - Fixed CNG pump-to-tank methane leakage so direct methane emissions are added to the inventory.
 - Fixed invalid impact indicator handling so typos raise `ValueError` before xarray result construction.
 - Made export tests skip cleanly when the optional `bw2io` export stack is not importable in the active Python environment.
+- Fixed the conda publication workflow to upload the package format produced by `conda-build`.
 - Added `pip` and runtime `python` requirements to the conda recipe to support conda build publication.
 - Aligned `carculator_utils>=1.3.5` across packaging metadata.
