@@ -464,8 +464,8 @@ class CarModel(VehicleModel):
                 self.energy.sel(parameter="recuperated energy").sum(dim="second")
                 / distance
             ).T
-            * self.array.sel(parameter="engine efficiency")
-            * self.array.sel(parameter="transmission efficiency")
+            * self.array.sel(powertrain="PHEV-e", parameter="engine efficiency")
+            * self.array.sel(powertrain="PHEV-e", parameter="transmission efficiency")
             / (
                 self["engine efficiency"]
                 * self["transmission efficiency"]
