@@ -7,13 +7,12 @@ name = "carculator"
 dynamic = ["version"]
 description = "Prospective life cycle assessment of passenger cars"
 readme = "README.md"
-requires-python = ">=3.11,<3.13"
+requires-python = ">=3.12,<3.13"
 license = {file = "LICENSE"}
 authors = [{name = "Romain Sacchi", email = "romain.sacchi@psi.ch"}, {name = "Chris Mutel", email = "christopher.mutel@psi.ch"}]
 dependencies = ["carculator_utils>=1.3.6.dev0"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
     "License :: OSI Approved :: BSD License",

@@ -9,12 +9,12 @@ build:
   script: "{{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv"
 requirements:
   host:
-    - python >=3.11,<3.13
+    - python >=3.12,<3.13
     - pip
     - setuptools >=68
     - wheel
   run:
-    - python >=3.11,<3.13
+    - python >=3.12,<3.13
     - carculator_utils >=1.3.6.dev0
 test:
   imports:

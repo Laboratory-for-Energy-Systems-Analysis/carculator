@@ -5,7 +5,7 @@ Installation
 
 Python Version
 --------------
-We recommend using the latest version of Python. ``carculator`` supports a Python 3.x environment.
+``carculator`` requires Python 3.12 (``>=3.12,<3.13``).
 Because ``carculator`` is still at an early development stage, we recommend installing it in a separate environment.
 
 Using Conda environment
@@ -15,7 +15,7 @@ Create a conda environment:
 
 .. code-block:: bash
 
-    conda create -n <name of the environment> python=3.7
+    conda create -n <name of the environment> python=3.12
 
 Once your environment created, you should activate it:
 
