@@ -1,53 +1,44 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "carculator"
-version = "1.9.5"
-description = "Prospective life cycle assessment of vehicles made blazing fast"
+dynamic = ["version"]
+description = "Prospective life cycle assessment of passenger cars"
 readme = "README.md"
-requires-python = ">=3.9"
-license = { file = "LICENSE" }
-authors = [
-    { name = "Romain Sacchi", email = "romain.sacchi@psi.ch" },
-    { name = "Chris Mutel", email = "christopher.mutel@psi.ch" },
-]
-dependencies = [
-    "carculator_utils>=1.3.5",
-]
+requires-python = ">=3.11,<3.13"
+license = {file = "LICENSE"}
+authors = [{name = "Romain Sacchi", email = "romain.sacchi@psi.ch"}, {name = "Chris Mutel", email = "christopher.mutel@psi.ch"}]
+dependencies = ["carculator_utils>=1.3.6.dev0"]
 classifiers = [
-    "Intended Audience :: End Users/Desktop",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
-    "Operating System :: MacOS :: MacOS X",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX",
-    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "Topic :: Scientific/Engineering :: Mathematics",
-    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: BSD License",
 ]
 
 [project.urls]
-Homepage = "https://github.com/romainsacchi/carculator"
+Homepage = "https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator"
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-cov", "openpyxl", "xlsxwriter"]
+docs = ["sphinx", "sphinx-rtd-theme"]
+excel = ["carculator_utils[excel]>=1.3.6.dev0"]
+brightway = ["carculator_utils[brightway]>=1.3.6.dev0"]
+
+[tool.setuptools.dynamic]
+version = {attr = "carculator._version.VERSION"}
 
 [tool.setuptools.packages.find]
-include = ["carculator*"]
+include = ["carculator", "carculator.*"]
 
 [tool.setuptools.package-data]
-carculator = [
-    "data/*.csv",
-    "data/*.json",
-    "data/*.yaml",
-    "data/*.yml",
-]
+carculator = ["data/*.json", "data/*.yaml", "data/*.yml", "data/*.csv", "data/*.npz", "data/*.xlsx", "data/**/*.json", "data/**/*.yaml", "data/**/*.yml", "data/**/*.csv", "data/**/*.npz", "data/**/*.xlsx"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["**/.DS_Store", "**/__pycache__/*"]
 
 [tool.black]
 line-length = 88

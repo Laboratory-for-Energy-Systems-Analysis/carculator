@@ -1,147 +1,45 @@
-name: Github Action
-on: [push, pull_request]
-
+name: Installed artifacts
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: artifacts-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  clean:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Black formatting
-        uses: lgeiger/black-action@v1.0.1
-        with:
-          args: "./"
-
-      - name: Run isort
-        uses: jamescurtin/isort-action@master
-        with:
-          configuration: --profile black
-
-      - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
-
-      - name: Push changes
-        if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config --global user.email "r_s@me.com"
-          git config --global user.name "romainsacchi"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout $GITHUB_HEAD_REF
-          git commit -am "Black reformating"
-          git push
-
-
-  build:
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python:
-          - 3.9
-    needs: clean
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install python version
-        uses: gabrielfalcao/pyenv-action@v9
-        with:
-          default: ${{ matrix.python }}
-          command: pip install -U pip  # upgrade pip after installing python
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt --upgrade pip
-          pip install -e .
-          pip install pytest
-          pip install pytest-cov
-          pip install coveralls
-
-      - name: Run tests
-        run: |
-          pytest --cov=carculator
-          coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.COVERALLS }}
-
-  conda:
-    name: (${{ matrix.python-version }}, ${{ matrix.os }})
+  verify:
+    timeout-minutes: 45
     runs-on: ${{ matrix.os }}
-    needs: build
-
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest"]
-        python-version: ["3.9"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.11', '3.12']
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v7
         with:
-          python-version: ${{ matrix.python-version }}
-          channels: conda-forge,cmutel,konstantinstadler,haasad,pascallesage,romainsacchi
-          allow-softlinks: true
-          channel-priority: strict
-          auto-update-conda: true
-          activate-environment: test
-
-      - name: Conda info
-        shell: bash -l {0}
-        run: conda info
-
-      - name: Publish distribution 📦 to Anaconda if Push
-        shell: bash -l {0}
-
-        run: |
-
-          PKG_NAME=carculator
-          USER=romainsacchi
-          conda install anaconda-client
-          conda install conda-build
-          mkdir ~/conda-bld
-          conda config --set anaconda_upload no
-          export CONDA_BLD_PATH=~/conda-bld
-          export VERSION=`date +%Y.%m.%d`
-          conda build "conda/" --old-build-string
-          ls $CONDA_BLD_PATH/noarch/
-          PACKAGE_PATH=$(find "$CONDA_BLD_PATH/noarch" -name "$PKG_NAME-$VERSION-py_0.*" \( -name "*.conda" -o -name "*.tar.bz2" \) -print -quit)
-          test -n "$PACKAGE_PATH"
-          anaconda -t ${{ secrets.ANACONDA_CLOUD }} upload -u $USER "$PACKAGE_PATH" --force
-
-  Pypi:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install pypa/build
-        run: >-
-          python -m
-          pip install
-          build
-          --user
-
-      - name: Build a binary wheel and a source tarball
-        run: >-
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
-          .
-
-      - name: Publish distribution 📦 to PyPI if Release
-        if: startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@master
+          path: project
+          persist-credentials: false
+      - uses: actions/checkout@v7
         with:
-          password: ${{ secrets.PYPI_TOKEN }}
-          skip_existing: true
-
-      - name: Publish distribution 📦 to Test PyPI if Push
-        uses: pypa/gh-action-pypi-publish@master
+          repository: Laboratory-for-Energy-Systems-Analysis/carculator_utils
+          ref: ${{ vars.CARCULATOR_UTILS_REF || 'master' }}
+          path: carculator_utils
+          persist-credentials: false
+      - uses: actions/setup-python@v7
         with:
-          password: ${{ secrets.TEST_PYPI_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
-          skip_existing: true
+          python-version: ${{ matrix.python }}
+      - name: Build, install, check resources, and test artifacts
+        run: python carculator_utils/scripts/verify_installation.py --repositories carculator_utils project --output verification --run-tests
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: verification-${{ matrix.os }}-${{ matrix.python }}
+          path: |
+            verification/report.json
+            verification/installation.log
+            verification/*-freeze.txt
+            verification/*-tests.xml
+          if-no-files-found: error

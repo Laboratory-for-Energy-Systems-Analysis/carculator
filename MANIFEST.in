@@ -1,13 +1,7 @@
-include *.md
-include *.txt
-include *.yml
-include *.yaml
-include *.toml
-include *.rst
-include *.ini
-include *.csv
-include carculator/data/*.csv
-include carculator/data/*.json
-include carculator/data/*.yaml
-include carculator/data/*.yml
-include LICENSE
+include LICENSE README.md pyproject.toml
+recursive-include carculator/data *.json *.yaml *.yml *.csv *.npz *.xlsx
+recursive-include tests *.py *.json *.xlsx
+recursive-include scripts *.py
+prune dev
+prune examples
+global-exclude .DS_Store *.pyc

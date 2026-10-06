@@ -16,9 +16,9 @@ __all__ = (
     "InventoryCar",
     "get_standard_driving_cycle_and_gradient",
 )
-__version__ = (1, 9, 5)
-
 from pathlib import Path
+
+from ._version import __version__
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
