@@ -4,61 +4,61 @@
     {
       "name": "carculator_utils-1.3.6.dev0-py3-none-any.whl",
       "source": "wheels",
-      "sha256": "005b8c641937e07ad49adc1c8135f104c6acb080d8c2d4971b20978a19b8a132",
+      "sha256": "49b4bdc826c0dbfed13ed541762c9445e89ca23a283c4aef55da7222194b20c5",
       "resources": 120
     },
     {
       "name": "carculator_utils-1.3.6.dev0-py3-none-any.whl",
       "source": "rebuilt",
-      "sha256": "38cc0095c3a33d4c6454bd226c554ceb8318fd6bc611d6a79bb8474ab9dff0e6",
+      "sha256": "90833ebb886a7e4eb9237b0dca71411213c8e6790c03ec60bdbcb9ba29c49418",
       "resources": 120
     },
     {
       "name": "carculator-1.9.6.dev0-py3-none-any.whl",
       "source": "wheels",
-      "sha256": "700bcfe25d8aa8639308ac771309605248c1c0cee8ce574d96d664dde87723f4",
+      "sha256": "c5cb9afefd4aa6743495fc0bba87595a84597686549b646fb8805bb3a5d28032",
       "resources": 3
     },
     {
       "name": "carculator-1.9.6.dev0-py3-none-any.whl",
       "source": "rebuilt",
-      "sha256": "6d379251f5041748ed892a4860f7873d747c7ffa3cc2a752fa2489f1d2812472",
+      "sha256": "db077e3fd074f9bb1e461bce33828cf331a0046b5b5bb725489455ead0fd13e2",
       "resources": 3
     },
     {
       "name": "carculator_bus-0.1.1.dev0-py3-none-any.whl",
       "source": "wheels",
-      "sha256": "1ba8fee41cb1ce04485dcf0b3058ca35a5399ad1a10d4646c78e75831814574c",
+      "sha256": "c7c575e658e8542c2fac84af7772d5c31308515b91c81cd75f55cf984dbb1376",
       "resources": 4
     },
     {
       "name": "carculator_bus-0.1.1.dev0-py3-none-any.whl",
       "source": "rebuilt",
-      "sha256": "1ba8fee41cb1ce04485dcf0b3058ca35a5399ad1a10d4646c78e75831814574c",
+      "sha256": "6094dcefd334d736ef7e0f98aa96940eb857db157d8a7ec233efa020ca2b97b5",
       "resources": 4
     },
     {
       "name": "carculator_truck-0.5.1.dev0-py3-none-any.whl",
       "source": "wheels",
-      "sha256": "79fb3c82f36ef1fbb31edbb112dbc06744314b8c77745c96028827c3cdc95ea2",
+      "sha256": "a64fd827bcdace853e84ccb249debf06164c140f888a12bbdb335632de2de32c",
       "resources": 3
     },
     {
       "name": "carculator_truck-0.5.1.dev0-py3-none-any.whl",
       "source": "rebuilt",
-      "sha256": "fa5d31a7ff4e1db4bfe1bb2367e3fcd5724af4485fb68c6d9255a9ca17268d80",
+      "sha256": "1aba5c9e5f8e9bdb558e8599fc73c8cf7ae15150b55e0ef8733e9aacbc7a4e2f",
       "resources": 3
     },
     {
       "name": "carculator_two_wheeler-0.1.1.dev0-py3-none-any.whl",
       "source": "wheels",
-      "sha256": "f0e453936a5e2ca922a5c5a2dfd61e70c376b552b963147aeb599db40a720886",
+      "sha256": "4f9b670bdacfd2c753c78cd2a565ed740b5cdbc19370ca14b3e9deb89dfdadb4",
       "resources": 2
     },
     {
       "name": "carculator_two_wheeler-0.1.1.dev0-py3-none-any.whl",
       "source": "rebuilt",
-      "sha256": "b1c82953a186c96ecdb6aea6d7a6262de0dfc38f410b4c469c2ab741681a7af2",
+      "sha256": "693550e2c562b05401a3522cb61cbbcf518377d86e406846d8aac00442c2b9aa",
       "resources": 2
     }
   ],
@@ -88,26 +88,34 @@
       "climate_change": 0.02329032393478126
     }
   ],
+  "verification_note": "Resumed after inactive truck charger lifetime regression. Rebuilt truck wheel/sdist; re-ran truck suite; retained successful utils/car/bus suites from the identical artifacts; completed two-wheeler tests and all core smoke checks. All artifact Python source bytes and resource hashes verified against final sources.",
+  "source_commits": {
+    "carculator_utils": "3f951d8d6c691ec86620400463cef1f6c5461b01",
+    "carculator": "706175287176b9db747f9fb9121bb3fd14cf2f00",
+    "carculator_bus": "7f4947bea48252c3683039208a9a44e64dadb4f1",
+    "carculator_truck": "aa8fc8a2c31f58a2714fc7a6b0e20ba49d873424",
+    "carculator_two_wheeler": "755ebb1ba6ff8156d2afb97164d41f35a1c771d0"
+  },
   "sdists": [
     {
       "name": "carculator-1.9.6.dev0.tar.gz",
-      "sha256": "8ce6e71dede8cfe31ef9dbd07716a68f9888ccf7c6152ac5d95c9ad8af285fe8"
+      "sha256": "2a0a15d8df150058f082c690c4b966951aa813ba6b196c7a03f7b3ddc697dd77"
     },
     {
       "name": "carculator_bus-0.1.1.dev0.tar.gz",
-      "sha256": "334e6ca7e59775bed3eda8fa85239b5df28188e39104d9de8bc29fdb599150a5"
+      "sha256": "41937cad258ad01947ab952836ae29bc0c3c74093e858f9971b57df35110e7b8"
     },
     {
       "name": "carculator_truck-0.5.1.dev0.tar.gz",
-      "sha256": "c58b3814929fca9d9e65dde54676c0731db485d7ff310e257e3382e47843a0ed"
+      "sha256": "a3061bf57fd966c4debb7af412041c5bd29db57065bdee117515aaf95a01e15d"
     },
     {
       "name": "carculator_two_wheeler-0.1.1.dev0.tar.gz",
-      "sha256": "1da686eaf5bffdb7516065e2959de3cd7ea0d3288291b7d3d459142aae84be21"
+      "sha256": "6b0a3a9390dd6058b3e6dab4110a895cf13d46e04da3f04166f063245e3a99e5"
     },
     {
       "name": "carculator_utils-1.3.6.dev0.tar.gz",
-      "sha256": "86ac99ab9e77af5dd0f63006c701a96cc6e30b6ae709d6e623e52fdb9bf6dd0b"
+      "sha256": "c55a38eeca086ae3f5c40ab82fa0996b7d9d56d27537e09aafcdd6321de8ba47"
     }
   ]
 }

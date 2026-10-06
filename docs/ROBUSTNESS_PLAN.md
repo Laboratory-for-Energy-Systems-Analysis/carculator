@@ -1,7 +1,7 @@
 # Carculator family robustness and installation plan
 
 Prepared 2026-10-06 from the [repository audit](REVIVAL_AUDIT.md).
-Status: first hardening batch implemented; see [HARDENING_PROGRESS.md](HARDENING_PROGRESS.md)
+Status: first hardening batch and focused unit-test/cost-arithmetic batch implemented; see [HARDENING_PROGRESS.md](HARDENING_PROGRESS.md)
 for completed changes, executed evidence, numerical changes, and outstanding work.
 Scope: carculator_utils, carculator, carculator_bus, carculator_truck,
 carculator_two_wheeler, flaskCarculator, and carculator_online.

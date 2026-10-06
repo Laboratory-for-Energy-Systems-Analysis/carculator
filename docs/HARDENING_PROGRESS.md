@@ -54,6 +54,48 @@ stage or every scientific scenario has been qualified.
 - Real car export regressions cover vkm/pkm/tkm, two years, both file formats,
   repeated calls, and unchanged LCA results after export.
 
+### Second batch: focused unit tests and cost arithmetic
+
+The unit-test expansion adds 67 pytest cases across all five core packages:
+14 shared financial cases, 11 car cases, 14 bus cases, 14 truck cases, and 14
+two-wheeler cases. Generated tests run 30 deterministic mass-balance examples per
+vehicle library and 50 discounted-payment examples in utils; these examples are
+additional executions within the reported pytest case counts.
+
+- Each vehicle suite checks curb/driving/cargo mass balance, lightweighting,
+  passenger loads, and batteries using controlled inputs. Bus luggage and truck
+  available payload have their own expectations.
+- Reordered input dimensions and two labelled samples must preserve values.
+  Independent model instances and their caller's input arrays must remain isolated.
+- Car, bus, and two-wheeler cost tests use an independent sum of discounted annual
+  payments, with 5/10-year lifetimes, two annual mileages, and 0/5% interest.
+  They check purchase, midpoint replacement, charging efficiency, total costs,
+  and the bus passenger-km divisor. These tests do not use golden spreadsheets.
+- Truck infrastructure tests cover scalar zero and near-zero interest,
+  negative-but-valid interest, zero demand, charger energy limits, and labelled
+  sample/year broadcasting. Mixed diesel/BEV arrays explicitly mask absent
+  chargers before financial validation; active chargers require a positive
+  lifetime. The zero-demand surcharge policy remains zero.
+- The shared capital-recovery helper is checked against present-value sums,
+  including generated rates/lifetimes, domain validation, and zero-rate limits.
+  Hypothesis is a test extra in every package, never a core runtime dependency.
+
+The initial regressions reproduced bus/two-wheeler annuities calculated using
+lifetime **kilometres** and replacement discounting that collapsed to zero.
+Those methods now convert distance to lifetime **years**, use stable annual
+capital recovery, and discount replacements at the already documented midpoint
+of vehicle life. Zero-lifetime/zero-mileage cells accrue no capital annuity;
+operating costs for unsupported combinations still require an availability policy.
+Truck infrastructure uses the same helper: a scalar zero interest rate previously
+raised `ZeroDivisionError`, and near-zero rates suffered cancellation error.
+Passenger-car cost calculations already passed the independent oracle and were
+left unchanged.
+
+These tests exercise formulas and ownership; they do not establish scientific
+validity for every default dataset or powertrain. Battery replacement policy,
+PHEV boundaries, repeated full-model execution, and reviewed numerical reference
+fixtures remain follow-up work.
+
 ### Packaging and CI
 
 All five core packages use setuptools pyproject metadata, explicit scientific
@@ -138,13 +180,33 @@ These four cases are regression evidence, not comprehensive scientific validatio
 The only changed data resource is the SimaPro passenger-kilometre unit alias;
 vehicle parameter datasets and background matrices are unchanged.
 
+### Cost changes from the second batch
+
+The same Python 3.11 environment compared the first hardening candidate with the
+unit-test/cost correction candidate, using CH and 2020. Runtime input datasets
+are unchanged. Values are currency units per stated distance unit.
+
+| Case | Cost component | Before | After |
+| --- | --- | ---: | ---: |
+| 13m-city BEV-depot bus, per passenger-km | Annualized purchase | 0.0184612 | 0.0373004 |
+| Same bus | Annualized replacement | 0.0000000 | 0.0079828 |
+| Same bus | Total | 0.0648389 | 0.0916609 |
+| Bicycle <25 BEV, per vehicle-km | Annualized purchase | -0.0042019 | -0.0108832 |
+| Same bicycle | Annualized replacement | 0.0000000 | 0.0062946 |
+| Same bicycle | Total | -0.0121237 | -0.0125105 |
+
+The bicycle glider and purchase costs remain negative; the correction does not
+validate those input coefficients. The strict expected-failure test remains.
+Full input/output values are in [unit-cost-comparison.json](verification/unit-cost-comparison.json).
+
 ## Remaining work and known issues
 
 1. **Scientific data/cost review:** the electric bicycle's glider cost is negative
-   under current inputs, producing approximately -0.0121 currency units/km. A
-   strict expected-failure test records this. Bus/two-wheeler annuity formulas use
-   lifetime kilometers where years are expected; unsupported two-wheeler cells
-   can have undefined costs. Do not hide these by coercing all costs to zero.
+   under current inputs, producing approximately -0.01251 currency units/km after
+   correcting the annuity. A strict expected-failure test records this. The
+   bus/two-wheeler annuity defects are repaired in the second batch, but replacement
+   policies and unsupported two-wheeler operating costs still need review. Do not
+   hide these by coercing all costs to zero.
 2. **Fuel mapping integrity:** `methane - synthetic - electrochemical` references
    an activity missing from the shipped A-matrix index. It now fails visibly.
    The old car test changed caller fuel types but accidentally reused names
@@ -179,22 +241,28 @@ Executed on macOS arm64 with Python 3.11.12 and Python 3.12. Artifact builds,
 clean installs, pip check, optional export imports, resource hashes, offline
 model/LCA smoke calculations, and wheel-versus-sdist numerical comparisons passed
 on both interpreters. Full tests ran against the installed wheels outside the
-checkout. The four smoke-case outputs also agree across Python versions.
+checkout. The four smoke-case outputs also agree across Python versions. They
+match the first hardening batch's energy and climate results exactly. Initial truck tests
+exposed the inactive-charger boundary; after correction, its wheel and sdist were
+rebuilt and its suite rerun. Already passing suites retained their identical
+artifacts. Final verification additionally compared all artifact Python source
+bytes against the reviewed sources, as well as checking resource hashes.
 
 | Suite | Python 3.11 installed wheels | Python 3.12 installed wheels |
 | --- | ---: | ---: |
-| utils | 40 passed | 40 passed |
-| car | 37 passed | 37 passed |
-| bus | 16 passed | 16 passed |
-| truck | 20 passed | 20 passed |
-| two-wheeler | 4 passed, 1 expected failure | 4 passed, 1 expected failure |
-| **Core total** | **117 passed, 1 expected failure** | **117 passed, 1 expected failure** |
+| utils | 54 passed | 54 passed |
+| car | 48 passed | 48 passed |
+| bus | 30 passed | 30 passed |
+| truck | 34 passed | 34 passed |
+| two-wheeler | 18 passed, 1 expected failure | 18 passed, 1 expected failure |
+| **Core total** | **184 passed, 1 expected failure** | **184 passed, 1 expected failure** |
 
-API source tests: 8 passed. Online pure-helper tests: 2 passed. These consumer
-checks used Python 3.11 with explicit sibling source paths; they are not fresh
-installations of the applications' pinned production dependencies. Together with
-the core suite, there are 127 passing distinct tests and one documented strict
-expected failure. No export integration was skipped for a missing dependency.
+The earlier batch passed 8 API source tests and 2 online pure-helper tests on
+Python 3.11 with explicit sibling source paths. Those consumer checks were not
+rerun for this cost-arithmetic expansion and did not qualify the applications'
+pinned production dependencies. The current core suite has 184 passing cases and
+one documented strict expected failure. No export integration was skipped for a
+missing dependency.
 
 See [test-summary.json](verification/test-summary.json),
 [Python 3.11 artifacts](verification/python311-artifacts.json), and
@@ -202,8 +270,8 @@ See [test-summary.json](verification/test-summary.json),
 snapshots record the resolved minimal and export/test dependencies. They are
 observations of this platform, not universal dependency locks.
 
-Black and isort checks pass for all 50 changed Python files. Workflow definitions
-have read-only repository permissions and no push/publication steps; GitHub has
+Black and isort checks pass for the 10 Python files changed in this batch. Workflow
+definitions have read-only repository permissions and no push/publication steps; GitHub has
 not executed the matrix. Linux, Windows, Conda, full web services, and production
 consumer pin upgrades remain unqualified. Deprecation warnings in legacy
 background/presentation methods are recorded rather than treated as test success

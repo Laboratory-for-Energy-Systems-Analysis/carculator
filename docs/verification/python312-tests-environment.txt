@@ -26,6 +26,7 @@ fasteners==0.20
 flexcache==0.3
 flexparser==0.4
 future==0.18.3
+hypothesis==6.168.5
 idna==3.20
 inflate64==1.0.4
 iniconfig==2.3.0
@@ -64,6 +65,7 @@ PyYAML==6.0.3
 requests==2.34.2
 scipy==1.17.1
 six==1.17.0
+sortedcontainers==2.4.0
 stats_arrays==3.0
 texttable==1.7.0
 tqdm==4.70.1

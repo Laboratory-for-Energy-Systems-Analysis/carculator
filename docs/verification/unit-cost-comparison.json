@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-06",
+  "interpretation": "Before is the first hardening candidate; after corrects annualization and midpoint discount only. Scientific input datasets are unchanged.",
+  "before": [
+    {
+      "package": "carculator_bus",
+      "size": "13m-city",
+      "powertrain": "BEV-depot",
+      "year": 2020,
+      "cost_unit": "per passenger-km",
+      "values": {
+        "interest rate": 0.05000000074505806,
+        "lifetime kilometers": 700000.0,
+        "kilometers per year": 50000.0,
+        "glider cost": 123900.453125,
+        "purchase cost": 184611.53125,
+        "amortised purchase cost": 0.018461154773831367,
+        "component replacement cost": 55593.60546875,
+        "amortised component replacement cost": 0.0,
+        "energy cost": 0.027919718995690346,
+        "total cost per km": 0.06483887881040573
+      }
+    },
+    {
+      "package": "carculator_two_wheeler",
+      "size": "Bicycle <25",
+      "powertrain": "BEV",
+      "year": 2020,
+      "cost_unit": "per vehicle-km",
+      "values": {
+        "interest rate": 0.05000000074505806,
+        "lifetime kilometers": 20000.0,
+        "kilometers per year": 2000.0,
+        "glider cost": -772.800048828125,
+        "purchase cost": -168.07406616210938,
+        "amortised purchase cost": -0.004201851785182953,
+        "component replacement cost": 124.06803131103516,
+        "amortised component replacement cost": 0.0,
+        "energy cost": 0.0017381191719323397,
+        "total cost per km": -0.012123733758926392
+      }
+    }
+  ],
+  "after": [
+    {
+      "package": "carculator_bus",
+      "size": "13m-city",
+      "powertrain": "BEV-depot",
+      "year": 2020,
+      "cost_unit": "per passenger-km",
+      "values": {
+        "interest rate": 0.05000000074505806,
+        "lifetime kilometers": 700000.0,
+        "kilometers per year": 50000.0,
+        "glider cost": 123900.453125,
+        "purchase cost": 184611.53125,
+        "amortised purchase cost": 0.03730037808418274,
+        "component replacement cost": 55593.60546875,
+        "amortised component replacement cost": 0.007982783019542694,
+        "energy cost": 0.027919718995690346,
+        "total cost per km": 0.09166087955236435
+      }
+    },
+    {
+      "package": "carculator_two_wheeler",
+      "size": "Bicycle <25",
+      "powertrain": "BEV",
+      "year": 2020,
+      "cost_unit": "per vehicle-km",
+      "values": {
+        "interest rate": 0.05000000074505806,
+        "lifetime kilometers": 20000.0,
+        "kilometers per year": 2000.0,
+        "glider cost": -772.800048828125,
+        "purchase cost": -168.07406616210938,
+        "amortised purchase cost": -0.010883180424571037,
+        "component replacement cost": 124.06803131103516,
+        "amortised component replacement cost": 0.00629460671916604,
+        "energy cost": 0.0017381191719323397,
+        "total cost per km": -0.012510456144809723
+      }
+    }
+  ]
+}
