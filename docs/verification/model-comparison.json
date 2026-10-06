@@ -1,0 +1,78 @@
+{
+  "before": [
+    {
+      "package": "carculator",
+      "curb mass": 1764.139892578125,
+      "TtW energy": 609.3123168945312,
+      "battery cell mass": 280.0,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": 0.4949306845664978,
+      "climate_change": 0.13762822063749153
+    },
+    {
+      "package": "carculator_bus",
+      "curb mass": 11431.234375,
+      "TtW energy": 3594.14501953125,
+      "battery cell mass": 234.09886169433594,
+      "battery cell energy density": 0.0,
+      "total cost per km": 0.06287072598934174,
+      "climate_change": 0.42156928934011983
+    },
+    {
+      "package": "carculator_truck",
+      "curb mass": 22677.345703125,
+      "TtW energy": 5327.00634765625,
+      "battery cell mass": 6165.5166015625,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": 3.195476531982422,
+      "climate_change": 1.327125032118089
+    },
+    {
+      "package": "carculator_two_wheeler",
+      "curb mass": 23.299999237060547,
+      "TtW energy": 25.00887107849121,
+      "battery cell mass": 2.309999942779541,
+      "battery cell energy density": 0.20000000298023224,
+      "total cost per km": -0.01264068391174078,
+      "climate_change": 0.028684009007436312
+    }
+  ],
+  "after": [
+    {
+      "package": "carculator",
+      "curb mass": 1764.139892578125,
+      "TtW energy": 609.3123168945312,
+      "battery cell mass": 280.0,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": 0.4949306845664978,
+      "climate_change": 0.13762822063749153
+    },
+    {
+      "package": "carculator_bus",
+      "curb mass": 12684.7275390625,
+      "TtW energy": 3814.033203125,
+      "battery cell mass": 1035.087158203125,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": 0.06483887881040573,
+      "climate_change": 0.48316411515725965
+    },
+    {
+      "package": "carculator_truck",
+      "curb mass": 22677.345703125,
+      "TtW energy": 5327.00634765625,
+      "battery cell mass": 6165.5166015625,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": 3.195476531982422,
+      "climate_change": 1.327125032118089
+    },
+    {
+      "package": "carculator_two_wheeler",
+      "curb mass": 23.299999237060547,
+      "TtW energy": 25.00887107849121,
+      "battery cell mass": 2.309999942779541,
+      "battery cell energy density": 0.23999999463558197,
+      "total cost per km": -0.012123733758926392,
+      "climate_change": 0.02329032393478126
+    }
+  ]
+}

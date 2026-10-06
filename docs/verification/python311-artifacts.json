@@ -1,0 +1,113 @@
+{
+  "python": "3.11.12 | packaged by conda-forge | (main, Apr 10 2025, 22:18:52) [Clang 18.1.8 ]",
+  "artifacts": [
+    {
+      "name": "carculator_utils-1.3.6.dev0-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "005b8c641937e07ad49adc1c8135f104c6acb080d8c2d4971b20978a19b8a132",
+      "resources": 120
+    },
+    {
+      "name": "carculator_utils-1.3.6.dev0-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "38cc0095c3a33d4c6454bd226c554ceb8318fd6bc611d6a79bb8474ab9dff0e6",
+      "resources": 120
+    },
+    {
+      "name": "carculator-1.9.6.dev0-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "700bcfe25d8aa8639308ac771309605248c1c0cee8ce574d96d664dde87723f4",
+      "resources": 3
+    },
+    {
+      "name": "carculator-1.9.6.dev0-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "6d379251f5041748ed892a4860f7873d747c7ffa3cc2a752fa2489f1d2812472",
+      "resources": 3
+    },
+    {
+      "name": "carculator_bus-0.1.1.dev0-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "1ba8fee41cb1ce04485dcf0b3058ca35a5399ad1a10d4646c78e75831814574c",
+      "resources": 4
+    },
+    {
+      "name": "carculator_bus-0.1.1.dev0-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "1ba8fee41cb1ce04485dcf0b3058ca35a5399ad1a10d4646c78e75831814574c",
+      "resources": 4
+    },
+    {
+      "name": "carculator_truck-0.5.1.dev0-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "79fb3c82f36ef1fbb31edbb112dbc06744314b8c77745c96028827c3cdc95ea2",
+      "resources": 3
+    },
+    {
+      "name": "carculator_truck-0.5.1.dev0-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "fa5d31a7ff4e1db4bfe1bb2367e3fcd5724af4485fb68c6d9255a9ca17268d80",
+      "resources": 3
+    },
+    {
+      "name": "carculator_two_wheeler-0.1.1.dev0-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "f0e453936a5e2ca922a5c5a2dfd61e70c376b552b963147aeb599db40a720886",
+      "resources": 2
+    },
+    {
+      "name": "carculator_two_wheeler-0.1.1.dev0-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "b1c82953a186c96ecdb6aea6d7a6262de0dfc38f410b4c469c2ab741681a7af2",
+      "resources": 2
+    }
+  ],
+  "results": [
+    {
+      "package": "carculator",
+      "version": "1.9.6.dev0",
+      "ttw_energy": 609.3123168945312,
+      "climate_change": 0.13762822063749153
+    },
+    {
+      "package": "carculator_bus",
+      "version": "0.1.1.dev0",
+      "ttw_energy": 3814.033203125,
+      "climate_change": 0.48316411515725965
+    },
+    {
+      "package": "carculator_truck",
+      "version": "0.5.1.dev0",
+      "ttw_energy": 5327.00634765625,
+      "climate_change": 1.327125032118089
+    },
+    {
+      "package": "carculator_two_wheeler",
+      "version": "0.1.1.dev0",
+      "ttw_energy": 25.00887107849121,
+      "climate_change": 0.02329032393478126
+    }
+  ],
+  "sdists": [
+    {
+      "name": "carculator-1.9.6.dev0.tar.gz",
+      "sha256": "8ce6e71dede8cfe31ef9dbd07716a68f9888ccf7c6152ac5d95c9ad8af285fe8"
+    },
+    {
+      "name": "carculator_bus-0.1.1.dev0.tar.gz",
+      "sha256": "334e6ca7e59775bed3eda8fa85239b5df28188e39104d9de8bc29fdb599150a5"
+    },
+    {
+      "name": "carculator_truck-0.5.1.dev0.tar.gz",
+      "sha256": "c58b3814929fca9d9e65dde54676c0731db485d7ff310e257e3382e47843a0ed"
+    },
+    {
+      "name": "carculator_two_wheeler-0.1.1.dev0.tar.gz",
+      "sha256": "1da686eaf5bffdb7516065e2959de3cd7ea0d3288291b7d3d459142aae84be21"
+    },
+    {
+      "name": "carculator_utils-1.3.6.dev0.tar.gz",
+      "sha256": "86ac99ab9e77af5dd0f63006c701a96cc6e30b6ae709d6e623e52fdb9bf6dd0b"
+    }
+  ]
+}

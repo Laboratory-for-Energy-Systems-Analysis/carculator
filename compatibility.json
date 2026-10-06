@@ -1,0 +1,50 @@
+{
+  "status": "unreleased committed candidates; base_commit records the pre-hardening baseline; candidate_commit identifies the qualified source changes",
+  "date": "2026-10-06",
+  "python": ">=3.11,<3.13",
+  "numpy": ">=1.26.4,<2",
+  "repositories": {
+    "carculator_utils": {
+      "base_commit": "e431f50b5117513a82b7aee94d8d0ce9e4062744",
+      "branch": "master",
+      "candidate_version": "1.3.6.dev0",
+      "candidate_commit": "9a6dbb105ae3b8bd65fca17bb8224d03ea649137"
+    },
+    "carculator": {
+      "base_commit": "67361c8e0382ef0d1feefd25facc7ccabfa2327d",
+      "branch": "master",
+      "candidate_version": "1.9.6.dev0",
+      "candidate_commit": "2e84b3e6a97c5d622992a7715f8960f038a4f3fe"
+    },
+    "carculator_bus": {
+      "base_commit": "24b12888e3414145c2353ce9acb8e1ed0d4a9ccc",
+      "branch": "master",
+      "candidate_version": "0.1.1.dev0",
+      "candidate_commit": "e28c2234643790bbfaa16bee677dc337dc91c1f7"
+    },
+    "carculator_truck": {
+      "base_commit": "fff196e74c733faf1d7c6cdfffaf078ee9c3c008",
+      "branch": "master",
+      "candidate_version": "0.5.1.dev0",
+      "candidate_commit": "3c68b67223a1116204a6aebf9bf23392ac225d1f"
+    },
+    "carculator_two_wheeler": {
+      "base_commit": "52c2157d95597bf9be206949d2dc14a717128b9d",
+      "branch": "main",
+      "candidate_version": "0.1.1.dev0",
+      "candidate_commit": "29e842f196d4e394c9523abf8293288f93871d9b"
+    },
+    "flaskCarculator": {
+      "base_commit": "ab0487961a50778e51f4ea35ae213e8739363b1d",
+      "branch": "TCS",
+      "deployment_pins": "unchanged",
+      "candidate_commit": "a688b8e1b6fa1f2b80be8e059244397b746c338a"
+    },
+    "carculator_online": {
+      "base_commit": "a434439707c5fde6ff59de776f4a67ff7f65c4fd",
+      "branch": "master",
+      "deployment_pins": "unchanged",
+      "candidate_commit": "94c84568db1e1a8fad7d0f1a27d45e7898bec048"
+    }
+  }
+}
