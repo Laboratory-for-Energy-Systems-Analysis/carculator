@@ -1,9 +1,9 @@
 import unittest
+from copy import deepcopy
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 from carculator import *
 from carculator.model import CarModel
 
@@ -12,12 +12,16 @@ class TestCarModel(unittest.TestCase):
     DATA = Path(__file__, "..").resolve() / "fixtures" / "cars_values.xlsx"
     ref = pd.read_excel(DATA, index_col=0)
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         cip = CarInputParameters()
         cip.static()
         dcts, arr = fill_xarray_from_input_parameters(cip)
-        self.cm = CarModel(arr, cycle="WLTC")
-        self.cm.set_all()
+        cls._model = CarModel(arr, cycle="WLTC")
+        cls._model.set_all()
+
+    def setUp(self):
+        self.cm = deepcopy(self._model)
 
     def test_model_results(self):
         list_powertrains = [

@@ -2,6 +2,7 @@ from itertools import product
 
 import numpy as np
 import yaml
+
 from carculator_utils.energy_consumption import EnergyConsumptionModel
 from carculator_utils.model import VehicleModel
 
@@ -207,10 +208,7 @@ class CarModel(VehicleModel):
             country=self.country,
         )
 
-        diff = 1.0
-
-        while diff > 0.00001:
-            old_driving_mass = self["driving mass"].sum().values
+        for _ in self.iterate_sizing("driving mass", rtol=1e-05):
             self.set_vehicle_masses()
             self.set_power_parameters()
             self.set_component_masses()
@@ -230,10 +228,6 @@ class CarModel(VehicleModel):
             # they override the default values
             if "capacity" in self.energy_storage:
                 self.override_battery_capacity()
-
-            diff = (self["driving mass"].sum().values - old_driving_mass) / self[
-                "driving mass"
-            ].sum()
 
         self.calculate_ttw_energy()
         self.set_ttw_efficiency()
