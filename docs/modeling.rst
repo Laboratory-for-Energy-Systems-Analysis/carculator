@@ -383,6 +383,14 @@ if the default input values (i.e., engine power, fuel tank size, etc.) are chang
 Energy consumption
 ******************
 
+.. note::
+
+   For the current 2025 calibration status, measurement boundaries, temporal
+   update and remaining evidence gaps, see :doc:`validity`. Historical figures
+   below retain their original configurations and do not constitute a new
+   validation of the revised defaults.
+
+
 The energy consumption model of ``carculator`` calculates the energy
 required at the wheels by considering different types of resistance.
 Some of these resistances are related to the vehicle size class. For
@@ -567,21 +575,27 @@ Where:
 - :math:`F_{motive}` is the motive energy,
 - and :math:`F_{aux}` is the auxiliary energy.
 
-There are no fuel consumption measurements available for fuel cell
-vehicles. Values found in the literature and from manufacturers data are
-used to approximate the engine and transmission efficiency and to
-calibrate the final energy consumption.
+Fuel-cell and electric-drive assumptions require the same boundary checks as
+other powertrains. The current component priors are not a universal empirical
+fuel-cell calibration; see :doc:`validity` for the evidence reviewed and limits.
+When opt-in combustion controls are enabled, their restart and terminal-buffer
+recharge fuel is also included in tank-to-wheel energy.
 
 Engine and transmission efficiency
 **********************************
 
-Engine and transmission efficiencies for the conventional gasoline, diesel
-and electric powertrains (including fuel cell electric powertrains) are
-defined as a function of the utilized engine power for each second of the driving cycle
-(i.e., the power load over the rated power output of the engine).
-Such relation is shown in Hjelkrem et al. 2020 :cite:`ct-1133`.
+The conventional combustion maps derive from the effective tank-to-wheel
+relations of Hjelkrem et al. 2020 :cite:`ct-1133`. The shared implementation
+converts the source wheel-load axis consistently to its shaft-load convention;
+this decomposition is not an independently measured engine/transmission map.
+Current electric traction uses explicit motor/inverter and transmission priors
+in the documented scopes, rather than fitting those components to each vehicle's
+aggregate consumption. Petrol full hybrids and depleted petrol PHEVs use the
+pinned Prius Atkinson engine curve. See :doc:`validity` for the adopted priors,
+source-transfer limits and comparison results. The historical relation and
+figure below describe the original map derivation.
 Unfortunately, such relation is not given for compressed gas powertrains,
-which we assume to be 17.5% less efficient than diesle powertrains :cite:`ct-1134`. The specific values
+which we assume to be 17.5% less efficient than diesel powertrains :cite:`ct-1134`. The specific values
 for engine and transmission efficiency in relation to utilized power can be consulted
 `here <https://github.com/romainsacchi/carculator_utils/blob/master/carculator_utils/data/efficiency/car.yaml>`_ .
 Hjelkrem et al. 2020 :cite:`ct-1133` only give the overall tank-to-wheel efficiency, which we decompose,

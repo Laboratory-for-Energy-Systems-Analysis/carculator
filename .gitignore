@@ -136,3 +136,6 @@ venv.bak/
 
 # Local agent guidance
 AGENTS.md
+
+# macOS Finder metadata
+.DS_Store

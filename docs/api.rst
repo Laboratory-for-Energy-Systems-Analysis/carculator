@@ -6,25 +6,25 @@ API
 Car Input Parameter
 -------------------
 
-.. autoclass:: carculator.car_input_parameters.VehicleInputParameters
+.. autoclass:: carculator.car_input_parameters.CarInputParameters
     :members:
     
 Array
 -----
 
-.. automodule:: carculator.array
+.. automodule:: carculator_utils.array
     :members:
     
 Driving cycle
 -------------
 
-.. automodule:: carculator.driving_cycles
+.. automodule:: carculator_utils.driving_cycles
     :members:
     
 Energy consumption
 ------------------
 
-.. automodule:: carculator.energy_consumption
+.. automodule:: carculator_utils.energy_consumption
     :members:
 
 Car Model
@@ -36,13 +36,13 @@ Car Model
 Noise Model
 -----------
 
-.. automodule:: carculator.noise_emissions
+.. automodule:: carculator_utils.noise_emissions
     :members:
 
 Hot pollutants emissions
 ------------------------
 
-.. automodule:: carculator.hot_emissions
+.. automodule:: carculator_utils.hot_emissions
     :members:
 
 Inventory calculation
@@ -54,11 +54,11 @@ Inventory calculation
 Inventory export
 ----------------
 
-.. automodule:: carculator.export
+.. automodule:: carculator_utils.export
     :members:
 
 Background systems
 ------------------
 
-.. automodule:: carculator.background_systems
+.. automodule:: carculator_utils.background_systems
     :members:

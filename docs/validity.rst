@@ -1,224 +1,118 @@
 .. _validity:
 
-Validity tests
-==============
+Passenger-car calibration and validation
+========================================
 
-Driving cycle, velocity and acceleration
-----------------------------------------
+The 2025 inputs combine historical parameter trends, sourced component priors
+and explicit engineering assumptions. They are not a newly fitted fleet of
+2025 cars. Historical curb-mass calibration is described in :doc:`modeling`;
+it does not independently validate current fuel or electricity consumption.
 
-Beside custom driving cycles, there are eleven default driving cycles to select from:
+Evidence reviewed
+-----------------
 
-* WLTC
-* WLTC 3.1
-* WLTC 3.2
-* WLTC 3.3
-* WLTC 3.4
-* CADC Urban
-* CADC Road
-* CADC Motorway
-* CADC Motorway 130
-* CADC
-* NEDC
+The shared measurement catalog contains 19 paired car observations covering
+18 configurations. Those baseline runs use WLTC, whereas the ADAC observations
+use Ecotest. Driving masses are measured or reconstructed from documented test
+payloads, with the basis retained in the catalog. Matching mass alone does not
+match road load, cold starts, auxiliaries, temperature or the driving protocol.
 
-They are needed to calculate a number of things, such as:
-* velocity, driving distance, driving time, and acceleration,
-* but also hot pollutant and noise emissions.
+For four mini BEVs, an additional experiment reconstructs ADAC's electric-cycle
+ending from its published graph. It is not an official numerical trace. The
+following are AC charging electricity, in kWh/100 km:
 
-Manually, such parameters can be obtained the following way:
+.. list-table:: Cycle sensitivity, without consumption fitting
+   :header-rows: 1
 
-.. code-block:: python
+   * - Vehicle
+     - WLTC
+     - Graph reconstruction
+     - ADAC
+   * - Dacia Spring 65
+     - 13.28
+     - 14.70
+     - 16.70
+   * - Fiat 500e RED
+     - 14.19
+     - 15.59
+     - 15.90
+   * - Fiat 500e La Prima
+     - 14.88
+     - 16.28
+     - 17.10
+   * - Fiat 500e Cabrio
+     - 14.98
+     - 16.38
+     - 17.40
 
-    import pandas as pd
-    import numpy as np
-    # Retrieve the driving cycle WLTC 3 from the UNECE
-    driving_cycle = pd.read_excel('http://www.unece.org/fileadmin/DAM/trans/doc/2012/wp29grpe/WLTP-DHC-12-07e.xls',
-                sheet_name='WLTC_class_3', skiprows=6, usecols=[2,4,5])
+The graph trace exceeds rated shaft power briefly; a slower-acceleration probe
+checks that limitation. These results support investigating cycle mismatch,
+not fitting generic motor or battery efficiencies to the remaining residuals.
+See `ADAC reconstruction and source protocol <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/adac_cycle_comparison.rst>`_.
 
-    # Calculate velocity (km/h -> m/s)
-    velocity = driving_cycle['km/h'].values * 1000 / 3600
+For lower-medium petrol cars, the Golf diagnostic gives about 7.03 L/100 km
+without hybrid assistance and 6.53 L/100 km with the source drag coefficient
+and opt-in start-stop/fuel-cut controls, against the reported ADAC 5.6 L/100 km.
+The protocol and control state remain imperfectly matched. This is a diagnostic,
+not a class-wide petrol calibration. The controller is disabled by default;
+its thresholds, buffer and restart costs are engineering assumptions. See
+`petrol diagnostics <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/petrol_car_energy_diagnostics.rst>`_ and
+`control accounting and public API <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/combustion_controls.rst>`_.
 
-    # Retrieve driving distance (-> km)
-    driving_distance = velocity.sum() * 1000
+Petrol full hybrids and depleted petrol PHEVs use the pinned FASTSim 2016
+Prius Atkinson engine curve at shaft load. The effective downstream efficiency
+of 0.8 remains a class assumption, not a separately measured transmission
+parameter. This transfer is not a time-resolved power-split controller.
 
-    # Retrieve driving time (-> s)
-    driving_time = len(driving_cycle.values)
+Hybrid regeneration and battery boundaries have analytical regression tests.
+Hybrid motor peak ratings are independent of combined system power; generic
+ratios and component priors are not independently identified by consumption
+alone. Neither these checks nor the historical fleet plots establish universal
+validation of hybrids, plug-in hybrids or fuel-cell cars.
 
-    # Retrieve acceleration by calculating the delta of velocity per time interval of 2 seconds
-    acceleration = np.zeros_like(velocity)
-    acceleration[1:-1] = (velocity[2:] - velocity[:-2])/2
+Energy boundaries and time trends
+---------------------------------
 
-Using ``carculator``, these parameters can be obtained the following way:
+``TtW energy`` is kJ/km. For a BEV it represents net stored-energy depletion;
+``model.battery_terminal_energy`` reports net terminal DC energy separately.
+``electricity consumption`` is charging electricity in kWh/km. Multiplying it
+by 100 gives kWh/100 km. A meter boundary must be identified before comparing
+these outputs. Regeneration and battery/charger losses must not be counted twice.
 
-.. code-block:: python
+The 2025 motor/inverter (0.90), electric transmission (0.97), charger (0.90)
+and symmetric battery one-way (sqrt(0.97)) values are component priors in their
+documented scopes, not universally measured efficiencies. For relevant hybrid
+scopes, the independent motor peak/system-power ratio is 0.65. The temporal
+update preserves all 2025 scalar values and uncertainty distributions. Storage
+and charger trends preserve relative legacy losses; newly explicit component
+priors are extended across native years to avoid interpolating from missing
+zero values. Historical estimates and future projections therefore change.
 
-    from carculator.energy_consumption import EnergyConsumptionModel
-    ecm = EnergyConsumptionModel('WLTC')
+The family audit completes 546 annual cases (21 configurations, 2015–2040),
+including availability-masked historical cells. The former inputs caused 20
+sizing failures in this grid. All 40 existing 2025 measurement-comparison runs
+retain their energy use and driving mass exactly. These are consistency and
+regression checks, not 546 empirical validations. See
+`temporal method, plots and limitations <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/temporal_energy.rst>`_.
 
-    # Access the driving distance
-    ecm.velocity.sum() * 1000
+Reproducibility
+---------------
 
-    # Access the driving time
-    len(ecm.velocity)
+The installed package includes :download:`2025 record provenance
+<../carculator/data/defaults_2025_provenance.json>` and
+:download:`temporal provenance and original affected records
+<../carculator/data/temporal_energy_provenance.json>`. Overrides should use measured
+vehicle-specific inputs where available. Retain source, year, cycle, driving
+mass, meter boundary and uncertainty assumptions with each comparison.
 
-    # Access the acceleration
-    ecm.acceleration
-    
-Both approaches should return identical results:
+With matching Python 3.12 sibling checkouts, run from ``carculator_utils``::
 
-.. code-block:: python
+   python scripts/validate_energy_measurements.py --output /tmp/measurements-new
+   python scripts/audit_energy_time_trends.py --output /tmp/temporal-new
 
-    print(np.array_equal(velocity, ecm.velocity))
-    print(driving_distance == ecm.velocity.sum()*1000)
-    print(driving_time == len(ecm.velocity))
-    print(np.array_equal(acceleration, ecm.acceleration))
-
-    True
-    True
-    True
-    True
-    
-And the acceleration returned by ``carculator`` should equal the values given by the UNECE:
-
-.. code-block:: python
-
-    np.array_equal(np.around(ecm.acceleration,4),np.around(driving_cycle['m/s²'].values,4))
-    
-    True
-    
-Which can be also be verified visually:
-
-.. code-block:: python
-
-    plt.plot(driving_cycle['m/s²'].values, label='UNECE')
-    plt.plot(acceleration, label='Manually calculated')
-    plt.plot(ecm.acceleration, label='carculator', alpha=0.6)
-    plt.legend()
-    plt.ylabel('m/s2')
-    plt.xlabel('second')
-    plt.savefig('comparison_driving_cycle.png')
-    plt.show()
-
-.. image:: /_static/img/comparison_driving_cycle.png
-    :width: 400
-    :align: center
-    :alt: Alternative text
-    
-Car and components masses
--------------------------
-
-:class:`CarModel` sizes and "builds" the vehicles. The vehicles attributes are accessed in the `array` attribute of the
-:class:`CarModel` class.
-Filters like vehicle size class, year of manufacture and powertrain technology are convenient to use.
-A relevant calculated parameter is the `driving mass`,
-as it is determinant for the energy required to overcome `rolling resistance`, the `drag`, but also the energy required to
-move the vehicle over a given distance -- `kinetic energy`, which is altogether defined as the `tank to wheel` energy,
-stored under the parameter `TtW_energy`.
-
-Parameters such as total cargo mass, curb mass and driving mass, can be obtained the following way, for a 2020 battery electric SUV:
-
-.. code-block:: python
-
-    cm.array.sel(size='SUV', powertrain='BEV', year=2020, parameter=['cargo mass','curb mass', 'driving mass']).values
-    
-    array([[  20.        ],
-       [1719.56033224],
-       [1874.56033224]])
-       
-One can check whether `total cargo mass` is indeed equal to cargo mass plus the product of the number of passengers
-and the average passenger weight:
-
-.. code-block:: python
-
-    total_cargo, cargo, passengers, passengers_weight = cm.array.sel(size='SUV', powertrain='BEV', year=2020,
-        parameter=['total cargo mass','cargo mass','average passengers', 'average passenger mass']).values
-    print('Total cargo of {} kg, with a cargo mass of {} kg, and {} passengers of individual weight of {} kg.'.format(total_cargo[0], cargo[0], passengers[0], passengers_weight[0]))
-    print(total_cargo == cargo+(passengers * passengers_weight))
-    
-    Total cargo of 155.0 kg, with a cargo mass of 20.0 kg, and 1.8 passengers of individual weight of 75.0 kg.
-    [True]
-    
-However, most of the driving mass is explained by the curb mass:
-
-.. code-block:: python
-
-    plt.pie(np.squeeze(cm.array.sel(size='SUV', powertrain='BEV', year=2020,
-        parameter=['total cargo mass', 'curb mass']).values).tolist(), labels=['Total cargo mass', 'Curb mass'])
-    plt.show()
-
-.. image:: /_static/img/pie_total_mass.png
-    :width: 400
-    :align: center
-    :alt: Alternative text
-    
-Here is a split between the components making up for the curb mass.
-One can see that, in the case of a battery electric SUV, most of the weight comes from the glider as well as the battery cells.
-On an equivalent diesel powertrain, the mass of the glider base is comparatively more important:
-
-.. code-block:: python
-
-    l_param=["fuel mass","charger mass","converter mass","glider base mass","inverter mass","power distribution unit mass",
-            "combustion engine mass","electric engine mass","powertrain mass","fuel cell stack mass",
-            "fuel cell ancillary BoP mass","fuel cell essential BoP mass","battery cell mass","battery BoP mass","fuel tank mass"]
-
-
-    colors = ['yellowgreen','red','gold','lightskyblue','white','lightcoral','blue','pink', 'darkgreen','yellow','grey','violet','magenta','cyan', 'green']
-
-    BEV_mass = np.squeeze(cm.array.sel(size='SUV', powertrain='BEV', year=2020,
-            parameter=l_param).values)
-
-    percent = 100.*BEV_mass/BEV_mass.sum()
-
-    f = plt.figure(figsize=(15,10))
-
-    ax = f.add_subplot(121)
-
-    patches, texts = ax.pie(BEV_mass, colors=colors, startangle=90, radius=1.2)
-    ax.set_title('BEV SUV')
-    labels = ['{0} - {1:1.2f} %'.format(i,j) for i,j in zip(l_param, percent)]
-
-    sort_legend = True
-    if sort_legend:
-        patches, labels, dummy =  zip(*sorted(zip(patches, labels, BEV_mass),
-                                              key=lambda x: x[2],
-                                              reverse=True))
-
-    ax.legend(patches, labels, loc='upper left', bbox_to_anchor=(-0.1, 1.),
-               fontsize=8)
-
-
-    ICEV_d_mass = np.squeeze(cm.array.sel(size='SUV', powertrain='ICEV-d', year=2020,
-            parameter=l_param).values)
-    percent = 100.*ICEV_d_mass/ICEV_d_mass.sum()
-
-    ax2 = f.add_subplot(122)
-
-    patches, texts = ax2.pie(ICEV_d_mass, colors=colors, startangle=90, radius=1.2)
-    ax2.set_title('ICE-d SUV')
-    labels = ['{0} - {1:1.2f} %'.format(i,j) for i,j in zip(l_param, percent)]
-
-    sort_legend = True
-    if sort_legend:
-        patches, labels, dummy =  zip(*sorted(zip(patches, labels, ICEV_d_mass),
-                                              key=lambda x: x[2],
-                                              reverse=True))
-
-    ax2.legend(patches, labels, loc='upper left', bbox_to_anchor=(-0.1, 1.),
-               fontsize=8)
-
-    plt.subplots_adjust(wspace=1)
-    plt.show()
-  
-.. image:: /_static/img/pie_mass_components.png
-    :width: 900
-    :align: center
-    :alt: Alternative text
-
-The `curb mass` returned by ``carculator`` for the year 2010 and 2020 is further calibrated against manufacturers' data, per vehicle size class and powertrain technology.
-For example, we use the car database Car2db (https://car2db.com/) and load all the vehicles produced between 2015 and 2019 (11,500+ vehicles) to do the curb mass calibration for 2020 vehicles.
-The same exercise is done with vehicles between 2008 and 2012 to calibrate the curb mass of given by ``carculator`` for vehicles in 2010.
-
-    
-.. image:: /_static/img/mass_comparison.png
-    :width: 900
-    :align: center
-    :alt: Alternative text
+The shared `measurement catalog and outputs <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/energy_measurements.rst>`_
+record excluded observations as well as paired values. Multiple cycles of one
+vehicle and AC/DC measurements from one run are not independent vehicles.
+The family artifact verification passed 436 tests, with one existing expected
+two-wheeler failure, plus offline wheel/source-distribution model and LCIA checks.
+That software verification does not replace empirical validation.
