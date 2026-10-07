@@ -393,6 +393,7 @@ class CarModel(VehicleModel):
         """
 
         self.energy = self.ecm.motive_energy_per_km(
+            combustion_controls=self.combustion_controls,
             engine_efficiency=self.get_energy_efficiency_override("engine efficiency"),
             transmission_efficiency=self.get_energy_efficiency_override(
                 "transmission efficiency"
@@ -454,6 +455,11 @@ class CarModel(VehicleModel):
                     "motive energy",
                     "auxiliary energy",
                 ]
+                + (
+                    ["combustion control energy"]
+                    if "combustion control energy" in self.energy.parameter
+                    else []
+                )
             ).sum(dim=["second", "parameter"])
             / distance
         ).T
