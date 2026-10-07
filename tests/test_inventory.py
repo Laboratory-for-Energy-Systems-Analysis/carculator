@@ -83,10 +83,40 @@ def test_plausibility_of_GWP(car_model):
                 gwp_icev.sum(dim="impact") < 0.36
             ).all(), gwp_icev.sum(dim="impact")
 
-            # Are the medium ICEVs direct emissions between 0.13 and  0.18 kg CO2-eq./vkm?
-            assert (gwp_icev.sel(impact="direct - exhaust") > 0.13).all() and (
-                gwp_icev.sel(impact="direct - exhaust") < 0.19
-            ).all(), gwp_icev.sel(impact="direct - exhaust")
+            # Check exhaust carbon against energy demand and fuel chemistry.
+            # The former fixed exhaust interval was an output snapshot, not a
+            # measured reference, and hid changes in the energy model.
+            year_index = list(car_model.array.year.values).index(2020)
+            inventory_year = list(ic.scope["year"]).index(2020)
+            for powertrain, fuel in [("ICEV-d", "diesel"), ("ICEV-p", "petrol")]:
+                selection = dict(
+                    size="Medium", powertrain=powertrain, year=2020, value=0
+                )
+                fuel_kg_km = float(car_model["TtW energy"].sel(**selection)) / (
+                    1000 * float(car_model["LHV fuel MJ per kg"].sel(**selection))
+                )
+                fossil_co2_per_kg = sum(
+                    component["share"][year_index]
+                    * component["CO2"]
+                    * (1 - component["biogenic share"])
+                    for component in car_model.fuel_blend[fuel].values()
+                )
+                expected = fuel_kg_km * fossil_co2_per_kg
+                row = ic.inputs[("Carbon dioxide, fossil", ("air",), "kilogram")]
+                columns = ic.find_input_indices(
+                    ("transport, car, ", powertrain, "Medium")
+                )
+                assert len(columns) == 1
+                np.testing.assert_allclose(
+                    -ic.A[0, row, columns[0], inventory_year], expected, rtol=1e-6
+                )
+                exhaust = float(
+                    gwp_icev.sel(powertrain=powertrain, impact="direct - exhaust")
+                )
+                assert exhaust >= expected * (1 - 1e-6)
+                assert exhaust < float(
+                    gwp_icev.sel(powertrain=powertrain).sum(dim="impact")
+                )
 
         # Is the GWP score for batteries of Medium BEVs between 0.025 and 0.035 kg Co2-eq./vkm?
         gwp_bev = results.sel(
