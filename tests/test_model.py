@@ -216,17 +216,16 @@ class TestCarModel(unittest.TestCase):
             == 1000
         )
 
-        assert np.isclose(
-            cm.array.sel(
-                powertrain="BEV",
-                size="Medium",
-                year=2020,
-                parameter="electricity consumption",
-                value=0,
-            ).values,
-            (1000 / 3600) * 1.17,
-            rtol=0.01,
+        bev = cm.array.sel(powertrain="BEV", size="Medium", year=2020, value=0)
+        # AC input must replenish the overridden stored energy after charging
+        # losses; the old fixed 17% uplift encoded superseded component defaults.
+        restored_energy = (
+            bev.sel(parameter="electricity consumption").item()
+            * bev.sel(parameter="charger efficiency").item()
+            * bev.sel(parameter="battery charge efficiency").item()
+            * 3600
         )
+        assert np.isclose(restored_energy, 1000, rtol=1e-6)
 
         assert (
             cm.array.sel(
