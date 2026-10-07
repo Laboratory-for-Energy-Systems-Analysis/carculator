@@ -392,13 +392,19 @@ class CarModel(VehicleModel):
         """
 
         self.energy = self.ecm.motive_energy_per_km(
+            engine_efficiency=self.get_energy_efficiency_override("engine efficiency"),
+            transmission_efficiency=self.get_energy_efficiency_override(
+                "transmission efficiency"
+            ),
             driving_mass=self["driving mass"],
             rr_coef=self["rolling resistance coefficient"],
             drag_coef=self["aerodynamic drag coefficient"],
             frontal_area=self["frontal area"],
             electric_motor_power=self["electric power"],
             engine_power=self["power"],
+            combustion_engine_power=self["combustion power"],
             recuperation_efficiency=self["recuperation efficiency"],
+            electric_motor_efficiency=self.get_electric_motor_efficiency(),
             aux_power=self["auxiliary power demand"],
             battery_charge_eff=self["battery charge efficiency"],
             battery_discharge_eff=self["battery discharge efficiency"],
@@ -451,25 +457,8 @@ class CarModel(VehicleModel):
             / distance
         ).T
 
-        # saved_TtW_energy_by_recuperation = recuperated energy * electric motor efficiency * electric transmission efficency / (engine efficiency * transmission efficiency)
-
-        self["TtW energy"] += (
-            (
-                self.energy.sel(parameter="recuperated energy").sum(dim="second")
-                / distance
-            ).T
-            * self.array.sel(parameter="engine efficiency")
-            * self.array.sel(parameter="transmission efficiency")
-            / (
-                self["engine efficiency"]
-                * self["transmission efficiency"]
-                * np.where(
-                    self["fuel cell system efficiency"] == 0,
-                    1,
-                    self["fuel cell system efficiency"],
-                )
-            )
-        )
+        self["TtW energy"] += self.get_regeneration_credit()
+        self.set_battery_energy_balance()
 
         self["TtW energy, combustion mode"] = self["TtW energy"] * (
             self["combustion power share"] > 0
@@ -682,9 +671,9 @@ class CarModel(VehicleModel):
         This method sets the energy consumption of vehicles that are not available to zero.
         """
 
-        # we flag cars that have a range inferior to 100 km
-        # and also BEVs, PHEVs and FCEVs from before 2013
-        self["TtW energy"] = np.where((self["range"] < 100), 0, self["TtW energy"])
+        # Range is an output/target, not a technology-availability threshold.
+        # In particular, PHEV electric operation remains valid below 100 km.
+        # Historical technology and size restrictions are applied below.
 
         pwts = [
             pt
