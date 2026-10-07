@@ -102,37 +102,31 @@ def test_plausibility_of_GWP(car_model):
 
 def test_fuel_blend():
     """Test if fuel blends defined by the user are considered"""
+    year_count = build_vehicle_array().sizes["year"]
 
     bc = {
         "petrol": {
             "primary": {
                 "type": "petrol",
-                "share": [0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
+                "share": np.full(year_count, 0.9),
             },
         },
         "diesel": {
             "primary": {
                 "type": "diesel",
-                "share": [0.93, 0.93, 0.93, 0.93, 0.93, 0.93],
+                "share": np.full(year_count, 0.93),
             },
         },
         "hydrogen": {
             "primary": {
                 "type": "hydrogen - electrolysis - PEM",
-                "share": [0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
+                "share": np.full(year_count, 0.9),
             },
         },
         "methane": {
             "primary": {
                 "type": "methane - biomethane - sewage sludge",
-                "share": [
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                    1,
-                ],
+                "share": np.full(year_count, 1),
             }
         },
     }
@@ -141,36 +135,18 @@ def test_fuel_blend():
 
     assert np.array_equal(
         cm.fuel_blend["petrol"]["primary"]["share"],
-        np.array(
-            [
-                0.9,
-                0.9,
-                0.9,
-                0.9,
-                0.9,
-                0.9,
-            ]
-        ),
+        np.array(np.full(year_count, 0.9)),
     )
 
     assert np.array_equal(
         cm.fuel_blend["diesel"]["primary"]["share"],
-        np.array(
-            [
-                0.93,
-                0.93,
-                0.93,
-                0.93,
-                0.93,
-                0.93,
-            ]
-        ),
+        np.array(np.full(year_count, 0.93)),
     )
     assert np.array_equal(
-        cm.fuel_blend["methane"]["primary"]["share"], np.array([1, 1, 1, 1, 1, 1])
+        cm.fuel_blend["methane"]["primary"]["share"], np.array(np.full(year_count, 1))
     )
     assert np.allclose(
-        np.sum(cm.fuel_blend["methane"]["secondary"]["share"]), np.zeros(6)
+        cm.fuel_blend["methane"]["secondary"]["share"], np.zeros(year_count)
     )
 
     for fuels in [
