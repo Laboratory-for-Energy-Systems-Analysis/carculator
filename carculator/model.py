@@ -1,6 +1,7 @@
 from itertools import product
 
 import numpy as np
+import xarray as xr
 import yaml
 
 from carculator_utils.energy_consumption import EnergyConsumptionModel
@@ -667,78 +668,31 @@ class CarModel(VehicleModel):
         )
 
     def remove_energy_consumption_from_unavailable_vehicles(self):
-        """
-        This method sets the energy consumption of vehicles that are not available to zero.
-        """
-
-        # Range is an output/target, not a technology-availability threshold.
-        # In particular, PHEV electric operation remains valid below 100 km.
-        # Historical technology and size restrictions are applied below.
-
-        pwts = [
-            pt
-            for pt in [
-                "BEV",
-                "PHEV-e",
-                "PHEV-c-p",
-                "PHEV-c-d",
-                "FCEV",
-                "PHEV-p",
-                "PHEV-d",
-                "HEV-d",
-                "HEV-p",
-            ]
-            if pt in self.array.coords["powertrain"].values
-        ]
-
-        years = [y for y in self.array.year.values if y < 2013]
-
-        if years:
-            self.array.loc[
-                dict(
-                    parameter="TtW energy",
-                    powertrain=pwts,
-                    year=years,
-                )
-            ] = 0
-
-        # and also Micro cars other than BEVs
-        if "Micro" in self.array.coords["size"].values:
-            self.array.loc[
-                dict(
-                    parameter="TtW energy",
-                    powertrain=[
-                        pt
-                        for pt in [
-                            "PHEV-e",
-                            "PHEV-c-p",
-                            "PHEV-c-d",
-                            "FCEV",
-                            "PHEV-p",
-                            "PHEV-d",
-                            "HEV-d",
-                            "HEV-p",
-                            "ICEV-p",
-                            "ICEV-d",
-                            "ICEV-g",
-                        ]
-                        if pt in self.array.coords["powertrain"].values
-                    ],
-                    size="Micro",
-                )
-            ] = 0
-
-            # replace Nans with zeros
+        """Apply the existing technology/year policy to all energy outputs."""
+        pwt = self.array.powertrain
+        year = self.array.year
+        size = self.array.coords["size"]
+        available = xr.ones_like(self["TtW energy"], dtype=bool)
+        available &= ~(
+            pwt.isin(
+                [
+                    "BEV",
+                    "PHEV-e",
+                    "PHEV-c-p",
+                    "PHEV-c-d",
+                    "FCEV",
+                    "PHEV-p",
+                    "PHEV-d",
+                    "HEV-d",
+                    "HEV-p",
+                ]
+            )
+            & (year < 2013)
+        )
+        available &= ~((size == "Micro") & (pwt != "BEV"))
+        available &= ~((pwt == "BEV") & (year <= 2010))
+        self.mask_energy_outputs(available)
+        if "Micro" in size.values:
             self.array.loc[dict(size="Micro")] = self.array.loc[
                 dict(size="Micro")
             ].fillna(0)
-
-        if "BEV" in self.array.coords["powertrain"].values:
-            # set the `TtW energy` of BEV vehicles before 2010 to zero
-            self.array.loc[
-                dict(
-                    powertrain="BEV",
-                    year=slice(None, 2010),
-                    parameter="TtW energy",
-                )
-            ] = 0
