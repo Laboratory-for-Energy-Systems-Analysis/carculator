@@ -1,13 +1,20 @@
-name: Installed artifacts
+name: Installed artifacts and release publishing
 on:
   push:
   pull_request:
+  release:
+    types: [published]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing tag to verify and publish (leave empty to verify only)'
+        required: false
+        type: string
 permissions:
   contents: read
 concurrency:
-  group: artifacts-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: artifacts-${{ github.workflow }}-${{ inputs.release_tag || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
 jobs:
   verify:
     timeout-minutes: 45
@@ -21,6 +28,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           path: project
+          ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
           persist-credentials: false
       - uses: actions/checkout@v7
         with:
@@ -31,6 +39,36 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
+      - name: Check release tag and package versions
+        if: github.event_name == 'release' || inputs.release_tag != ''
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.event.release.tag_name }}
+        shell: python
+        run: |
+          import ast
+          import os
+          import re
+          from pathlib import Path
+
+          tag = os.environ['RELEASE_TAG']
+          match = re.fullmatch(r'v\.?([0-9]+\.[0-9]+\.[0-9]+)', tag)
+          if not match:
+              raise SystemExit(f'Expected a release tag such as v.1.9.6, got {tag!r}')
+          version = match.group(1)
+          tree = ast.parse(Path('project/carculator/_version.py').read_text())
+          package_version = next(
+              ast.literal_eval(node.value)
+              for node in tree.body
+              if isinstance(node, ast.Assign)
+              and any(isinstance(target, ast.Name) and target.id == 'VERSION'
+                      for target in node.targets)
+          )
+          recipe = Path('project/conda/meta.yaml').read_text()
+          recipe_version = re.search(r'^  version: ([^\s]+)$', recipe, re.MULTILINE)
+          if (package_version != version or recipe_version is None
+                  or recipe_version.group(1) != version):
+              raise SystemExit(f'Tag {tag} does not match package/conda versions')
+          print(f'Release versions match: {version}')
       - name: Build, install, check resources, and test artifacts
         run: python carculator_utils/scripts/verify_installation.py --repositories carculator_utils project --output verification --run-tests
       - uses: actions/upload-artifact@v7
@@ -43,3 +81,74 @@ jobs:
             verification/*-freeze.txt
             verification/*-tests.xml
           if-no-files-found: error
+      - name: Preserve verified release distributions
+        if: matrix.os == 'ubuntu-latest' && (github.event_name == 'release' || inputs.release_tag != '')
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-distributions
+          path: |
+            verification/wheels/carculator-*.whl
+            verification/wheels/carculator-*.tar.gz
+          if-no-files-found: error
+
+  publish-pypi:
+    needs: verify
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: release-distributions
+          path: dist
+      - name: Publish verified distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
+          skip-existing: true
+          attestations: false
+
+  build-conda:
+    needs: verify
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
+          persist-credentials: false
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: '3.12'
+          channels: conda-forge,romainsacchi
+          channel-priority: strict
+          activate-environment: release-build
+      - name: Build and test conda package
+        shell: bash -el {0}
+        run: |
+          conda install --yes conda-build
+          conda build conda --no-anaconda-upload --output-folder conda-output
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-conda
+          path: |
+            conda-output/noarch/carculator-*.conda
+            conda-output/noarch/carculator-*.tar.bz2
+          if-no-files-found: error
+
+  publish-conda:
+    needs: build-conda
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: release-conda
+          path: conda-dist
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install upload client
+        run: python -m pip install anaconda-client
+      - name: Publish to Anaconda
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_CLOUD }}
+        run: anaconda upload --user romainsacchi --skip-existing conda-dist/*

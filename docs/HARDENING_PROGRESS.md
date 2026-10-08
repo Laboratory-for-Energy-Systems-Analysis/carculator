@@ -128,7 +128,9 @@ access, and runs tests against the installed wheels with export extras. The
 matrix targets Linux, macOS, and Windows with Python 3.11/3.12. Repository
 permissions are read-only. The former formatting commits, ordinary-push TestPyPI
 and Anaconda publication, and embedded publishing jobs have been removed.
-No replacements publish automatically.
+At that stage, no replacements published automatically. Release publishing has
+since been restored for published GitHub releases, gated on the artifact
+verification matrix; see [RELEASING.md](RELEASING.md) for triggers and recovery.
 
 The harness is maintained in `carculator_utils/scripts/verify_installation.py`.
 The car repository's script delegates to its sibling utils checkout. Example:
