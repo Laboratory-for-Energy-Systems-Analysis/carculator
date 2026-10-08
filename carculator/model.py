@@ -314,8 +314,8 @@ class CarModel(VehicleModel):
 
         """
 
-        n_iterations = self.array.shape[-1]
-        n_year = len(self.array.year.values)
+        n_iterations = self.array.sizes["value"]
+        years = self.array.year
 
         # If uncertainty is not considered, the cost factor equals 1.
         # Otherwise, a variability of +/-30% is added.
@@ -328,24 +328,23 @@ class CarModel(VehicleModel):
             else:
                 cost_factor = np.random.triangular(0.7, 1, 1.3, (n_iterations, 1))
 
+        # Broadcast by labels: one cost factor per sample, shared across years.
+        cost_factor = xr.DataArray(
+            np.asarray(cost_factor).ravel(),
+            dims="value",
+            coords={"value": self.array.value},
+        )
+
         # Correction of hydrogen tank cost, per kg
         # Correction of fuel cell stack cost, per kW
         if "FCEV" in self.array.powertrain:
             self.array.loc[
                 dict(powertrain="FCEV", parameter="fuel tank cost per kg")
-            ] = np.reshape(
-                (1.078e58 * np.exp(-6.32e-2 * self.array.year.values) + 3.43e2)
-                * cost_factor,
-                (1, n_year, n_iterations),
-            )
+            ] = (1.078e58 * np.exp(-6.32e-2 * years) + 3.43e2) * cost_factor
 
             self.array.loc[
                 dict(powertrain="FCEV", parameter="fuel cell cost per kW")
-            ] = np.reshape(
-                (3.15e66 * np.exp(-7.35e-2 * self.array.year.values) + 2.39e1)
-                * cost_factor,
-                (1, n_year, n_iterations),
-            )
+            ] = (3.15e66 * np.exp(-7.35e-2 * years) + 2.39e1) * cost_factor
 
         # Correction of energy battery system cost, per kWh
         list_batt = [
@@ -356,11 +355,7 @@ class CarModel(VehicleModel):
         if len(list_batt) > 0:
             self.array.loc[
                 dict(powertrain=list_batt, parameter="energy battery cost per kWh")
-            ] = np.reshape(
-                (2.75e86 * np.exp(-9.61e-2 * self.array.year.values) + 5.059e1)
-                * cost_factor,
-                (1, 1, n_year, n_iterations),
-            )
+            ] = (2.75e86 * np.exp(-9.61e-2 * years) + 5.059e1) * cost_factor
 
         # Correction of power battery system cost, per kW
         list_pwt = [
@@ -381,22 +376,14 @@ class CarModel(VehicleModel):
         if len(list_pwt) > 0:
             self.array.loc[
                 dict(powertrain=list_pwt, parameter="power battery cost per kW")
-            ] = np.reshape(
-                (8.337e40 * np.exp(-4.49e-2 * self.array.year.values) + 11.17)
-                * cost_factor,
-                (1, 1, n_year, n_iterations),
-            )
+            ] = (8.337e40 * np.exp(-4.49e-2 * years) + 11.17) * cost_factor
 
         # Correction of combustion powertrain cost for ICEV-g
         if "ICEV-g" in self.array.powertrain:
             self.array.loc[
                 dict(powertrain="ICEV-g", parameter="combustion powertrain cost per kW")
             ] = np.clip(
-                np.reshape(
-                    (5.92e160 * np.exp(-0.1819 * self.array.year.values) + 26.76)
-                    * cost_factor,
-                    (1, n_year, n_iterations),
-                ),
+                ((5.92e160 * np.exp(-0.1819 * years) + 26.76) * cost_factor),
                 None,
                 100,
             )

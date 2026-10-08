@@ -136,3 +136,24 @@ See the shared `battery-cost guide
 for chemistry selection, sensitivity, provenance and plug-in-hybrid component
 inputs. This change preserves supplied prices; it does not recalibrate the
 underlying default cost curve.
+
+
+Multi-year cost calculations
+----------------------------
+
+Automatic component-cost projections now align year and sample labels explicitly.
+This corrects a reshaping error that mixed prices between years and samples in
+multi-year uncertainty and sensitivity runs. The sensitivity reference now agrees
+with static costs in each year; the default BEV battery prices are EUR 186.49,
+134.64 and 102.57/kWh in 2020, 2025 and 2030, respectively.
+
+The equations, uncertainty distributions and explicit battery-price precedence
+are unchanged. Static calculations and single-year sampled calculations retain
+their previous results. Regenerate multi-year uncertainty and sensitivity costs
+calculated with the old projection. Each sample's cost factor applies across all
+years in that run; input seeding still does not seed the separate global cost RNG.
+
+Completed regressions compare sensitivity references with static results across
+battery-electric and combustion powertrains. Paired runs with the pre-fix cost
+hooks also verify unchanged physical outputs, inventories and LCIA. These checks
+validate the numerical assignment of costs, not the empirical price assumptions.
