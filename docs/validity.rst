@@ -8,6 +8,23 @@ and explicit engineering assumptions. They are not a newly fitted fleet of
 2025 cars. Historical curb-mass calibration is described in :doc:`modeling`;
 it does not independently validate current fuel or electricity consumption.
 
+Target-range sizing consistency
+-------------------------------
+
+The BEV range-sizing loop now converges battery pack mass together with driving
+mass, power and energy demand. For a 2025 Medium BEV on WLTC with a 400 km target,
+LFP requires 78.45 kWh nominal capacity and 17.70 kWh/100 km from the grid;
+NMC-811 requires 74.15 kWh and 16.73 kWh/100 km. A frozen-vehicle energy
+recalculation at each final mass confirms the requested range within the sizing
+tolerance. Default runs without a target retain the recorded baseline outputs.
+
+Regression tests cover four chemistries, two years and two load samples,
+independent fixed-capacity runs, user overrides, mixed powertrains and bounded
+convergence. Completed inventories verify both charging electricity and battery
+production exchanges, with finite life cycle impacts. These establish numerical
+and accounting consistency; they are not measured-vehicle validation.
+See the `reproduction and repaired results <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/bev_target_range_issue.rst>`_.
+
 Evidence reviewed
 -----------------
 

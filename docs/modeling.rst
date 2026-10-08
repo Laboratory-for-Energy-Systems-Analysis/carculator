@@ -947,6 +947,38 @@ Sizing of onboard energy storage
 Sizing of battery
 +++++++++++++++++
 
+A BEV ``target_range`` overrides the default pack-mass sizing. For example::
+
+   key = ("BEV", "Medium", 2025)
+   model = CarModel(
+       array,
+       cycle="WLTC",
+       energy_storage={"electric": {key: "LFP"}},
+       target_range={key: 400},
+   )
+   model.set_all()
+
+Here ``array`` must include the selected vehicle and year. Battery pack mass,
+vehicle mass, power and energy demand are iterated together. The nominal
+capacity is the target distance times stored-energy consumption, divided by
+the battery depth of discharge. Both driving mass and pack mass must converge
+per sample at a relative tolerance of ``1e-5``; failure within
+``max_iterations`` raises a coordinate-labelled convergence error. Replacements,
+costs and emissions are calculated after this convergence.
+
+This corrects an earlier ordering defect that resized batteries after energy
+had already been calculated. Chemistry-dependent energy density and cell mass
+share now affect the mass and hence the energy required to reach a common
+range. The input recuperation assumption remains fixed during iteration.
+
+A target range takes precedence over a capacity override for the same BEV.
+Without a target range, the default pack mass or explicit capacity still
+controls sizing. An explicit ``target_mass`` adjusts the glider to keep curb
+mass fixed, and an ``energy_consumption`` override keeps demand fixed; equal
+consumption across chemistries can therefore be expected in these cases.
+Build a fresh model for each independent chemistry comparison.
+
+
 The sizing of batteries for battery electric vehicles is conditioned by
 the battery mass, which is defined as an input parameter for each size
 class. The battery masses given for the different size classes are

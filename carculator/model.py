@@ -3,7 +3,6 @@ from itertools import product
 import numpy as np
 import xarray as xr
 import yaml
-
 from carculator_utils.energy_consumption import EnergyConsumptionModel
 from carculator_utils.model import VehicleModel
 
@@ -187,8 +186,9 @@ class CarModel(VehicleModel):
         :meth:`set_component_masses()`, :meth:`set_car_masses()` and :meth:`set_power_parameters()` are interdependent.
         `powertrain_mass` depends on `power`, `curb_mass` is affected by changes in `powertrain_mass`,
         `combustion engine mass` and `electric engine mass`, and `power` is a function of `curb_mass`.
-        The current solution is to loop through the methods until the increment in driving mass is
-        inferior to 0.1%.
+        Sizing converges per vehicle and sample at a relative tolerance of 1e-5.
+        With a BEV target range, battery mass and driving mass converge together:
+        each step recalculates energy demand and the capacity needed for that range.
 
         :param drop_hybrids: boolean. True by default. If False, the underlying vehicles used to build plugin-hybrid
                 vehicles remain present in the array.
@@ -209,7 +209,16 @@ class CarModel(VehicleModel):
             country=self.country,
         )
 
-        for _ in self.iterate_sizing("driving mass", rtol=1e-05):
+        size_for_range = any(
+            key[0] == "BEV" and target is not None
+            for key, target in (self.target_range or {}).items()
+        )
+        sizing_state = (
+            ["driving mass", "energy battery mass"]
+            if size_for_range
+            else "driving mass"
+        )
+        for iteration in self.iterate_sizing(sizing_state, rtol=1e-05):
             self.set_vehicle_masses()
             self.set_power_parameters()
             self.set_component_masses()
@@ -218,7 +227,11 @@ class CarModel(VehicleModel):
             self.set_battery_preferences()
             self.set_battery_properties()
             self.set_energy_stored_properties()
-            self.set_recuperation()
+            # Keep the input recuperation assumption fixed. Energy calculations
+            # write a cycle-average transmission efficiency back to the array;
+            # feeding that output into later iterations would change the inputs.
+            if iteration == 1:
+                self.set_recuperation()
             self.set_battery_preferences()
 
             if "FCEV" in self.array.powertrain.values:
@@ -230,13 +243,16 @@ class CarModel(VehicleModel):
             if "capacity" in self.energy_storage:
                 self.override_battery_capacity()
 
-        self.calculate_ttw_energy()
+            if size_for_range:
+                self.calculate_ttw_energy()
+                # Range retains precedence over a capacity override for the
+                # same BEV; other vehicles retain their specified capacities.
+                self.override_range()
+
+        if not size_for_range:
+            self.calculate_ttw_energy()
         self.set_ttw_efficiency()
-
         self.set_range()
-
-        if self.target_range:
-            self.override_range()
 
         self.set_share_recuperated_energy()
         self.set_battery_fuel_cell_replacements()
