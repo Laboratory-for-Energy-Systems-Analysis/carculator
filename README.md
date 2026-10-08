@@ -75,6 +75,10 @@ The range solver converges battery mass and energy demand together. See the
 
 ## Modelling and validation
 
+Battery unit prices supplied by users now survive chemistry selection and cost
+adjustment. Use `battery_costs` for explicit prices scoped by vehicle, year and
+sample; see [battery-cost inputs](docs/usage.rst#battery-unit-costs).
+
 The vehicle models include native **2025** parameters and documented temporal
 extensions. These combine engineering priors and selected calibration evidence;
 they are not independent measurements for every vehicle configuration.

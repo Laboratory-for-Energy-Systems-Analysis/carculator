@@ -16,6 +16,7 @@ it has not yet been published. Older entries, where present, retain their origin
 
 ### Model and inventory changes
 
+- Preserve explicit generic and selected-chemistry battery prices through cost adjustment, including scoped zero and per-sample constructor inputs. Verify completed purchase and replacement costs and unchanged default pricing; see [usage](docs/usage.rst#battery-unit-costs).
 - Converge BEV target range with battery mass, driving mass, motor power and energy demand, allowing chemistry to affect the required capacity and consumption.
 - Verify capacity and pack-mass changes through completed models and inventories across four chemistries, two years and two load samples.
 - Add native 2025 inputs and explicit component-efficiency priors, with temporal extensions that avoid artificial 2020/2025/2030 discontinuities.

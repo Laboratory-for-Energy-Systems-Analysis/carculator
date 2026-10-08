@@ -100,3 +100,39 @@ fuel blend, background scenario, functional unit and energy meter boundary.
 Seeded parameter draws do not seed every downstream cost adjustment.
 See :doc:`validity` for the scope of
 calibration, measurement comparisons and known limitations.
+
+
+Battery unit costs
+------------------
+
+Explicit battery unit prices survive chemistry selection and automatic cost
+adjustment. Using the input array from the quick start above:
+
+.. code-block:: python
+
+   model = CarModel(
+       array,
+       battery_costs={
+           "energy battery cost per kWh": {("BEV", "Medium", 2025): 100},
+       },
+   )
+   model.set_all()
+
+The amount is EUR/kWh of nominal capacity before markup; use
+``power battery cost per kW`` for power batteries (EUR/kW). Amounts must be finite
+and nonnegative, either scalar or one per sample in the array's sample order.
+Zero and prices equal to packaged inputs are supported.
+
+Ordinary battery-cost array edits and changed dictionary/file definitions also
+survive, provided the array retains the reference coordinates supplied by the
+current array builder. Use the constructor for old or hand-built arrays, or for
+an explicit price equal to the original input. An explicit generic price wins
+over an explicit price for the selected chemistry; untouched inputs keep the
+existing year trajectory. Prices affect purchase and replacement costs without
+changing mass, energy use or environmental inventories.
+
+See the shared `battery-cost guide
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/battery_costs.rst>`_
+for chemistry selection, sensitivity, provenance and plug-in-hybrid component
+inputs. This change preserves supplied prices; it does not recalibrate the
+underlying default cost curve.
