@@ -10,7 +10,7 @@ Welcome to Carculator documentation
 vehicle configurations, according to selected:
 
 * powertrain technologies (9): petrol engine, diesel engine, electric motor, hybrid, plugin-hybrid, etc.,
-* year of operation (2): 2000, 2010, 2020, 2040 (with the possibility to interpolate in between, and up to 2050)
+* model years from 2000 to 2050, including native 2025 inputs and interpolation between supported years
 * and sizes (9): Micro, Mini, Large, etc.
 
 The methodology used to develop `carculator` is explained in an article by :cite:`ct-1073`.
@@ -51,7 +51,7 @@ Finally, beside being more flexible and transparent, ``carculator`` provides int
 
 * a stochastic mode, that allows fast Monte Carlo analyses, to include uncertainty at the vehicle level
 * possibility to override any or all of the 200+ default input car parameters (e.g., number of passengers, drag coefficient) but also calculated parameters (e.g., driving mass).
-* hot pollutants emissions as a function of the driving cycle, using `HBEFA <https://www.hbefa.net/e/index.html>`_ 4.1 data, further divided between rural, suburban and urban areas
+* hot pollutants emissions as a function of the driving cycle, using bundled `HBEFA <https://www.hbefa.net/e/index.html>`_ emission factors, further divided between rural, suburban and urban areas
 * noise emissions, based on `CNOSSOS-EU <https://ec.europa.eu/jrc/en/publication/reference-reports/common-noise-assessment-methods-europe-cnossos-eu>`_ models for noise emissions
   and :cite:`ct-1015` for inventory modelling and mid- and endpoint characterization of noise emissions, function of driving cycle and further divided between rural, suburban and urban areas
 * export of inventories as an Excel/CSV file, to be used with Brightway2 or Simapro, including uncertainty information. This requires the user to have `ecoinvent` installed on the LCA software the car inventories are exported to.
@@ -67,6 +67,7 @@ User's Guide
    :maxdepth: 2
 
    installation
+   release
    usage
    modeling
    structure

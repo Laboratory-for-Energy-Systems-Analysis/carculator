@@ -12,6 +12,8 @@
 #
 import os
 import sys
+from pathlib import Path
+from runpy import run_path
 
 # sys.path.insert(0, os.path.abspath('C:\Users\sacchi_r\Documents\GitHub\coarse\coarse'))
 sys.path.insert(0, os.path.abspath(".."))
@@ -24,7 +26,10 @@ copyright = "2019, Paul Scherrer Institut"
 author = "Chris Mutel, Brian Cox, Romain Sacchi"
 
 # The full version, including alpha/beta/rc tags
-release = "1.9.5"
+release = run_path(
+    str(Path(__file__).resolve().parents[1] / "carculator" / "_version.py")
+)["VERSION"]
+version = release
 
 
 # -- General configuration ---------------------------------------------------
@@ -72,8 +77,8 @@ html_theme_options = {
     },
     "font": {"text": "Fira Sans", "code": "JetBrains Mono"},
     "site_url": "https://carculator.readthedocs.io",
-    "repo_url": "https://github.com/romainsacchi/carculator",
-    "repo_name": "romainsacchi/carculator",
+    "repo_url": "https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator",
+    "repo_name": "Laboratory-for-Energy-Systems-Analysis/carculator",
     "edit_uri": "blob/master/docs/",
     "globaltoc_collapse": True,
     "features": ["navigation.top", "search.share", "navigation.tracking", "toc.follow"],

@@ -1,50 +1,86 @@
 {
-  "status": "unreleased committed candidates; base_commit records the pre-hardening baseline; candidate_commit identifies the qualified source changes",
-  "date": "2026-10-06",
-  "python": ">=3.11,<3.13",
+  "status": "prepared stable releases; not published",
+  "date": "2026-10-08",
+  "python": ">=3.12,<3.13",
   "numpy": ">=1.26.4,<2",
   "repositories": {
     "carculator_utils": {
-      "base_commit": "e431f50b5117513a82b7aee94d8d0ce9e4062744",
+      "release_version": "1.3.6",
       "branch": "master",
-      "candidate_version": "1.3.6.dev0",
-      "candidate_commit": "3f951d8d6c691ec86620400463cef1f6c5461b01"
+      "implementation_commit": "706d6dafc19c842c559953bfc7cc33e984cd4653"
     },
     "carculator": {
-      "base_commit": "67361c8e0382ef0d1feefd25facc7ccabfa2327d",
+      "release_version": "1.9.6",
       "branch": "master",
-      "candidate_version": "1.9.6.dev0",
-      "candidate_commit": "706175287176b9db747f9fb9121bb3fd14cf2f00"
-    },
-    "carculator_bus": {
-      "base_commit": "24b12888e3414145c2353ce9acb8e1ed0d4a9ccc",
-      "branch": "master",
-      "candidate_version": "0.1.1.dev0",
-      "candidate_commit": "7f4947bea48252c3683039208a9a44e64dadb4f1"
+      "implementation_commit": "97d1db8abf684be5e3289a1dfb1573a9cb1f0f98"
     },
     "carculator_truck": {
-      "base_commit": "fff196e74c733faf1d7c6cdfffaf078ee9c3c008",
+      "release_version": "0.5.1",
       "branch": "master",
-      "candidate_version": "0.5.1.dev0",
-      "candidate_commit": "aa8fc8a2c31f58a2714fc7a6b0e20ba49d873424"
+      "implementation_commit": "91ec2305efa289e7f410669fc97a09cfe5fc3757"
+    },
+    "carculator_bus": {
+      "release_version": "0.1.1",
+      "branch": "master",
+      "implementation_commit": "bf4ecbcb22222a524a9caaa6f50a4ed182dca7c2"
     },
     "carculator_two_wheeler": {
-      "base_commit": "52c2157d95597bf9be206949d2dc14a717128b9d",
+      "release_version": "0.1.1",
       "branch": "main",
-      "candidate_version": "0.1.1.dev0",
-      "candidate_commit": "755ebb1ba6ff8156d2afb97164d41f35a1c771d0"
-    },
-    "flaskCarculator": {
-      "base_commit": "ab0487961a50778e51f4ea35ae213e8739363b1d",
-      "branch": "TCS",
-      "deployment_pins": "unchanged",
-      "candidate_commit": "a688b8e1b6fa1f2b80be8e059244397b746c338a"
-    },
-    "carculator_online": {
-      "base_commit": "a434439707c5fde6ff59de776f4a67ff7f65c4fd",
-      "branch": "master",
-      "deployment_pins": "unchanged",
-      "candidate_commit": "94c84568db1e1a8fad7d0f1a27d45e7898bec048"
+      "implementation_commit": "70c79530847f3489460ec3de0d8f09975e711c06",
+      "publication_status": "blocked: default petrol-motorcycle engine efficiency produces physically implausible consumption; see its CHANGELOG.md"
     }
-  }
+  },
+  "provenance_note": "implementation_commit identifies the numerical code before release metadata/documentation preparation; artifact verification records the prepared builds separately. Web applications are outside this release set.",
+  "historical_hardening": {
+    "status": "unreleased committed candidates; base_commit records the pre-hardening baseline; candidate_commit identifies the qualified source changes",
+    "date": "2026-10-06",
+    "python": ">=3.11,<3.13",
+    "numpy": ">=1.26.4,<2",
+    "repositories": {
+      "carculator_utils": {
+        "base_commit": "e431f50b5117513a82b7aee94d8d0ce9e4062744",
+        "branch": "master",
+        "candidate_version": "1.3.6.dev0",
+        "candidate_commit": "3f951d8d6c691ec86620400463cef1f6c5461b01"
+      },
+      "carculator": {
+        "base_commit": "67361c8e0382ef0d1feefd25facc7ccabfa2327d",
+        "branch": "master",
+        "candidate_version": "1.9.6.dev0",
+        "candidate_commit": "706175287176b9db747f9fb9121bb3fd14cf2f00"
+      },
+      "carculator_bus": {
+        "base_commit": "24b12888e3414145c2353ce9acb8e1ed0d4a9ccc",
+        "branch": "master",
+        "candidate_version": "0.1.1.dev0",
+        "candidate_commit": "7f4947bea48252c3683039208a9a44e64dadb4f1"
+      },
+      "carculator_truck": {
+        "base_commit": "fff196e74c733faf1d7c6cdfffaf078ee9c3c008",
+        "branch": "master",
+        "candidate_version": "0.5.1.dev0",
+        "candidate_commit": "aa8fc8a2c31f58a2714fc7a6b0e20ba49d873424"
+      },
+      "carculator_two_wheeler": {
+        "base_commit": "52c2157d95597bf9be206949d2dc14a717128b9d",
+        "branch": "main",
+        "candidate_version": "0.1.1.dev0",
+        "candidate_commit": "755ebb1ba6ff8156d2afb97164d41f35a1c771d0"
+      },
+      "flaskCarculator": {
+        "base_commit": "ab0487961a50778e51f4ea35ae213e8739363b1d",
+        "branch": "TCS",
+        "deployment_pins": "unchanged",
+        "candidate_commit": "a688b8e1b6fa1f2b80be8e059244397b746c338a"
+      },
+      "carculator_online": {
+        "base_commit": "a434439707c5fde6ff59de776f4a67ff7f65c4fd",
+        "branch": "master",
+        "deployment_pins": "unchanged",
+        "candidate_commit": "94c84568db1e1a8fad7d0f1a27d45e7898bec048"
+      }
+    }
+  },
+  "verification_record": "docs/_static/release_verification.json"
 }

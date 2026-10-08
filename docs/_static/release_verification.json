@@ -1,0 +1,114 @@
+{
+  "package": "carculator",
+  "version": "1.9.6",
+  "date": "2026-10-08",
+  "publication_status": "prepared; not published",
+  "implementation_commit_before_release_documentation": "97d1db8abf684be5e3289a1dfb1573a9cb1f0f98",
+  "environment": {
+    "python": "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:06:14) [Clang 19.1.7 ]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "family_versions": {
+    "carculator_utils": "1.3.6",
+    "carculator": "1.9.6",
+    "carculator_truck": "0.5.1",
+    "carculator_bus": "0.1.1",
+    "carculator_two_wheeler": "0.1.1"
+  },
+  "installed_tests": {
+    "passed": 72,
+    "failed": 0,
+    "errors": 0,
+    "expected_failures": 0,
+    "unexpected_skips": 0
+  },
+  "family_installed_tests": {
+    "carculator_utils": {
+      "passed": 323,
+      "failed": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_skips": 0
+    },
+    "carculator": {
+      "passed": 72,
+      "failed": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_skips": 0
+    },
+    "carculator_truck": {
+      "passed": 54,
+      "failed": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_skips": 0
+    },
+    "carculator_bus": {
+      "passed": 30,
+      "failed": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_skips": 0
+    },
+    "carculator_two_wheeler": {
+      "passed": 18,
+      "failed": 0,
+      "errors": 0,
+      "expected_failures": 1,
+      "unexpected_skips": 0
+    }
+  },
+  "artifacts": [
+    {
+      "name": "carculator-1.9.6-py3-none-any.whl",
+      "source": "wheels",
+      "sha256": "233b576de82b292da08843124eff5147ed4c8580bb760cdef81f6465f912b2d9",
+      "resources": 5
+    },
+    {
+      "name": "carculator-1.9.6-py3-none-any.whl",
+      "source": "rebuilt",
+      "sha256": "1d957f80e94454a17234002263ef414108fe5841920a093ac64e5756746bf9ad",
+      "resources": 5
+    },
+    {
+      "name": "carculator-1.9.6.tar.gz",
+      "source": "wheels",
+      "sha256": "ed94e270d7c9a9b3dfa16e153133087dfb71084dc1f1a199b45669957b55f1c6"
+    }
+  ],
+  "checks": {
+    "wheel_and_sdist_built_wheel_resources": "passed; hashes compared with source resources",
+    "installed_tests_with_optional_exports": "passed; one existing expected failure for two-wheeler electric-bicycle costs",
+    "offline_core_only_model_lcia_wheels_and_sdists": "passed",
+    "strict_twine_metadata_all_ten_distributions": "passed",
+    "readme_python_example": "completed against installed wheel; not a physical-validation assertion",
+    "usage_brightway_excel_export": "completed against installed wheel",
+    "documentation": "all five HTML builds passed using wheel docs extras; dependency check passed"
+  },
+  "family_publication_blockers": [
+    {
+      "package": "carculator_two_wheeler",
+      "publication": "blocked",
+      "case": {
+        "year": 2025,
+        "size": "Motorcycle 11-35kW",
+        "powertrain": "ICEV-p",
+        "inputs": "static defaults; standard cycle"
+      },
+      "engine_efficiency": 0.01,
+      "ttw_energy_kj_km": 33001.77734375,
+      "fuel_litres_per_km": 1.0368982553482056,
+      "finding": "Physically implausible consumption; review default efficiency and its source before publication. A passing execution/finite-output check is not physical validation."
+    }
+  ],
+  "qualifications": [
+    "Local macOS/Python 3.12 verification; hosted CI, Linux, Windows and conda builds are not certified by this record.",
+    "Sphinx warnings are not treated as errors. Existing API/docstring and bibliography warnings remain.",
+    "Tests and smoke runs establish software consistency, not universal empirical calibration or physical plausibility.",
+    "After installed tests, two-wheeler release-blocker documentation changed. Its wheel and sdist-built wheel were rebuilt; every package code/data file is byte-identical to the tested artifact. Metadata was rechecked separately.",
+    "Artifact hashes identify these local builds; rebuild and reverify after final publication-date changes."
+  ],
+  "reproduce": "From carculator_utils: python scripts/verify_installation.py --repositories . ../carculator ../carculator_truck ../carculator_bus ../carculator_two_wheeler --output /tmp/carculator-family-release-check --run-tests; see RELEASING.md for documentation and metadata commands."
+}

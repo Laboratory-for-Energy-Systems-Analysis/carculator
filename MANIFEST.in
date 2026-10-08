@@ -1,4 +1,4 @@
-include LICENSE README.md pyproject.toml
+include LICENSE README.md CHANGELOG.md RELEASING.md pyproject.toml
 recursive-include carculator/data *.json *.yaml *.yml *.csv *.npz *.xlsx
 recursive-include tests *.py *.json *.xlsx
 recursive-include scripts *.py
