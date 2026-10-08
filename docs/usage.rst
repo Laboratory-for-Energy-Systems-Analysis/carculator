@@ -97,7 +97,11 @@ Reproducibility and interpretation
 
 Record package versions, input overrides, driving cycle, load, geography,
 fuel blend, background scenario, functional unit and energy meter boundary.
-Seeded parameter draws do not seed every downstream cost adjustment.
+``stochastic(n, seed=42)`` also seeds projected-cost factors. Keep the array's
+auxiliary coordinates and build fresh models for independent runs. See the
+`shared cost-uncertainty guide
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/cost_uncertainty.rst>`_
+for sample selection, serialization and legacy-array behavior.
 See :doc:`validity` for the scope of
 calibration, measurement comparisons and known limitations.
 
@@ -148,10 +152,12 @@ with static costs in each year; the default BEV battery prices are EUR 186.49,
 134.64 and 102.57/kWh in 2020, 2025 and 2030, respectively.
 
 The equations, uncertainty distributions and explicit battery-price precedence
-are unchanged. Static calculations and single-year sampled calculations retain
-their previous results. Regenerate multi-year uncertainty and sensitivity costs
-calculated with the old projection. Each sample's cost factor applies across all
-years in that run; input seeding still does not seed the separate global cost RNG.
+are unchanged. Static calculations retain their previous results. Regenerate
+multi-year sensitivity costs calculated with the old projection, and stochastic
+costs calculated before cost factors were tied to the input seed. Each sample's
+factor applies across all years and survives reordering or selection, including
+selection of just one sample. ``stochastic(1)`` now also draws a cost factor;
+use ``static()`` for deterministic inputs and prices.
 
 Completed regressions compare sensitivity references with static results across
 battery-electric and combustion powertrains. Paired runs with the pre-fix cost

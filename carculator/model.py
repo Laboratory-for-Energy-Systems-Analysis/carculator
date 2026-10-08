@@ -314,26 +314,8 @@ class CarModel(VehicleModel):
 
         """
 
-        n_iterations = self.array.sizes["value"]
+        cost_factor, _ = self._get_cost_factors()
         years = self.array.year
-
-        # If uncertainty is not considered, the cost factor equals 1.
-        # Otherwise, a variability of +/-30% is added.
-
-        if n_iterations == 1:
-            cost_factor = 1
-        else:
-            if "reference" in self.array.value.values.tolist():
-                cost_factor = np.ones((n_iterations, 1))
-            else:
-                cost_factor = np.random.triangular(0.7, 1, 1.3, (n_iterations, 1))
-
-        # Broadcast by labels: one cost factor per sample, shared across years.
-        cost_factor = xr.DataArray(
-            np.asarray(cost_factor).ravel(),
-            dims="value",
-            coords={"value": self.array.value},
-        )
 
         # Correction of hydrogen tank cost, per kg
         # Correction of fuel cell stack cost, per kW
