@@ -125,7 +125,7 @@ jobs:
       - name: Build and test conda package
         shell: bash -el {0}
         run: |
-          conda install --yes conda-build
+          conda install --yes --name base conda-build
           conda build conda --no-anaconda-upload --output-folder conda-output
       - uses: actions/upload-artifact@v7
         with:
