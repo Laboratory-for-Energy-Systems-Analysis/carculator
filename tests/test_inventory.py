@@ -228,29 +228,36 @@ def test_fuel_blend():
             ic.calculate_impacts()
 
 
-def test_cng_leakage_adds_direct_methane_emissions():
+@pytest.mark.parametrize("bio_share", [0, 0.35, 1])
+def test_cng_leakage_adds_direct_methane_emissions(bio_share):
     cip = CarInputParameters()
     cip.static()
     _, array = fill_xarray_from_input_parameters(
         cip, scope={"powertrain": ["ICEV-g"], "size": ["Medium"], "year": [2020]}
     )
-    cm = CarModel(array, cycle="WLTC")
+    cm = CarModel(
+        array,
+        cycle="WLTC",
+        fuel_blend={
+            "methane": {
+                "primary": {"type": "methane", "share": 1 - bio_share},
+                "secondary": {
+                    "type": "methane - biomethane - sewage sludge",
+                    "share": bio_share,
+                },
+            }
+        },
+    )
     cm.set_all()
     ic = InventoryCar(cm)
-
-    methane_supply_indices = ic.find_input_indices(
-        ("fuel supply for methane vehicles",)
-    )
-    transport_indices = ic.find_input_indices((f"transport, {ic.vm.vehicle_type}, ",))
-    methane_flow_index = ic.inputs[("Methane, fossil", ("air",), "kilogram")]
-    leakage = ic.array.sel(parameter="CNG pump-to-tank leakage")
-
-    methane_supply = ic.A[:, methane_supply_indices, transport_indices]
-    expected_leakage = methane_supply / (1 + leakage) * leakage
-    methane_emissions = ic.A[:, methane_flow_index, transport_indices]
-
-    assert (methane_emissions < 0).any()
-    np.testing.assert_allclose(methane_emissions, expected_leakage)
+    (market,) = ic.find_input_indices(("fuel supply for methane vehicles",))
+    (transport,) = ic.find_input_indices(("transport, car, ICEV-g, Medium",))
+    engine_fuel = (cm["fuel consumption"] * cm["fuel density per kg"]).item()
+    lost = engine_fuel * cm["CNG pump-to-tank leakage"].item()
+    assert -ic.A[0, market, transport, 0] == pytest.approx(engine_fuel + lost)
+    for origin, share in (("fossil", 1 - bio_share), ("non-fossil", bio_share)):
+        row = ic.inputs[(f"Methane, {origin}", ("air",), "kilogram")]
+        assert -ic.A[0, row, transport, 0] == pytest.approx(lost * share)
 
 
 def test_countries(car_model):

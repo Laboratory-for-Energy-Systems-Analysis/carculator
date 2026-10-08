@@ -146,3 +146,28 @@ With matching Python 3.12 sibling checkouts, run from ``carculator_utils``::
 The shared `measurement catalog and outputs <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/energy_measurements.rst>`_
 record excluded observations as well as paired values. Multiple cycles of one
 vehicle and AC/DC measurements from one run are not independent vehicles.
+
+Additional methane leakage
+---------------------------
+
+Cars now split additional methane leakage between fossil and non-fossil flows according to the fuel blend, instead of classifying all leakage as fossil.
+The shared calculation preserves the existing convention: loss in kg per km
+is engine fuel times the ``CNG pump-to-tank leakage`` ratio, and purchased fuel
+is engine fuel plus that loss. Fossil/non-fossil methane follows the blend.
+Both generic-air methane flows now enter non-exhaust impacts and exports;
+combustion CO2 and HBEFA exhaust emissions are unchanged.
+
+The historical 0.4% default is retained as an additional-loss assumption.
+Its source combines several station/delivery/vehicle stages and includes LNG
+boil-off; it does not establish a residual CNG loss after every supplier.
+Existing supplier losses are retained, so possible overlap is not eliminated
+by this accounting repair. Specify only loss additional to the selected
+supplier; set the parameter to zero if that supplier covers all relevant losses.
+See the shared `methane leakage boundary and verification notes
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/methane_leakage.rst>`_.
+
+Completed regressions include Medium cars, diesel/BEV controls,
+2020/2025/2030, two samples, fossil gas, sewage biomethane, biological synthetic
+methane and mixed fuels. They check mass balance, unchanged upstream inventories,
+ReCiPe/EF climate contributions, and repeated multi-year Brightway exports.
+These establish accounting consistency, not measured leakage-rate validation.
