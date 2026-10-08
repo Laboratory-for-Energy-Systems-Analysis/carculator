@@ -99,6 +99,10 @@ def test_target_range_converges_each_year_sample_and_inventory(chemistry):
     ).all()
     assert np.isfinite(model["total cost per km"]).all()
 
+    assert_inventory_consistent(model, chemistry)
+
+
+def assert_inventory_consistent(model, chemistry):
     inventory = InventoryCar(model, scenario="static", functional_unit="vkm")
     impacts = inventory.calculate_impacts()
     assert np.isfinite(impacts).all()
@@ -248,3 +252,123 @@ def test_target_range_sizing_respects_iteration_limit():
     key = ("BEV", "Medium", 2025)
     with pytest.raises(ConvergenceError, match="iteration limit.*Medium"):
         run(inputs(years=(2025,)), target_range={key: 400}, max_iterations=1)
+
+
+SWEEP_LEVELS = {"capacity": [40, 60, 80], "mass": [250, 400, 550]}
+
+
+def battery_sweep(chemistry, direction):
+    """Fresh completed models: two years and two loads for each input level."""
+    models = []
+    for level in SWEEP_LEVELS[direction]:
+        array = inputs(samples=True)
+        keys = [("BEV", "Medium", year) for year in [2020, 2025]]
+        storage = {"electric": dict.fromkeys(keys, chemistry)}
+        if direction == "capacity":
+            storage["capacity"] = dict.fromkeys(keys, level)
+        else:
+            array.loc[dict(parameter="energy battery mass")] = level
+        source = array.copy(deep=True)
+        original_storage = deepcopy(storage)
+        models.append(run(array, energy_storage=storage))
+        xr.testing.assert_identical(array, source)
+        assert storage == original_storage
+    return models
+
+
+@pytest.mark.parametrize("chemistry", CHEMISTRIES)
+@pytest.mark.parametrize("direction", ["capacity", "mass"])
+def test_capacity_and_mass_sweeps_propagate_to_range_energy_and_inventory(
+    chemistry, direction
+):
+    models = battery_sweep(chemistry, direction)
+    controlled = (
+        "electric energy stored" if direction == "capacity" else "energy battery mass"
+    )
+    for level, model in zip(SWEEP_LEVELS[direction], models):
+        np.testing.assert_allclose(model[controlled], level, rtol=1e-6)
+        np.testing.assert_allclose(
+            model["electric energy stored"],
+            model["energy battery mass"]
+            * model["battery cell mass share"]
+            * model["battery cell energy density"],
+            rtol=1e-6,
+        )
+        np.testing.assert_allclose(
+            model["battery cell mass"] + model["battery BoP mass"],
+            model["energy battery mass"],
+            rtol=1e-6,
+        )
+        assert_energy_consistent(model)
+        assert_inventory_consistent(model, chemistry)
+    for smaller, larger in zip(models, models[1:]):
+        for parameter in [
+            "energy battery mass",
+            "electric energy stored",
+            "driving mass",
+            "TtW energy",
+            "electricity consumption",
+            "range",
+        ]:
+            assert (larger[parameter] > smaller[parameter]).all(), (
+                direction,
+                chemistry,
+                parameter,
+            )
+        # Added energy storage gives a less-than-proportional range increase
+        # because hauling the larger pack increases the per-km demand.
+        assert (
+            larger["range"] / smaller["range"]
+            < larger["electric energy stored"] / smaller["electric energy stored"]
+        ).all()
+
+
+@pytest.mark.parametrize("direction", ["capacity", "mass"])
+def test_battery_input_changes_preserve_unselected_vehicles(direction):
+    array = inputs(powertrains=("BEV", "FCEV", "ICEV-p", "PHEV-p"))
+    baseline = run(array)
+    if direction == "capacity":
+        model = run(array, energy_storage={"capacity": {("BEV", "Medium", 2025): 60}})
+    else:
+        array.loc[
+            dict(parameter="energy battery mass", powertrain="BEV", year=2025)
+        ] = 550
+        model = run(array)
+    # Includes cell/BoP split: equal total pack mass alone can hide a mutation.
+    parameters = [
+        "energy battery mass",
+        "battery cell mass",
+        "battery BoP mass",
+        "electric energy stored",
+        "TtW energy",
+        "driving mass",
+        "range",
+    ]
+    for selection in [
+        dict(powertrain=["FCEV", "ICEV-p", "PHEV-p"]),
+        dict(powertrain="BEV", year=2020),
+    ]:
+        np.testing.assert_allclose(
+            model[parameters].sel(**selection),
+            baseline[parameters].sel(**selection),
+            rtol=1e-5,
+        )
+
+
+def test_capacity_override_takes_precedence_over_pack_mass_input():
+    key = ("BEV", "Medium", 2025)
+    models = []
+    for pack_mass in [250, 550]:
+        array = inputs(years=(2025,))
+        array.loc[dict(parameter="energy battery mass")] = pack_mass
+        models.append(run(array, energy_storage={"capacity": {key: 60}}))
+    for parameter in [
+        "energy battery mass",
+        "electric energy stored",
+        "driving mass",
+        "TtW energy",
+        "range",
+    ]:
+        np.testing.assert_allclose(
+            models[0][parameter], models[1][parameter], rtol=1e-5
+        )

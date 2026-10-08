@@ -25,6 +25,22 @@ production exchanges, with finite life cycle impacts. These establish numerical
 and accounting consistency; they are not measured-vehicle validation.
 See the `reproduction and repaired results <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/bev_target_range_issue.rst>`_.
 
+Capacity and pack-mass changes were also tested in 24 complete model/inventory
+runs: four chemistries, three levels per input direction, two years (2020/2025)
+and two load samples, or 96 vehicle/year/sample cells. Increasing nominal capacity
+from 40 to 80 kWh or pack mass from 250 to 550 kg increases energy demand and range
+throughout this tested scope. Increasing pack mass also increases nominal capacity.
+For a 2025 Medium NMC-811 BEV on WLTC, the capacity sweep changes range from
+226.1 to 428.2 km and grid demand from 15.97 to 16.86 kWh/100 km. The mass sweep
+changes capacity from 52.56 to 115.64 kWh, range from 291.9 to 591.1 km, and grid
+demand from 16.25 to 17.66 kWh/100 km. Fixed curb mass, energy consumption or target
+range were not imposed in these sweeps.
+
+Mass/energy consistency and battery/electricity inventory exchanges pass the
+regressions. A related repair restricts capacity overrides to selected vehicles,
+preserving unrelated FCEV battery component masses in mixed runs. The shared
+report linked above includes the full sweep results and source provenance.
+
 Evidence reviewed
 -----------------
 

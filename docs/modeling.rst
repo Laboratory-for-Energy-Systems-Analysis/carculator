@@ -978,6 +978,40 @@ mass fixed, and an ``energy_consumption`` override keeps demand fixed; equal
 consumption across chemistries can therefore be expected in these cases.
 Build a fresh model for each independent chemistry comparison.
 
+To choose capacity directly, use nominal kWh in the constructor::
+
+   capacity_model = CarModel(
+       array,
+       cycle="WLTC",
+       energy_storage={
+           "electric": {key: "NMC-811"},
+           "capacity": {key: 60},
+       },
+   )
+   capacity_model.set_all()
+
+To choose battery pack mass directly, edit the input parameter in kg before
+constructing the model::
+
+   mass_array = array.copy(deep=True)
+   mass_array.loc[dict(
+       parameter="energy battery mass", powertrain="BEV", size="Medium", year=2025,
+   )] = 400
+   mass_model = CarModel(
+       mass_array,
+       cycle="WLTC",
+       energy_storage={"electric": {key: "NMC-811"}},
+   )
+   mass_model.set_all()
+
+``energy battery mass`` includes cells and balance of plant. ``electric energy
+stored`` and ``battery cell mass`` are calculated outputs. With free vehicle mass
+and modelled consumption, increasing capacity or pack mass increases consumption
+and range in the tested sweeps; increasing pack mass also increases capacity.
+A capacity override takes precedence over input pack mass, and a target range
+takes precedence over both. Omit these higher-priority constraints when exploring
+the effect of mass or capacity alone. See :doc:`validity` for the tested scope.
+
 
 The sizing of batteries for battery electric vehicles is conditioned by
 the battery mass, which is defined as an input parameter for each size
