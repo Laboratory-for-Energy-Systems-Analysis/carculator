@@ -98,5 +98,5 @@ Reproducibility and interpretation
 Record package versions, input overrides, driving cycle, load, geography,
 fuel blend, background scenario, functional unit and energy meter boundary.
 Seeded parameter draws do not seed every downstream cost adjustment.
-See :doc:`release` for migration notes and :doc:`validity` for the scope of
+See :doc:`validity` for the scope of
 calibration, measurement comparisons and known limitations.

@@ -9,7 +9,7 @@ The shared runtime requires NumPy ``>=1.26.4,<2``.
 Published release
 -----------------
 
-After ``1.9.6`` is published on PyPI::
+Install ``carculator 1.9.6`` from PyPI::
 
    python3.12 -m venv .venv
    source .venv/bin/activate
@@ -32,14 +32,14 @@ background database in the destination LCA tool.
 Source checkout and documentation
 ---------------------------------
 
-Before publication, use the matching sibling checkouts and install from this
+For development, use the matching sibling checkouts and install from this
 repository root::
 
    python -m pip install -e "../carculator_utils[test,excel,brightway]" -e ".[test,docs,excel,brightway]"
    python -m pip check
    python -m pytest
+   python -m pip install -r docs/docs_requirements.txt
    python -m sphinx -b html docs docs/_build/html
 
-The ``docs`` extra includes the Sphinx extensions used here. See :doc:`release`
-for migration notes and the :download:`release checklist <../RELEASING.md>` for
-wheel/source-distribution verification.
+Use ``docs/docs_requirements.txt`` to install the extensions needed to build
+this documentation site.

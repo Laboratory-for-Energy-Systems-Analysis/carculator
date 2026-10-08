@@ -59,3 +59,19 @@ python -m twine check --strict /tmp/carculator-family-release-check/wheels/carcu
 
 The prepared metadata and README examples target this release; older published
 packages may not provide the documented APIs or 2025 defaults.
+
+
+## Historical verification record
+
+On 2026-10-08, the five-package installed-artifact suites passed **497 tests**,
+with one existing expected two-wheeler cost failure. Wheel and sdist-built
+wheel resource checks, offline core-only model/LCIA runs, strict Twine metadata
+checks, README execution and the documented inventory exports passed. All five
+Sphinx sites built using the release wheels and their ``docs`` extras.
+
+The [release verification record](docs/_static/release_verification.json)
+contains versions, artifact hashes, test counts and qualifications. Builds were
+local on macOS with Python 3.12; hosted CI and conda builds need separate
+qualification. Existing documentation warnings are recorded. These checks
+exercise packaging and software consistency; they do not establish physical
+plausibility or replace the measurement evidence and limitations in [model validation](docs/validity.rst).

@@ -23,5 +23,10 @@ verifies it again, and publishes it without moving or recreating the tag.
 Leaving `release_tag` empty only runs verification. Both uploads skip existing
 files, allowing a rerun after one registry succeeded and the other failed.
 
+Pushes and pull requests that only change `docs/`, root Markdown files, or
+`examples/` skip CI. Changes to code, tests, packaging, or workflows still run
+verification. Release and manual workflow triggers are unaffected by these
+path filters.
+
 Creating a tag alone does not publish; publish its GitHub release to trigger
 automatic publication. Publication runs are not cancelled by later CI pushes.

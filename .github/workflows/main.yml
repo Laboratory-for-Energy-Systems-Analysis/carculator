@@ -1,7 +1,15 @@
 name: Installed artifacts and release publishing
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - 'examples/**'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - 'examples/**'
   release:
     types: [published]
   workflow_dispatch:

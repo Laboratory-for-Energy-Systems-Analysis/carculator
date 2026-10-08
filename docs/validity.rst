@@ -146,7 +146,3 @@ With matching Python 3.12 sibling checkouts, run from ``carculator_utils``::
 The shared `measurement catalog and outputs <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/energy_measurements.rst>`_
 record excluded observations as well as paired values. Multiple cycles of one
 vehicle and AC/DC measurements from one run are not independent vehicles.
-The family artifact verification on 2026-10-08 passed 497 tests, with one
-existing expected two-wheeler failure, plus offline wheel/source-distribution
-model and LCIA checks. See :doc:`release` for the release verification record.
-That software verification does not replace empirical validation.
