@@ -2003,15 +2003,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "61-2000-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -4778,15 +4776,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "144-2010-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -7546,15 +7542,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "227-2020-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -10312,15 +10306,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "310-2030-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -13095,15 +13087,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "393-2040-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -15886,15 +15876,13 @@
             "Medium SUV",
             "Mini"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "476-2050-lifetime kilometers": {
         "name": "lifetime kilometers",
@@ -40862,15 +40850,13 @@
             "Small",
             "Van"
         ],
-        "amount": 0.004,
-        "loc": 0.004,
+        "amount": 0,
+        "loc": 0,
         "kind": "distribution",
-        "uncertainty_type": 5,
+        "uncertainty_type": 1,
         "category": "Energy Storage",
-        "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
-        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('226-2020-CNG pump-to-tank leakage', '309-2030-CNG pump-to-tank leakage'). Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
-        "minimum": 0.001,
-        "maximum": 0.093
+        "source": "Supplier-boundary policy, 2026-10-09; see methane_leakage_provenance.json and shared docs/methane_leakage.rst.",
+        "comment": "No unqualified additional loss beyond the delivered-fuel supplier by default. Zero is an exclusion of an unmeasured residual, not a claim that upstream losses or vehicle leakage are physically zero. Specify a stage-matched residual in kg lost/kg engine fuel when available."
     },
     "baseline-2025-0001-CNG tank mass intercept": {
         "name": "CNG tank mass intercept",

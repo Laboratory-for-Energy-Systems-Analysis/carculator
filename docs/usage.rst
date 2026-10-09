@@ -195,3 +195,14 @@ group. Regenerate saved stochastic arrays: removing redundant records can change
 seeded draw sequences, while their distributions remain the same. Explicit
 custom dictionaries retain first-entry precedence for compatibility; audit them
 with ``validate_parameters(records, check_duplicates=True)``.
+
+Additional gas leakage
+----------------------
+
+``CNG pump-to-tank leakage`` now defaults to zero at all native years. This
+excludes an unqualified overlay beyond the delivered-fuel supplier boundary; it
+does not remove upstream emissions or exhaust methane, or assert that actual
+vehicle leakage is zero. The former 0.004 prior combined potentially overlapping
+delivery/storage/vehicle stages. Supply a documented residual loss (kg lost/kg
+engine fuel) for the selected pathway when available. Original records and
+source/boundary rationale are packaged in ``data/methane_leakage_provenance.json``.

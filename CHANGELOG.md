@@ -9,6 +9,8 @@ it has not yet been published. Older entries, where present, retain their origin
 
 - Remove import-time global warning suppression and refresh API/documentation contracts; shared sulfur-table reductions use explicit pandas axis arguments.
 
+- Default additional CNG pump-to-tank leakage to zero beyond the delivered-fuel supplier boundary. Remove the unqualified 0.4% overlay while retaining upstream and exhaust methane; explicit measured residuals remain supported.
+
 ### Compatibility and installation
 
 - Require Python 3.12 (`>=3.12,<3.13`); older Python environments must be recreated.

@@ -1,0 +1,193 @@
+{
+  "issue": 12,
+  "date": "2026-10-09",
+  "default_additional_loss_ratio": 0,
+  "boundary": "Additional unmeasured losses after delivered-fuel supplier are excluded by default; upstream emissions and HBEFA exhaust methane remain.",
+  "reason": "Historical 0.004 cited a mixed LNG/CNG delivery, storage and vehicle loss boundary, not a residual beyond each bundled supplier.",
+  "historical_source": "https://doi.org/10.1088/2516-1083/ab56af",
+  "qualification": "Boundary correction, not empirical calibration of zero vehicle leakage. Use explicitly sourced residuals where available.",
+  "original_records": {
+    "60-2000-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2000,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "143-2010-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2010,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "226-2020-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2020,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "309-2030-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2030,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "392-2040-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2040,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "475-2050-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2050,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Small",
+        "Medium",
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Van",
+        "Medium SUV",
+        "Mini"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    },
+    "baseline-2025-0000-CNG pump-to-tank leakage": {
+      "name": "CNG pump-to-tank leakage",
+      "year": 2025,
+      "powertrain": [
+        "ICEV-g"
+      ],
+      "sizes": [
+        "Large",
+        "Large SUV",
+        "Lower medium",
+        "Medium",
+        "Medium SUV",
+        "Mini",
+        "Small",
+        "Van"
+      ],
+      "amount": 0.004,
+      "loc": 0.004,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "https://iopscience.iop.org/article/10.1088/2516-1083/ab56af/pdf",
+      "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('226-2020-CNG pump-to-tank leakage', '309-2030-CNG pump-to-tank leakage'). Leakage represented as a fraction of CNG input.\nIncludes leakage from Delivery, Station tank, Continuous leaks at stations, Fuelling nozzle, Vehicle fuel tank and Vehicle manual vent.",
+      "minimum": 0.001,
+      "maximum": 0.093
+    }
+  }
+}
