@@ -172,3 +172,13 @@ Completed regressions compare sensitivity references with static results across
 battery-electric and combustion powertrains. Paired runs with the pre-fix cost
 hooks also verify unchanged physical outputs, inventories and LCIA. These checks
 validate the numerical assignment of costs, not the empirical price assumptions.
+
+
+Repeated completion
+-------------------
+
+Repeated ``set_all()`` calls reuse retained inputs instead of previous results.
+Existing coordinate selections and explicit input-cell edits are supported.
+Modify PHEV component inputs in a fresh model rather than aggregated outputs.
+See the `shared repeat-run contract
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/repeated_runs.rst>`_.

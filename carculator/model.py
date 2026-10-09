@@ -5,6 +5,7 @@ import xarray as xr
 import yaml
 from carculator_utils.energy_consumption import EnergyConsumptionModel
 from carculator_utils.model import VehicleModel
+from carculator_utils.model_run import repeatable_run
 
 from . import DATA_DIR
 
@@ -178,6 +179,7 @@ class CarModel(VehicleModel):
 
     """
 
+    @repeatable_run
     def set_all(self):
         """
         This method runs a series of other methods to obtain the tank-to-wheel energy requirement, efficiency
