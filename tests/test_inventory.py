@@ -200,7 +200,7 @@ def test_fuel_blend():
             "methane - synthetic - biological",
         ),
         (
-            "petrol - synthetic - methanol - electrolysis - energy allocation",
+            "petrol - synthetic - methanol - cement - energy allocation",
             "diesel - synthetic - FT - coal - economic allocation",
             "hydrogen - atr - biogas",
             "methane - synthetic - biological",
@@ -217,15 +217,20 @@ def test_fuel_blend():
         bc["hydrogen"]["primary"]["type"] = fuels[2]
         bc["methane"]["primary"]["type"] = fuels[3]
 
-        cm = build_car_model(fuel_blend=bc)
         if fuels[3] == "methane - synthetic - electrochemical":
-            # The bundled fuel label does not exist in the background matrix.
-            # Previously caller mutation reused an earlier fuel's cached name.
-            with pytest.raises(KeyError, match="methane"):
-                InventoryCar(cm)
+            # Unsupported routes must fail before completing the vehicle model.
+            with pytest.raises(ValueError, match="methane.*unavailable"):
+                build_car_model(fuel_blend=bc)
         else:
+            cm = build_car_model(fuel_blend=bc)
             ic = InventoryCar(cm)
             ic.calculate_impacts()
+
+    bc["petrol"]["primary"][
+        "type"
+    ] = "petrol - synthetic - methanol - electrolysis - energy allocation"
+    with pytest.raises(ValueError, match="petrol.*Ambiguous carbon-source alias"):
+        build_car_model(fuel_blend=bc)
 
 
 @pytest.mark.parametrize("bio_share", [0, 0.35, 1])
