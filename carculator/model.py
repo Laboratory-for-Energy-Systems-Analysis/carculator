@@ -584,12 +584,10 @@ class CarModel(VehicleModel):
         # Per km
         self["energy cost"] = self["energy cost per kWh"] * self["TtW energy"] / 3600
 
-        # For battery, need to divide cost of electricity
-        # at battery by efficiency of charging
-        # to get costs at the "wall socket".
-
+        # Retain the fuel-cost convention; electric modes use grid purchases.
         _ = lambda x: np.where(x == 0, 1, x)
         self["energy cost"] /= _(self["battery charge efficiency"])
+        self.set_electricity_costs(self["energy cost per kWh"])
 
         self["component replacement cost"] = (
             self["energy battery cost"] * self["battery lifetime replacements"]

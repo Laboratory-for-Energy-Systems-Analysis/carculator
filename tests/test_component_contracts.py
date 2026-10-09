@@ -93,6 +93,7 @@ def test_costs_follow_discounted_cash_flow(rate, annual_km, years):
         kilometers_per_year=annual_km,
         average_passengers=2,
         battery_charge_efficiency=0.8,
+        electricity_consumption=1.25,  # kWh purchased per km at the plug
         electric_energy_stored=10,
         battery_lifetime_replacements=1,
         glider_cost_slope=1,

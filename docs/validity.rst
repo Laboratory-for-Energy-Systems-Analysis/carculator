@@ -8,6 +8,32 @@ and explicit engineering assumptions. They are not a newly fitted fleet of
 2025 cars. Historical curb-mass calibration is described in :doc:`modeling`;
 it does not independently validate current fuel or electricity consumption.
 
+.. _charging-cost-accounting:
+
+Charging cost accounting
+------------------------
+
+Electricity running costs use grid purchases: ``electricity consumption`` in
+kWh/km times the electricity tariff. Grid consumption already includes both
+battery-charge and charger losses; neither efficiency is applied again when
+billing that electricity. Previously the cost formula omitted charger losses.
+At 90% charger efficiency it understated the electricity component by 10%; at
+80% efficiency it understated it by 20%. This correction changes costs, while
+preserving vehicle energy demand, inventory electricity exchanges and LCIA.
+
+BEVs and PHEV electric intermediates use this grid-based calculation. Combined
+PHEVs retain the utility-factor-weighted sum of electric and combustion costs,
+with the electric share applied once. Fuel-mode costs retain their existing
+convention. Tariffs and charging-efficiency assumptions have not been refitted.
+
+Car costs remain per vehicle-km. The default Swiss 2025 ``Medium`` BEV on
+WLTC uses 16.95 kWh/100 km from the grid; at the bundled tariff its electricity
+cost is approximately EUR 3.40/100 km, corrected from EUR 3.06/100 km.
+
+Completed model/inventory checks and the shared billing contract are described
+in the `shared charging-cost validation <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/validity.rst#charging-cost-accounting>`_.
+
+
 Target-range sizing consistency
 -------------------------------
 
