@@ -27,15 +27,21 @@ python -m pip install "carculator==1.9.6"
 
 Before publication, use the matching source checkouts as described under development.
 Core calculations use bundled resources and need no Brightway project, ecoinvent
-installation or network access. Inventory export has optional dependencies:
+installation or network access. The matching `carculator_utils` runtime installs
+`brightpath>=1.0.0a6,<1.1` for Brightway Excel, SimaPro CSV and openLCA JSON-LD
+exports. It uses Brightpath's v1 API, currently an alpha; model and LCIA
+calculations do not import Brightpath or Brightway.
+
+The `excel` extra remains a compatibility alias. To select the tested legacy
+Brightway stack (`bw2io<0.9`, `bw2data<4`, `bw2calc<2`), use:
 
 ```bash
-python -m pip install "carculator[excel,brightway]==1.9.6"
+python -m pip install "carculator[brightway]==1.9.6"
 ```
 
-The Brightway extra supports the legacy stack (`bw2io<0.9`, `bw2data<4`,
-`bw2calc<2`). Export currently targets ecoinvent 3.9 and 3.10; importing those
-inventories requires the corresponding background database in the destination tool.
+Brightpath also installs `bw2io` without that extra. Export targets ecoinvent
+3.9 and 3.10, cut-off; external suppliers must be matched to the corresponding
+background in the destination tool. See [inventory export](docs/inventory_export.rst).
 
 ## Quick start
 
@@ -63,6 +69,27 @@ print(impacts.sel(impact_category="climate change").sum("impact"))
 ```
 
 The example reports impacts per vehicle-kilometre.
+
+## Inventory export
+
+With the completed `inventory` from the quick start:
+
+```python
+workbook = inventory.export_lci(software="brightway2", format="file", directory="exports")
+simapro_csv = inventory.export_lci(software="simapro", format="file", directory="exports")
+foreground_zip = inventory.export_lci(software="openlca", format="file", directory="exports")
+```
+
+Retain exactly one sample before constructing the model and inventory. Each year
+gets its own export; multiple years return a list. Exports preserve the original
+inventory and calculated impacts. The default `export_lci()` returns an unlinked
+Brightway importer.
+
+The openLCA ZIP contains foreground processes, without an ecoinvent background or
+LCIA methods; map external providers and elementary flows before calculation.
+SimaPro CSV uses Latin-1 and warns when omitting custom noise flows. See the
+[export guide](docs/inventory_export.rst) for return types, sample selection and
+format-specific limitations.
 
 ## Battery sizing
 

@@ -2254,10 +2254,11 @@ vehicle as well as the REMIND climate scenario considered (i.e.,
 "SSP2-Baseline", "SSP2-PkBudg1150" or "SSP2-PkBudg500"). Midpoint and
 endpoint (i.e., human health, ecosystem impacts and resources use)
 indicators include those of the ReCiPe 2008 v.1.13 impact assessment
-method, as well as those of EF 3.1. Additionally, it is possible to
-export the inventories in a format compatible with the LCA framework
-`Brightway2 <https://brightway.dev/>`_ or `SimaPro <https://simapro.com/>`_,
-thereby allowing the characterization of the results against a larger number of impact assessment methods.
+method, as well as those of EF 3.1. Inventories can also be
+exported through Brightpath as Brightway Excel, SimaPro CSV or foreground-only
+openLCA JSON-LD. After matching external providers and elementary flows in the
+destination database, users can apply the methods available there. See
+:doc:`inventory_export` for supported ecoinvent targets and linking limitations.
 
 Presentation of results
 ***********************

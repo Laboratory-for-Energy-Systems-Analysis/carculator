@@ -18,8 +18,11 @@ The methodology used to develop `carculator` is explained in an article by :cite
 The tool has a focus on passenger cars.
 It is initially based on the model developed in :cite:`ct-1130`.
 
-More specifically, ``carculator`` generates `Brightway2 <https://brightway.dev/>`_ and `SimaPro <https://simapro.com/>`_
-inventories, but also directly provides characterized
+``carculator`` uses Brightpath through ``carculator_utils`` to export
+Brightway Excel, SimaPro CSV and foreground-only openLCA JSON-LD inventories.
+The openLCA files need background-provider and elementary-flow mapping before
+calculation; see :doc:`inventory_export`.
+``carculator`` also directly provides characterized
 results against several midpoint indicators from the impact assessment method ReCiPe, EF 3.1, as well as life cycle cost indicators.
 
 ``carculator`` is a special in the way that it uses time- and energy-scenario-differentiated background inventories for the future,
@@ -54,8 +57,12 @@ Finally, beside being more flexible and transparent, ``carculator`` provides int
 * hot pollutants emissions as a function of the driving cycle, using bundled `HBEFA <https://www.hbefa.net/e/index.html>`_ emission factors, further divided between rural, suburban and urban areas
 * noise emissions, based on `CNOSSOS-EU <https://ec.europa.eu/jrc/en/publication/reference-reports/common-noise-assessment-methods-europe-cnossos-eu>`_ models for noise emissions
   and :cite:`ct-1015` for inventory modelling and mid- and endpoint characterization of noise emissions, function of driving cycle and further divided between rural, suburban and urban areas
-* export of inventories as an Excel/CSV file, to be used with Brightway2 or Simapro, including uncertainty information. This requires the user to have `ecoinvent` installed on the LCA software the car inventories are exported to.
-* export inventories directly into Brightway2, as a LCIImporter object to be registered. Additionally, when run in stochastic mode, it is possible to export arrays of pre-sampled values using the `presamples <https://pypi.org/project/presamples/>`_ library to be used together with the Monte Carlo function of Brightway2.
+* export one retained sample per model year as Brightway Excel, SimaPro CSV or
+  foreground-only openLCA JSON-LD through Brightpath. External suppliers need
+  matching to the destination background; see :doc:`inventory_export`.
+* return unlinked Brightway ``LCIImporter`` objects for subsequent matching and
+  writing in a Brightway project. Select one sample before building the model
+  and inventory; exports do not create uncertainty distributions or presamples.
 * development of an online graphical user interface: `carculator online <https://carculator.psi.ch>`_
 
 Get started with :ref:`Installation <install>` and continue with an overview about :ref:`how to use the library <usage>`.
@@ -68,6 +75,7 @@ User's Guide
 
    installation
    usage
+   inventory_export
    modeling
    structure
    validity

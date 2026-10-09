@@ -9,9 +9,9 @@ it has not yet been published. Older entries, where present, retain their origin
 
 - Require Python 3.12 (`>=3.12,<3.13`); older Python environments must be recreated.
 - Use NumPy `>=1.26.4,<2` through the shared runtime.
-- Require the stable `carculator_utils>=1.3.6` release, including its export extras.
+- Require the stable `carculator_utils>=1.3.6` release, including its Brightpath runtime dependency.
 - Build wheels and source distributions from centralized `pyproject.toml` metadata.
-- Keep core model/LCIA use independent of Brightway; install `excel` or `brightway` extras for export. The Brightway extra targets the legacy stack (`bw2io<0.9`, `bw2data<4`, `bw2calc<2`).
+- Keep core model/LCIA calculations independent of Brightway projects and imports. Export writers now come through Brightpath; `excel` remains a compatibility alias and `brightway` selects the legacy stack (`bw2io<0.9`, `bw2data<4`, `bw2calc<2`).
 - Align documentation versions with the package version and provide complete documentation-build dependencies.
 
 ### Model and inventory changes
@@ -28,6 +28,12 @@ it has not yet been published. Older entries, where present, retain their origin
 - Apply corrected shared battery and hybrid energy accounting and consistently mask unavailable configurations across reported energy and supply outputs.
 - Use bounded per-cell sizing, preserve custom inputs, and verify labelled samples, mass balance and annualized costs.
 - Verify fuel blends, PHEV carbon accounting, hot pollutant translation and multi-year export through the updated shared dependency.
+
+### Inventory export
+
+- Inherit Brightpath (`>=1.0.0a6,<1.1`, v1 alpha API) writers for Brightway Excel, SimaPro CSV and foreground-only openLCA JSON-LD from `carculator_utils`; document examples and return values in the [export guide](docs/inventory_export.rst).
+- Retain exact ecoinvent 3.9/3.10 cut-off targets, one selected sample per export, every selected year and unchanged source inventories/impacts. Brightway importers still require background matching and writing.
+- Document the SimaPro Latin-1 layout and identifier changes, warnings for omitted custom noise flows, and openLCA provider/elementary-flow mapping required before calculation. Remove obsolete presamples and uncertainty-export claims.
 
 ### Documentation and verification
 

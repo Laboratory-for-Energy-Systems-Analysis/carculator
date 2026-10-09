@@ -72,25 +72,34 @@ See :doc:`modeling` for capacity, chemistry and mass examples.
 Inventory export
 ----------------
 
-Install the optional export dependencies described in :doc:`installation`.
-After a complete model and inventory calculation, the shared public API is:
+The shared runtime includes Brightpath and its export writers. Continue with
+the completed inventory from the quick start:
 
 .. code-block:: python
 
-   paths = inventory.export_lci(
+   workbook = inventory.export_lci(
        ecoinvent_version="3.10",
-       software="brightway2",
-       format="file",
-       directory="exports",
-       filename="vehicle-comparison",
+       software="brightway2", format="file", directory="exports",
+   )
+   simapro_csv = inventory.export_lci(
+       software="simapro", format="file", directory="exports",
+   )
+   foreground_zip = inventory.export_lci(
+       software="openlca", format="file", directory="exports",
    )
 
-``software`` accepts ``brightway2`` or ``simapro``. Brightway export supports
-``file``, ``string`` and ``bw2io``; SimaPro supports ``file`` and ``string``.
-The supported ecoinvent targets are 3.9 and 3.10. Multi-year runs preserve every
-year in the returned exports, and exporting does not change the original
-inventory or calculated impacts. A destination Brightway/ecoinvent setup is
-needed to register and link exported inventories, not for the core calculation.
+Export requires exactly one retained sample, selected before constructing the
+model and inventory. The static quick start already has one sample. Every
+selected year gets an export; multiple years return a list. The original
+inventory, calculated impacts and functional unit remain unchanged.
+
+The default ``export_lci()`` returns an unlinked Brightway ``LCIImporter``.
+Supported ecoinvent targets are exactly ``3.9`` and ``3.10``, cut-off. The
+openLCA ZIP contains foreground processes without an ecoinvent background or
+LCIA methods; map external providers and elementary flows before calculation.
+SimaPro uses Latin-1 CSV and warns when custom noise flows are omitted.
+See :doc:`inventory_export` for the full format/return-value table, sample
+selection and linking requirements.
 
 Reproducibility and interpretation
 ----------------------------------

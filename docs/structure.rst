@@ -35,3 +35,6 @@ energy supply and direct emissions. Background fuel blends, electricity mixes
 and scenario-specific characterized factors support impact calculations.
 Functional-unit normalization and inventory export are separate operations;
 exports use copies so repeated calls preserve calculated results and all years.
+The shared exporter builds activities and exchanges; Brightpath validates and
+serializes Brightway, SimaPro and openLCA formats. See :doc:`inventory_export`
+for sample selection and background-linking requirements.

@@ -21,13 +21,23 @@ activate it, and use the same pip command. Availability of a conda package is
 separate from the PyPI release.
 
 Core calculations use bundled resources without a Brightway project, an
-ecoinvent installation or network access. For export support::
+ecoinvent installation or network access. The matching ``carculator_utils``
+runtime installs ``brightpath>=1.0.0a6,<1.1`` for Brightway Excel, SimaPro CSV
+and openLCA JSON-LD export. This uses Brightpath's v1 API, currently an alpha.
+Brightpath brings ``bw2io``, XlsxWriter and ``olca-schema``; model and LCIA code
+does not import Brightpath or Brightway.
 
-   python -m pip install "carculator[excel,brightway]==1.9.6"
+The ``excel`` extra remains a compatibility alias; the Excel writer is already
+installed through Brightpath. To select the tested legacy Brightway stack::
 
-The Brightway extra intentionally targets the legacy stack (``bw2io<0.9``,
-``bw2data<4``, ``bw2calc<2``). Importing exported inventories requires a matching
-background database in the destination LCA tool.
+   python -m pip install "carculator[brightway]==1.9.6"
+
+The ``brightway`` extra selects ``bw2io<0.9``, ``bw2data<4`` and ``bw2calc<2``.
+Brightpath also installs ``bw2io`` without this extra. Export targets ecoinvent
+3.9 and 3.10 with the cut-off system model. Match external suppliers to the
+corresponding background in the destination tool. openLCA exports contain only
+foreground processes and require provider and elementary-flow mapping before
+calculation. See :doc:`inventory_export` for examples and limitations.
 
 Source checkout and documentation
 ---------------------------------

@@ -15,7 +15,9 @@ Status: prepared, not published. Use Python 3.12 and review the matching family 
    Preserve local notebooks and inventories; commit only the intended release files.
 2. Check `carculator/_version.py`, `conda/meta.yaml` and dependency metadata together.
    Sphinx reads the package version automatically. All vehicle packages require
-   `carculator_utils>=1.3.6`, including the optional export extras.
+   `carculator_utils>=1.3.6`, whose runtime includes Brightpath export writers.
+   The `excel` extra is a compatibility alias; `brightway` selects the legacy stack.
+   Review [export formats and linking requirements](docs/inventory_export.rst).
 3. Build and verify actual artifacts from this checkout (use a new output directory):
 
 ```bash
