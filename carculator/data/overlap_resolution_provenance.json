@@ -1,0 +1,489 @@
+{
+  "issue": 4,
+  "policy": "Preserve the first existing definition of every cell, including its distribution and source. Regenerate old stochastic samples after record changes; split scopes share uncertainty groups.",
+  "original_records": {
+    "683-2010-fuel mass": {
+      "name": "fuel mass",
+      "year": 2010,
+      "powertrain": [
+        "ICEV-g",
+        "PHEV-c-p",
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Van",
+        "Small"
+      ],
+      "amount": 28,
+      "loc": 28,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 26,
+      "maximum": 30
+    },
+    "961-2020-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2020,
+      "powertrain": [
+        "PHEV-e",
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV",
+        "Micro"
+      ],
+      "amount": 0.9,
+      "loc": 0.9,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.81,
+      "maximum": 0.9900000000000001
+    },
+    "963-2030-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2030,
+      "powertrain": [
+        "PHEV-e",
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV",
+        "Micro"
+      ],
+      "amount": 0.91,
+      "loc": 0.91,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.8190000000000001,
+      "maximum": 1.0010000000000001
+    },
+    "965-2040-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2040,
+      "powertrain": [
+        "PHEV-e",
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV",
+        "Micro"
+      ],
+      "amount": 0.92,
+      "loc": 0.92,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.8280000000000001,
+      "maximum": 1.0120000000000002
+    },
+    "966-2050-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2050,
+      "powertrain": [
+        "PHEV-e",
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV",
+        "Micro"
+      ],
+      "amount": 0.93,
+      "loc": 0.93,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.8370000000000001,
+      "maximum": 1.0230000000000001
+    },
+    "1058-2020-fuel mass": {
+      "name": "fuel mass",
+      "year": 2020,
+      "powertrain": [
+        "HEV-p",
+        "HEV-d"
+      ],
+      "sizes": [
+        "Lower medium"
+      ],
+      "amount": 35,
+      "loc": 35,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 31.5,
+      "maximum": 38.5
+    },
+    "1103-2020-fuel mass": {
+      "name": "fuel mass",
+      "year": 2020,
+      "powertrain": [
+        "PHEV-c-p",
+        "PHEV-c-d",
+        "ICEV-d",
+        "ICEV-p"
+      ],
+      "sizes": [
+        "Medium",
+        "Large",
+        "Van"
+      ],
+      "amount": 55,
+      "loc": 55,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 49.5,
+      "maximum": 60.50000000000001
+    },
+    "1123-2020-fuel mass": {
+      "name": "fuel mass",
+      "year": 2020,
+      "powertrain": [
+        "PHEV-c-p",
+        "PHEV-c-d",
+        "ICEV-d",
+        "ICEV-p"
+      ],
+      "sizes": [
+        "Large SUV",
+        "Medium SUV"
+      ],
+      "amount": 55.25,
+      "loc": 55.25,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 49.725,
+      "maximum": 60.775000000000006
+    },
+    "1127-2000-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2000,
+      "powertrain": [
+        "PHEV-c-p",
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Lower medium",
+        "Medium"
+      ],
+      "amount": 0.3080000000000001,
+      "loc": 0.3080000000000001,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.2772000000000001,
+      "maximum": 0.33880000000000016
+    },
+    "1129-2010-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2010,
+      "powertrain": [
+        "PHEV-c-p",
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Lower medium",
+        "Medium"
+      ],
+      "amount": 0.363,
+      "loc": 0.363,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.3267,
+      "maximum": 0.39930000000000004
+    },
+    "1135-2010-fuel mass": {
+      "name": "fuel mass",
+      "year": 2010,
+      "powertrain": [
+        "PHEV-c-p",
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Van"
+      ],
+      "amount": 36,
+      "loc": 36,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 35,
+      "maximum": 40
+    },
+    "1237-2000-lightweighting": {
+      "name": "lightweighting",
+      "year": 2000,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large",
+        "Large SUV"
+      ],
+      "amount": 0.15,
+      "loc": 0.15,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.135,
+      "maximum": 0.165
+    },
+    "1239-2010-lightweighting": {
+      "name": "lightweighting",
+      "year": 2010,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large",
+        "Large SUV"
+      ],
+      "amount": 0.15,
+      "loc": 0.15,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.135,
+      "maximum": 0.165
+    },
+    "1245-2040-lightweighting": {
+      "name": "lightweighting",
+      "year": 2040,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large"
+      ],
+      "amount": 0.28,
+      "loc": 0.28,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.25200000000000006,
+      "maximum": 0.30800000000000005
+    },
+    "1247-2050-lightweighting": {
+      "name": "lightweighting",
+      "year": 2050,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large"
+      ],
+      "amount": 0.28,
+      "loc": 0.28,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.25200000000000006,
+      "maximum": 0.30800000000000005
+    },
+    "1255-2040-lightweighting": {
+      "name": "lightweighting",
+      "year": 2040,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV"
+      ],
+      "amount": 0.3,
+      "loc": 0.3,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.27,
+      "maximum": 0.33
+    },
+    "1257-2050-lightweighting": {
+      "name": "lightweighting",
+      "year": 2050,
+      "powertrain": [
+        "BEV"
+      ],
+      "sizes": [
+        "Large SUV"
+      ],
+      "amount": 0.3,
+      "loc": 0.3,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Glider",
+      "source": "Geyer (2017), Hirschberg et al. (2016)",
+      "comment": "",
+      "minimum": 0.27,
+      "maximum": 0.33
+    },
+    "1278-2000-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2000,
+      "powertrain": [
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Small",
+        "Lower medium",
+        "Mini"
+      ],
+      "amount": 0.3360000000000001,
+      "loc": 0.3360000000000001,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.30240000000000006,
+      "maximum": 0.3696000000000001
+    },
+    "1283-2010-engine efficiency": {
+      "name": "engine efficiency",
+      "year": 2010,
+      "powertrain": [
+        "PHEV-c-d"
+      ],
+      "sizes": [
+        "Small",
+        "Lower medium",
+        "Mini"
+      ],
+      "amount": 0.396,
+      "loc": 0.396,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Powertrain",
+      "source": "Hirschberg et al. (2016), Calibration result",
+      "comment": "",
+      "minimum": 0.35640000000000005,
+      "maximum": 0.43560000000000004
+    },
+    "1347-2000-fuel mass": {
+      "name": "fuel mass",
+      "year": 2000,
+      "powertrain": [
+        "ICEV-p"
+      ],
+      "sizes": [
+        "Medium",
+        "Large SUV",
+        "Medium SUV"
+      ],
+      "amount": 70,
+      "loc": 70,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 65,
+      "maximum": 75
+    },
+    "1349-2010-fuel mass": {
+      "name": "fuel mass",
+      "year": 2010,
+      "powertrain": [
+        "ICEV-p"
+      ],
+      "sizes": [
+        "Large"
+      ],
+      "amount": 61,
+      "loc": 61,
+      "kind": "distribution",
+      "uncertainty_type": 5,
+      "category": "Energy Storage",
+      "source": "Own assumption, Calibration result with Car2db",
+      "comment": "",
+      "minimum": 58,
+      "maximum": 63
+    }
+  },
+  "replacement_record_ids": {
+    "683-2010-fuel mass": [
+      "683-2010-fuel mass",
+      "683-2010-fuel mass-scope-1"
+    ],
+    "961-2020-engine efficiency": [
+      "961-2020-engine efficiency"
+    ],
+    "963-2030-engine efficiency": [
+      "963-2030-engine efficiency"
+    ],
+    "965-2040-engine efficiency": [
+      "965-2040-engine efficiency"
+    ],
+    "966-2050-engine efficiency": [
+      "966-2050-engine efficiency"
+    ],
+    "1058-2020-fuel mass": [],
+    "1103-2020-fuel mass": [
+      "1103-2020-fuel mass"
+    ],
+    "1123-2020-fuel mass": [],
+    "1127-2000-engine efficiency": [
+      "1127-2000-engine efficiency",
+      "1127-2000-engine efficiency-scope-1"
+    ],
+    "1129-2010-engine efficiency": [
+      "1129-2010-engine efficiency",
+      "1129-2010-engine efficiency-scope-1"
+    ],
+    "1135-2010-fuel mass": [],
+    "1237-2000-lightweighting": [],
+    "1239-2010-lightweighting": [],
+    "1245-2040-lightweighting": [],
+    "1247-2050-lightweighting": [],
+    "1255-2040-lightweighting": [],
+    "1257-2050-lightweighting": [],
+    "1278-2000-engine efficiency": [
+      "1278-2000-engine efficiency"
+    ],
+    "1283-2010-engine efficiency": [
+      "1283-2010-engine efficiency"
+    ],
+    "1347-2000-fuel mass": [
+      "1347-2000-fuel mass"
+    ],
+    "1349-2010-fuel mass": []
+  },
+  "effective_cells_sha256": "6adb4138371d9ba9bf7b5ea462cab73fa2d2fe852955d65639def8137fbbc47f",
+  "effective_cell_count": 58586
+}

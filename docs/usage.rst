@@ -182,3 +182,16 @@ Existing coordinate selections and explicit input-cell edits are supported.
 Modify PHEV component inputs in a fresh model rather than aggregated outputs.
 See the `shared repeat-run contract
 <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/repeated_runs.rst>`_.
+
+Bundled parameter scopes
+------------------------
+
+Bundled records now have unique parameter/size/powertrain/year cells. The cleanup
+preserves the formerly effective first record, including its distribution and
+source, rather than choosing a new scientific value from a conflicting later
+record. Original overlapping records and replacement scopes are archived in
+``data/overlap_resolution_provenance.json``. Split scopes share an uncertainty
+group. Regenerate saved stochastic arrays: removing redundant records can change
+seeded draw sequences, while their distributions remain the same. Explicit
+custom dictionaries retain first-entry precedence for compatibility; audit them
+with ``validate_parameters(records, check_duplicates=True)``.
