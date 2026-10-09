@@ -16,23 +16,24 @@ Continue with the completed ``inventory`` from :doc:`usage`:
 .. code-block:: python
 
    workbook = inventory.export_lci(
-       ecoinvent_version="3.10",
+       ecoinvent_version="3.12",
        software="brightway2", format="file", directory="exports",
    )
    simapro_csv = inventory.export_lci(
-       ecoinvent_version="3.10",
+       ecoinvent_version="3.12",
        software="simapro", format="file", directory="exports",
    )
    foreground_zip = inventory.export_lci(
-       ecoinvent_version="3.10",
+       ecoinvent_version="3.12",
        software="openlca", format="file", directory="exports",
    )
 
-Only the exact ecoinvent targets ``"3.9"`` and ``"3.10"`` are supported, with
-cut-off technosphere and version-matched biosphere contexts. The default target
-is ``"3.10"``. Export does not migrate the background to another release or
-system model. Match external suppliers to the corresponding background in the
-destination tool before calculation.
+The default target is **ecoinvent 3.12 cutoff**, matching the rebuilt LCA
+background. Logical supplier labels and disaggregations resolve to their 3.12
+identities. Legacy ``"3.9"``/``"3.10"`` exports reject newly introduced suppliers
+without verified older counterparts; complete backward compatibility is not
+claimed. Match external suppliers and elementary flows to the corresponding
+background in the destination tool before calculation.
 
 Exports operate on copies: the original inventory, calculated impacts and
 selected functional unit (``vkm``, ``pkm`` or ``tkm``) are preserved.

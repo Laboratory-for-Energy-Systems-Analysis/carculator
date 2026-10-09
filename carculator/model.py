@@ -77,7 +77,7 @@ class CarModel(VehicleModel):
 
             # the following chemistries are available
             # NMC-111
-            # NMC-523
+            # NMC-532
             # NMC-622
             # NMC-811
             # NMC-955

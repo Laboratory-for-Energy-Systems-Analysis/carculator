@@ -76,11 +76,13 @@ def test_plausibility_of_GWP(car_model):
             size="Medium",
         )
 
-        # Are the medium ICEVs between 0.28 and 0.35 kg CO2-eq./vkm?
+        # Broad plausibility bounds, not a frozen database-output snapshot.
+        # The 3.12/Premise 2.5.4 rebuild gives 0.273/0.361 kg CO2-eq./vkm
+        # for 2020 Medium diesel/petrol (previous bundle: 0.266/0.354).
 
         if method == "recipe":
             assert (gwp_icev.sum(dim="impact") > 0.24).all() and (
-                gwp_icev.sum(dim="impact") < 0.36
+                gwp_icev.sum(dim="impact") < 0.40
             ).all(), gwp_icev.sum(dim="impact")
 
             # Check exhaust carbon against energy demand and fuel chemistry.
@@ -118,13 +120,14 @@ def test_plausibility_of_GWP(car_model):
                     gwp_icev.sel(powertrain=powertrain).sum(dim="impact")
                 )
 
-        # Is the GWP score for batteries of Medium BEVs between 0.025 and 0.035 kg Co2-eq./vkm?
+        # Battery contribution: broad 20-50 g CO2-eq./vkm plausibility range.
+        # The verified 3.12 background gives 41.0 g for this 2020 case.
         gwp_bev = results.sel(
             impact_category=m, powertrain="BEV", value=0, year=2020, size="Medium"
         )
 
         assert (gwp_bev.sel(impact="energy storage") > 0.02).all() and (
-            gwp_bev.sel(impact="energy storage") < 0.04
+            gwp_bev.sel(impact="energy storage") < 0.05
         ).all()
 
         assert gwp_bev.sel(impact="direct - exhaust") == 0
@@ -354,7 +357,7 @@ def test_export_to_bw():
     )
     #
 
-    for b in ("3.9",):
+    for b in ("3.12",):
         ic.export_lci(
             ecoinvent_version=b,
         )
@@ -371,7 +374,7 @@ def test_export_to_excel(tmp_path):
             if d == "bw2io" and not bw2io_is_usable():
                 continue
             ic.export_lci(
-                ecoinvent_version="3.10",
+                ecoinvent_version="3.12",
                 format=d,
                 software=s,
                 directory=str(tmp_path),

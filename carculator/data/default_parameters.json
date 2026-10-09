@@ -155,8 +155,8 @@
         "source": "https://theicct.org/sites/default/files/publications/PV_Tech_Trend_Electrification_20180917.pdf",
         "comment": "ICEVs will be mild-hybdrids in the future, equipped with a small battery. In 2020, several manufacturers already produce those. By 2030, they will be representative of most ICEVs."
     },
-    "5-2000-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "5-2000-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2000,
         "powertrain": [
             "ICEV-g",
@@ -1205,8 +1205,8 @@
         "minimum": 150,
         "maximum": 350
     },
-    "37-2000-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "37-2000-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2000,
         "powertrain": [
             "ICEV-g",
@@ -1678,8 +1678,8 @@
         "minimum": 0.5,
         "maximum": 0.6000000000000001
     },
-    "51-2000-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "51-2000-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2000,
         "powertrain": [
             "ICEV-g",
@@ -2930,8 +2930,8 @@
         "source": "https://theicct.org/sites/default/files/publications/PV_Tech_Trend_Electrification_20180917.pdf",
         "comment": "ICEVs will be mild-hybdrids in the future, equipped with a small battery. In 2020, several manufacturers already produce those. By 2030, they will be representative of most ICEVs."
     },
-    "88-2010-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "88-2010-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2010,
         "powertrain": [
             "ICEV-g",
@@ -3978,8 +3978,8 @@
         "minimum": 150,
         "maximum": 350
     },
-    "120-2010-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "120-2010-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2010,
         "powertrain": [
             "ICEV-g",
@@ -4451,8 +4451,8 @@
         "minimum": 0.5,
         "maximum": 0.6000000000000001
     },
-    "134-2010-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "134-2010-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2010,
         "powertrain": [
             "ICEV-g",
@@ -5703,8 +5703,8 @@
         "source": "https://theicct.org/sites/default/files/publications/PV_Tech_Trend_Electrification_20180917.pdf",
         "comment": "ICEVs will be mild-hybdrids in the future, equipped with a small battery. In 2020, several manufacturers already produce those. By 2030, they will be representative of most ICEVs."
     },
-    "171-2020-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "171-2020-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2020,
         "powertrain": [
             "ICEV-g",
@@ -6752,8 +6752,8 @@
         "minimum": 150,
         "maximum": 350
     },
-    "203-2020-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "203-2020-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2020,
         "powertrain": [
             "ICEV-g",
@@ -7225,8 +7225,8 @@
         "minimum": 0.5,
         "maximum": 0.6000000000000001
     },
-    "217-2020-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "217-2020-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2020,
         "powertrain": [
             "ICEV-g",
@@ -8469,8 +8469,8 @@
         "minimum": 4.5,
         "maximum": 5.5
     },
-    "254-2030-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "254-2030-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2030,
         "powertrain": [
             "ICEV-g",
@@ -9516,8 +9516,8 @@
         "minimum": 142.5,
         "maximum": 350
     },
-    "286-2030-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "286-2030-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2030,
         "powertrain": [
             "ICEV-g",
@@ -9989,8 +9989,8 @@
         "minimum": 0.475,
         "maximum": 0.5750000000000001
     },
-    "300-2030-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "300-2030-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2030,
         "powertrain": [
             "ICEV-g",
@@ -11241,8 +11241,8 @@
         "minimum": 4.5,
         "maximum": 5.5
     },
-    "337-2040-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "337-2040-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2040,
         "powertrain": [
             "ICEV-g",
@@ -12297,8 +12297,8 @@
         "minimum": 135,
         "maximum": 350
     },
-    "369-2040-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "369-2040-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2040,
         "powertrain": [
             "ICEV-g",
@@ -12770,8 +12770,8 @@
         "minimum": 0.45,
         "maximum": 0.55
     },
-    "383-2040-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "383-2040-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2040,
         "powertrain": [
             "ICEV-g",
@@ -14030,8 +14030,8 @@
         "minimum": 4.5,
         "maximum": 5.5
     },
-    "420-2050-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "420-2050-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2050,
         "powertrain": [
             "ICEV-g",
@@ -15086,8 +15086,8 @@
         "minimum": 135,
         "maximum": 350
     },
-    "452-2050-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "452-2050-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2050,
         "powertrain": [
             "ICEV-g",
@@ -15559,8 +15559,8 @@
         "minimum": 0.45,
         "maximum": 0.55
     },
-    "466-2050-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "466-2050-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2050,
         "powertrain": [
             "ICEV-g",
@@ -26202,8 +26202,8 @@
         "minimum": 80,
         "maximum": 120
     },
-    "844-2020-energy battery cost per kWh, NMC-523": {
-        "name": "energy battery cost per kWh, NMC-523",
+    "844-2020-energy battery cost per kWh, NMC-532": {
+        "name": "energy battery cost per kWh, NMC-532",
         "year": 2020,
         "powertrain": [
             "PHEV-e",
@@ -27168,8 +27168,8 @@
         "minimum": 60,
         "maximum": 100
     },
-    "878-2030-energy battery cost per kWh, NMC-523": {
-        "name": "energy battery cost per kWh, NMC-523",
+    "878-2030-energy battery cost per kWh, NMC-532": {
+        "name": "energy battery cost per kWh, NMC-532",
         "year": 2030,
         "powertrain": [
             "PHEV-e",
@@ -28103,8 +28103,8 @@
         "minimum": 29.253018900111098,
         "maximum": 86.51309279861428
     },
-    "911-2040-energy battery cost per kWh, NMC-523": {
-        "name": "energy battery cost per kWh, NMC-523",
+    "911-2040-energy battery cost per kWh, NMC-532": {
+        "name": "energy battery cost per kWh, NMC-532",
         "year": 2040,
         "powertrain": [
             "PHEV-e",
@@ -29005,8 +29005,8 @@
         "minimum": 14.262318579504287,
         "maximum": 74.84515225581647
     },
-    "943-2050-energy battery cost per kWh, NMC-523": {
-        "name": "energy battery cost per kWh, NMC-523",
+    "943-2050-energy battery cost per kWh, NMC-532": {
+        "name": "energy battery cost per kWh, NMC-532",
         "year": 2050,
         "powertrain": [
             "PHEV-e",
@@ -41593,8 +41593,8 @@
         "minimum": 0.17099999999999999,
         "maximum": 0.189
     },
-    "baseline-2025-0025-battery cell energy density, NMC-523": {
-        "name": "battery cell energy density, NMC-523",
+    "baseline-2025-0025-battery cell energy density, NMC-532": {
+        "name": "battery cell energy density, NMC-532",
         "year": 2025,
         "powertrain": [
             "BEV",
@@ -41627,7 +41627,7 @@
         "uncertainty_type": 5,
         "category": "Energy Storage",
         "source": "https://pubs.acs.org/doi/pdf/10.1021/acsenergylett.7b00432",
-        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('171-2020-battery cell energy density, NMC-523', '254-2030-battery cell energy density, NMC-523'). ",
+        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('171-2020-battery cell energy density, NMC-532', '254-2030-battery cell energy density, NMC-532'). ",
         "minimum": 0.19,
         "maximum": 0.21000000000000002
     },
@@ -42011,8 +42011,8 @@
         "minimum": 0.675,
         "maximum": 0.75
     },
-    "baseline-2025-0036-battery cell mass share, NMC-523": {
-        "name": "battery cell mass share, NMC-523",
+    "baseline-2025-0036-battery cell mass share, NMC-532": {
+        "name": "battery cell mass share, NMC-532",
         "year": 2025,
         "powertrain": [
             "BEV",
@@ -42045,7 +42045,7 @@
         "uncertainty_type": 5,
         "category": "Energy Storage",
         "source": "For LFP :Yang, X.-G., Liu, T., & Wang, C.-Y. (2021). Thermally modulated lithium iron phosphate batteries for mass-market electric vehicles. Nature Energy 2021 6:2, 6(2), 176\u2013185. https://doi.org/10.1038/s41560-020-00757-7\nFor NMC/NCA: Towards more flexibility and transparency in life cycle inventories for Lithium-ion batteries. EleonorCrenna, Marcel Gauch, Rolf Widmer, Patrick W\u00e4ger, Roland Hischier",
-        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('217-2020-battery cell mass share, NMC-523', '300-2030-battery cell mass share, NMC-523'). ",
+        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('217-2020-battery cell mass share, NMC-532', '300-2030-battery cell mass share, NMC-532'). ",
         "minimum": 0.675,
         "maximum": 0.75
     },
@@ -42599,8 +42599,8 @@
         "minimum": 2625.0,
         "maximum": 4375.0
     },
-    "baseline-2025-0052-battery cycle life, NMC-523": {
-        "name": "battery cycle life, NMC-523",
+    "baseline-2025-0052-battery cycle life, NMC-532": {
+        "name": "battery cycle life, NMC-532",
         "year": 2025,
         "powertrain": [
             "BEV",
@@ -42633,7 +42633,7 @@
         "uncertainty_type": 5,
         "category": "Energy Storage",
         "source": "Yuliya Preger et al 2020 J. Electrochem. Soc. 167 120532",
-        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('203-2020-battery cycle life, NMC-523', '286-2030-battery cycle life, NMC-523'). Cycle life, used to calculate battery lifetime.",
+        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('203-2020-battery cycle life, NMC-532', '286-2030-battery cycle life, NMC-532'). Cycle life, used to calculate battery lifetime.",
         "minimum": 2625.0,
         "maximum": 4375.0
     },
@@ -44044,8 +44044,8 @@
         "minimum": 110.0,
         "maximum": 130.0
     },
-    "baseline-2025-0101-energy battery cost per kWh, NMC-523": {
-        "name": "energy battery cost per kWh, NMC-523",
+    "baseline-2025-0101-energy battery cost per kWh, NMC-532": {
+        "name": "energy battery cost per kWh, NMC-532",
         "year": 2025,
         "powertrain": [
             "BEV",
@@ -44069,7 +44069,7 @@
         "uncertainty_type": 5,
         "category": "Costs",
         "source": "Sources: BNEF 2023; https://battery2030.eu/research/roadmap; https://www.iea.org/reports/global-ev-outlook-2024; www.anl.gov/cse/batpac-model-software;\nhttps://ourworldindata.org/grapher/average-battery-cell-price\nhttps://www.spglobal.com/automotive-insights/en/blogs/2025/01/where-are-ev-battery-prices-headed-in-2025-and-beyond\nhttps://patentpc.com/blog/battery-costs-in-2020-2030-how-much-have-prices-dropped-for-evs-and-energy-storage\nhttps://www.batterytechonline.com/ev-batteries/iea-report-lfp-dominates-as-ev-battery-prices-fall ",
-        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('844-2020-energy battery cost per kWh, NMC-523', '878-2030-energy battery cost per kWh, NMC-523'). ",
+        "comment": "2025 baseline: linear interpolation of the effective 2020 and 2030 records, before empirical calibration. Triangular modes and bounds are interpolated. Endpoint records: ('844-2020-energy battery cost per kWh, NMC-532', '878-2030-energy battery cost per kWh, NMC-532'). ",
         "minimum": 105.0,
         "maximum": 125.0
     },
