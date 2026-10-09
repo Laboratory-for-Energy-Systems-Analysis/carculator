@@ -606,7 +606,7 @@ gives the tank-to-wheel efficiency).
    :align: center
    :width: 50%
 
-   *Figure 8: Tank-to-wheel efficiency as a function of utilized power. Source: Hjelkrem et al. 2020 :cite:`ct-1133` *
+   *Figure 8: Tank-to-wheel efficiency as a function of utilized power. Source: Hjelkrem et al. 2020.* :cite:`ct-1133`
 
 For diesel and gasoline hybrid vehicles, the approach to estimating
 the engine and transmission efficiencies is similar, but a small electric motor

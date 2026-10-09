@@ -24,158 +24,158 @@ class CarModel(VehicleModel):
 
     1. **Basic Setup and Simulation**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize car input parameters
-        cip = CarInputParameters()
-        cip.static()  # Static input parameters
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # Fill the xarray from input parameters
-        dcts, arr = fill_xarray_from_input_parameters(cip)
+            # Initialize car input parameters
+            cip = CarInputParameters()
+            cip.static()  # Static input parameters
 
-        # Create a CarModel instance and run the simulation
-        cm = CarModel(arr, cycle="WLTC")
-        cm.set_all()
+            # Fill the xarray from input parameters
+            dcts, arr = fill_xarray_from_input_parameters(cip)
 
-        # Access simulation results
-        print(cm.array.sel(parameter="electricity consumption", year=2020).values)
-        ```
+            # Create a CarModel instance and run the simulation
+            cm = CarModel(arr, cycle="WLTC")
+            cm.set_all()
+
+            # Access simulation results
+            print(cm.array.sel(parameter="electricity consumption", year=2020).values)
 
     2. **Setting Battery Capacity Manually**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize parameters
-        cip = CarInputParameters()
-        cip.static()
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # Define specific battery capacity
-        batt_cap = {"capacity": {("BEV", "Medium", 2020): 50}}
+            # Initialize parameters
+            cip = CarInputParameters()
+            cip.static()
 
-        # Fill xarray
-        dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
+            # Define specific battery capacity
+            batt_cap = {"capacity": {("BEV", "Medium", 2020): 50}}
 
-        # Create CarModel with specific battery capacity
-        cm = CarModel(arr, cycle="WLTC", energy_storage=batt_cap)
-        cm.set_all()
+            # Fill xarray
+            dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
 
-        # Check the battery capacity setting
-        print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="electric energy stored", value=0).values)
-        ```
+            # Create CarModel with specific battery capacity
+            cm = CarModel(arr, cycle="WLTC", energy_storage=batt_cap)
+            cm.set_all()
+
+            # Check the battery capacity setting
+            print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="electric energy stored", value=0).values)
 
     3. **Customizing Battery Chemistry**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize parameters
-        cip = CarInputParameters()
-        cip.static()
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # the following chemistries are available
-        # NMC-111
-        # NMC-523
-        # NMC-622
-        # NMC-811
-        # NMC-955
-        # LFP
-        # NCA
-        # Li-S
-        # Li-O2
-        # SiB
+            # Initialize parameters
+            cip = CarInputParameters()
+            cip.static()
 
-        # by default, the battery chemistry is:
-        # NMC-111 for 2000-2015
-        # NMC-622 for 2020
-        # NMC-811 for 2025
-        # NMC-955 for 2030
+            # the following chemistries are available
+            # NMC-111
+            # NMC-523
+            # NMC-622
+            # NMC-811
+            # NMC-955
+            # LFP
+            # NCA
+            # Li-S
+            # Li-O2
+            # SiB
+
+            # by default, the battery chemistry is:
+            # NMC-111 for 2000-2015
+            # NMC-622 for 2020
+            # NMC-811 for 2025
+            # NMC-955 for 2030
 
 
-        # Define battery chemistry
-        batt_chem = {"electric": {("BEV", "Medium", 2020): "LFP"}}
+            # Define battery chemistry
+            batt_chem = {"electric": {("BEV", "Medium", 2020): "LFP"}}
 
-        # Fill xarray
-        dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
+            # Fill xarray
+            dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
 
-        # Create CarModel with specific battery chemistry
-        cm = CarModel(arr, cycle="WLTC", energy_storage=batt_chem)
-        cm.set_all()
+            # Create CarModel with specific battery chemistry
+            cm = CarModel(arr, cycle="WLTC", energy_storage=batt_chem)
+            cm.set_all()
 
-        # Check the battery chemistry setting
-        print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="battery cell energy density", value=0).values)
-        ```
+            # Check the battery chemistry setting
+            print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="battery cell energy density", value=0).values)
 
     4. **Setting Target Vehicle Mass**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize parameters
-        cip = CarInputParameters()
-        cip.static()
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # Define a custom target mass
-        mass = {("BEV", "Medium", 2020): 2000}
+            # Initialize parameters
+            cip = CarInputParameters()
+            cip.static()
 
-        # Fill xarray
-        dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
+            # Define a custom target mass
+            mass = {("BEV", "Medium", 2020): 2000}
 
-        # Create CarModel with target mass
-        cm = CarModel(arr, cycle="WLTC", target_mass=mass)
-        cm.set_all()
+            # Fill xarray
+            dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
 
-        # Check if the target mass was set
-        print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="curb mass", value=0).values)
-        ```
+            # Create CarModel with target mass
+            cm = CarModel(arr, cycle="WLTC", target_mass=mass)
+            cm.set_all()
+
+            # Check if the target mass was set
+            print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="curb mass", value=0).values)
 
     5. **Setting Target Driving Range**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize parameters
-        cip = CarInputParameters()
-        cip.static()
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # Define a custom target range
-        range = {("BEV", "Medium", 2020): 100}
+            # Initialize parameters
+            cip = CarInputParameters()
+            cip.static()
 
-        # Fill xarray
-        dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
+            # Define a custom target range
+            range = {("BEV", "Medium", 2020): 100}
 
-        # Create CarModel with target range
-        cm = CarModel(arr, cycle="WLTC", target_range=range)
-        cm.set_all()
+            # Fill xarray
+            dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV"], "year": [2020]})
 
-        # Check if the target range was achieved
-        print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="range", value=0).values)
-        ```
+            # Create CarModel with target range
+            cm = CarModel(arr, cycle="WLTC", target_range=range)
+            cm.set_all()
+
+            # Check if the target range was achieved
+            print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="range", value=0).values)
 
     6. **Customizing Power Values**
 
-        ```python
-        from your_module import CarModel, CarInputParameters, fill_xarray_from_input_parameters
+        .. code-block:: python
 
-        # Initialize parameters
-        cip = CarInputParameters()
-        cip.static()
+            from carculator import CarModel, CarInputParameters, fill_xarray_from_input_parameters
 
-        # Define custom power values
-        power = {("BEV", "Medium", 2020): 100, ("ICEV-p", "Medium", 2020): 200}
+            # Initialize parameters
+            cip = CarInputParameters()
+            cip.static()
 
-        # Fill xarray
-        dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV", "ICEV-p"], "year": [2020]})
+            # Define custom power values
+            power = {("BEV", "Medium", 2020): 100, ("ICEV-p", "Medium", 2020): 200}
 
-        # Create CarModel with custom power settings
-        cm = CarModel(arr, cycle="WLTC", power=power)
-        cm.set_all()
+            # Fill xarray
+            dcts, arr = fill_xarray_from_input_parameters(cip, scope={"size": ["Medium"], "powertrain": ["BEV", "ICEV-p"], "year": [2020]})
 
-        # Check if the power values were set correctly
-        print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="electric power", value=0).values)
-        print(cm.array.sel(powertrain="ICEV-p", size="Medium", year=2020, parameter="combustion power", value=0).values)
-        ```
+            # Create CarModel with custom power settings
+            cm = CarModel(arr, cycle="WLTC", power=power)
+            cm.set_all()
+
+            # Check if the power values were set correctly
+            print(cm.array.sel(powertrain="BEV", size="Medium", year=2020, parameter="electric power", value=0).values)
+            print(cm.array.sel(powertrain="ICEV-p", size="Medium", year=2020, parameter="combustion power", value=0).values)
 
     """
 
@@ -192,13 +192,8 @@ class CarModel(VehicleModel):
         With a BEV target range, battery mass and driving mass converge together:
         each step recalculates energy demand and the capacity needed for that range.
 
-        :param drop_hybrids: boolean. True by default. If False, the underlying vehicles used to build plugin-hybrid
-                vehicles remain present in the array.
-        :param electric_utility_factor: array. If an array is passed, its values are used to override the
-                electric utility factor for plugin hybrid vehicles. If not, this factor is calculated using a relation
-                described in `set_electric_utility_factor()`
-
-        :returns: Does not return anything. Modifies ``self.array`` in place.
+        PHEV utility factors and component retention use the constructor options
+        ``electric_utility_factor`` and ``drop_hybrids``.
 
         """
 
