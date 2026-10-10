@@ -1,0 +1,12 @@
+{
+  "created": "2026-10-10",
+  "sources_sha256": {
+    "carculator_utils/docs/_static/climate_refresh_comparison_20261009/climate_comparison.csv": "513befd1ece16380df728b785212098b28cbbc9c3b1c6c7eadd73e8f70af9048",
+    "carculator_utils/docs/_static/energy_validation_2025/qualification_20261009/comparisons.json": "cf70d5f30d62e7a5130f24094f66ff38149f10870ea61f0313e0a115cece9056",
+    "carculator_two_wheeler/docs/_static/petrol_efficiency_audit.json": "830ea94970badd8ed0deeb02dc7c92fb41b42575d884df945f3e01e4c4faab7d",
+    "carculator_utils/docs/_static/energy_validation_2025/adac_cycle/consumption_comparison.png": "c63c484208bb3da1ed32a711be9439e927c4dc365543dee628b6f2e2fb4a86b9",
+    "carculator_utils/docs/_static/energy_validation_2025/truck_diagnostics/verified/comparison.png": "24d2a6b86bffc2f92326cdc5fb2db616171bf355532f22910b1e5ef69283a8ee",
+    "carculator_two_wheeler/tests/fixtures/petrol_consumption_sources.json": "cb05d7461c568595836e26d692d80c4e00dd02d1d3d6ca0635ab9a807ff08356"
+  },
+  "note": "Plots describe the recorded snapshots, not newly executed validation."
+}

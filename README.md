@@ -103,12 +103,19 @@ The range solver converges battery mass and energy demand together. See the
 
 ## Modelling and validation
 
+For a guided explanation of the inputs, units and assumptions, read
+[Understanding inputs and results](docs/interpretation.rst). The
+[validation examples](docs/validation_examples.rst) include bar charts, source
+records and the limits of each comparison. Measured energy comparisons are
+separate from the model-to-model comparison of the background database update.
+
+
 Battery unit prices supplied by users now survive chemistry selection and cost
 adjustment. Use `battery_costs` for explicit prices scoped by vehicle, year and
 sample; see [battery-cost inputs](docs/usage.rst#battery-unit-costs).
 
-The vehicle models include native **2025** parameters and documented temporal
-extensions. These combine engineering priors and selected calibration evidence;
+The vehicle models include tabulated **2025** parameters and documented temporal
+extensions. These combine engineering assumptions and selected calibration evidence;
 they are not independent measurements for every vehicle configuration.
 
 `TtW energy` is in kJ/km. For BEVs it is net stored-energy depletion;
@@ -120,7 +127,9 @@ represent physically zero consumption.
 Supported background scenarios are `SSP2-NPi`, `SSP2-PkBudg1000`,
 `SSP2-PkBudg650`, and `static`. ReCiPe supports midpoint/endpoint and EF midpoint.
 Use fresh model instances for independent cases. `inputs.stochastic(n, seed=...)`
-seeds parameter sampling, not every downstream cost adjustment.
+seeds parameter draws and the projected-cost factors used by the current
+array builder. Keep its auxiliary sample coordinates; older hand-built arrays
+do not recover that seed automatically.
 
 See [validation and limitations](https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator/blob/master/docs/validity.rst), [migration notes](https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator/blob/master/docs/release.rst)
 and the [documentation](https://carculator.readthedocs.io/en/latest/).

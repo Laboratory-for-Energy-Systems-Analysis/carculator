@@ -1,5 +1,11 @@
 # Carculator family robustness and installation plan
 
+> Historical development record from 6 October 2026. Its findings, proposed work,
+> test counts and environment support describe that stage of development.
+> For current behaviour and evidence, use the [user guide](usage.rst),
+> [validation examples](validation_examples.rst) and [changelog](../CHANGELOG.md).
+
+
 Prepared 2026-10-06 from the [repository audit](REVIVAL_AUDIT.md).
 Status: first hardening batch and focused unit-test/cost-arithmetic batch implemented; see [HARDENING_PROGRESS.md](HARDENING_PROGRESS.md)
 for completed changes, executed evidence, numerical changes, and outstanding work.

@@ -3,8 +3,9 @@
 Usage
 =====
 
-Use the vehicle package’s input, model and inventory classes. Start with a small
-static scope before expanding years, sizes or uncertainty samples.
+The example below loads default inputs, calculates the vehicle, and then
+calculates its life cycle impacts. Start with one year and a few vehicles. Add
+more years, vehicle types or uncertainty samples once that example works.
 
 Quick start
 -----------
@@ -36,22 +37,31 @@ Quick start
 Inputs and scope
 ----------------
 
-The vehicle input classes provide packaged defaults. Call ``static()`` for a
-single deterministic sample, or ``stochastic(n, seed=42)`` for seeded parameter
-draws. The array builder returns ``(mappings, array)`` and preserves labelled
-``size``, ``powertrain``, ``parameter``, ``year`` and ``value`` dimensions.
-Scope by actual labels and native input years; interpolate explicitly when a
-year is not in the parameter table. The current defaults include 2025.
+The input classes load the default parameter tables. ``static()`` uses one
+set of central values. ``stochastic(n, seed=42)`` draws ``n`` sets from the
+specified uncertainty distributions; using the same seed repeats those draws.
+
+The array builder returns ``(mappings, array)``. The array has labelled axes for
+``size``, ``powertrain``, ``parameter``, ``year`` and ``value``; ``value`` identifies
+the sample. The ``scope`` dictionary selects vehicles and years, rather than
+changing their assumptions. Use labels and years present in the parameter
+tables, including 2025. For other years, interpolate the input array explicitly
+before constructing the vehicle model.
 
 Change input parameters before constructing a fresh vehicle model. Constructor
 overrides such as battery chemistry, capacity, fuel blends and component
 efficiencies are copied, preserving the caller's data. Most vehicle overrides
 use ``(powertrain, size, year)`` keys; consult the model API for exceptions.
-Repeated ``set_all()`` calls on an already completed model are not the supported
-way to compare independent scenarios.
+Calling ``set_all()`` again is supported: it starts from saved inputs,
+including explicit edits, rather than using calculated outputs as new inputs.
+Use a fresh model for a separate scenario, new coordinates, or changes to the
+component assumptions of a plug-in hybrid.
 
 Energy and results
 ------------------
+
+See :doc:`interpretation` for units, powertrain abbreviations, and the difference
+between energy use, direct emissions and life cycle impacts.
 
 ``model["TtW energy"]`` is kJ per vehicle-kilometre. For BEVs it is net
 stored-energy depletion; ``model.battery_terminal_energy`` is a separate DC
@@ -62,7 +72,8 @@ Construct the inventory with the completed model, not its raw parameter array.
 Use ``calculate_impacts()`` and labelled selection/reduction of the returned
 xarray. Functional units are ``vkm``, ``pkm`` and ``tkm``. Passenger- and
 cargo-normalized results require finite positive loads for active vehicles.
-Availability-masked zero consumption does not describe a zero-energy vehicle.
+A zero reported for an unavailable or infeasible vehicle is a status marker,
+not a prediction of zero energy use.
 
 BEV range targets converge battery mass and energy demand together. Range
 takes precedence over capacity; capacity takes precedence over input pack mass.
@@ -78,7 +89,7 @@ the completed inventory from the quick start:
 .. code-block:: python
 
    workbook = inventory.export_lci(
-       ecoinvent_version="3.10",
+       ecoinvent_version="3.12",
        software="brightway2", format="file", directory="exports",
    )
    simapro_csv = inventory.export_lci(
@@ -88,13 +99,15 @@ the completed inventory from the quick start:
        software="openlca", format="file", directory="exports",
    )
 
-Export requires exactly one retained sample, selected before constructing the
+Export requires exactly one selected sample, selected before constructing the
 model and inventory. The static quick start already has one sample. Every
 selected year gets an export; multiple years return a list. The original
 inventory, calculated impacts and functional unit remain unchanged.
 
 The default ``export_lci()`` returns an unlinked Brightway ``LCIImporter``.
-Supported ecoinvent targets are exactly ``3.9`` and ``3.10``, cut-off. The
+Exports default to **ecoinvent 3.12 cutoff**, matching the bundled background.
+Older ``3.9`` and ``3.10`` targets raise an error when a required supplier has no
+verified counterpart in that version. The
 openLCA ZIP contains foreground processes without an ecoinvent background or
 LCIA methods; map external providers and elementary flows before calculation.
 SimaPro uses Latin-1 CSV and warns when custom noise flows are omitted.
@@ -180,7 +193,7 @@ Repeated completion
 Repeated ``set_all()`` calls reuse retained inputs instead of previous results.
 Existing coordinate selections and explicit input-cell edits are supported.
 Modify PHEV component inputs in a fresh model rather than aggregated outputs.
-See the `shared repeat-run contract
+See the `shared guide to repeated runs
 <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/repeated_runs.rst>`_.
 
 Bundled parameter scopes
@@ -199,7 +212,7 @@ with ``validate_parameters(records, check_duplicates=True)``.
 Additional gas leakage
 ----------------------
 
-``CNG pump-to-tank leakage`` now defaults to zero at all native years. This
+``CNG pump-to-tank leakage`` now defaults to zero at all tabulated years. This
 excludes an unqualified overlay beyond the delivered-fuel supplier boundary; it
 does not remove upstream emissions or exhaust methane, or assert that actual
 vehicle leakage is zero. The former 0.004 prior combined potentially overlapping

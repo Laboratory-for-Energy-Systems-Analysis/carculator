@@ -6,7 +6,7 @@ Installation
 Use Python **3.12** (``>=3.12,<3.13``) in a fresh environment.
 The shared runtime requires NumPy ``>=1.26.4,<2``.
 
-Published release
+Install a release
 -----------------
 
 Install ``carculator 1.9.6`` from PyPI::
@@ -33,14 +33,20 @@ installed through Brightpath. To select the tested legacy Brightway stack::
    python -m pip install "carculator[brightway]==1.9.6"
 
 The ``brightway`` extra selects ``bw2io<0.9``, ``bw2data<4`` and ``bw2calc<2``.
-Brightpath also installs ``bw2io`` without this extra. Export targets ecoinvent
-3.9 and 3.10 with the cut-off system model. Match external suppliers to the
+Brightpath also installs ``bw2io`` without this extra. Exports default to ecoinvent
+3.12 cutoff. Older 3.9/3.10 exports require verified supplier mappings and may
+stop if those mappings are unavailable. Match external suppliers to the
 corresponding background in the destination tool. openLCA exports contain only
 foreground processes and require provider and elementary-flow mapping before
 calculation. See :doc:`inventory_export` for examples and limitations.
 
 Source checkout and documentation
 ---------------------------------
+
+This website follows the repository documentation. Changes listed under
+``Unreleased`` in the changelog may be newer than the package on PyPI. Use
+matching source checkouts to reproduce those changes; record their Git revisions
+in addition to package version numbers.
 
 For development, use the matching sibling checkouts and install from this
 repository root::

@@ -3,7 +3,11 @@
 Passenger-car calibration and validation
 ========================================
 
-The 2025 inputs combine historical parameter trends, sourced component priors
+Start with :doc:`validation_examples` for bar charts and an explanation of the
+evidence. This page records detailed checks and limitations; dated test totals
+and before/after results refer to their stated software snapshots.
+
+The 2025 inputs combine historical parameter trends, sourced component assumptions
 and explicit engineering assumptions. They are not a newly fitted fleet of
 2025 cars. Historical curb-mass calibration is described in :doc:`modeling`;
 it does not independently validate current fuel or electricity consumption.
@@ -30,7 +34,7 @@ Car costs remain per vehicle-km. The default Swiss 2025 ``Medium`` BEV on
 WLTC uses 16.95 kWh/100 km from the grid; at the bundled tariff its electricity
 cost is approximately EUR 3.40/100 km, corrected from EUR 3.06/100 km.
 
-Completed model/inventory checks and the shared billing contract are described
+Completed model/inventory checks and the shared billing calculation are described
 in the `shared charging-cost validation <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/validity.rst#charging-cost-accounting>`_.
 
 
@@ -125,7 +129,7 @@ parameter. This transfer is not a time-resolved power-split controller.
 
 Hybrid regeneration and battery boundaries have analytical regression tests.
 Hybrid motor peak ratings are independent of combined system power; generic
-ratios and component priors are not independently identified by consumption
+ratios and component assumptions are not independently identified by consumption
 alone. Neither these checks nor the historical fleet plots establish universal
 validation of hybrids, plug-in hybrids or fuel-cell cars.
 
@@ -139,12 +143,12 @@ by 100 gives kWh/100 km. A meter boundary must be identified before comparing
 these outputs. Regeneration and battery/charger losses must not be counted twice.
 
 The 2025 motor/inverter (0.90), electric transmission (0.97), charger (0.90)
-and symmetric battery one-way (sqrt(0.97)) values are component priors in their
+and symmetric battery one-way (sqrt(0.97)) values are component assumptions in their
 documented scopes, not universally measured efficiencies. For relevant hybrid
 scopes, the independent motor peak/system-power ratio is 0.65. The temporal
 update preserves all 2025 scalar values and uncertainty distributions. Storage
 and charger trends preserve relative legacy losses; newly explicit component
-priors are extended across native years to avoid interpolating from missing
+assumptions are extended across tabulated years to avoid interpolating from missing
 zero values. Historical estimates and future projections therefore change.
 
 The family audit completes 546 annual cases (21 configurations, 2015–2040),
@@ -174,7 +178,7 @@ record excluded observations as well as paired values. Multiple cycles of one
 vehicle and AC/DC measurements from one run are not independent vehicles.
 
 Additional methane leakage
----------------------------
+--------------------------
 
 Cars now split additional methane leakage between fossil and non-fossil flows according to the fuel blend, instead of classifying all leakage as fossil.
 The shared calculation preserves the existing convention: loss in kg per km
@@ -183,12 +187,13 @@ is engine fuel plus that loss. Fossil/non-fossil methane follows the blend.
 Both generic-air methane flows now enter non-exhaust impacts and exports;
 combustion CO2 and HBEFA exhaust emissions are unchanged.
 
-The historical 0.4% default is retained as an additional-loss assumption.
-Its source combines several station/delivery/vehicle stages and includes LNG
-boil-off; it does not establish a residual CNG loss after every supplier.
-Existing supplier losses are retained, so possible overlap is not eliminated
-by this accounting repair. Specify only loss additional to the selected
-supplier; set the parameter to zero if that supplier covers all relevant losses.
+The current default is **zero additional leakage** at all tabulated years.
+The former 0.4% assumption combined several delivery and vehicle stages and did
+not establish an extra loss after the selected supplier. Losses already present
+in the supplier inventory and HBEFA exhaust factors remain included. Set
+``CNG pump-to-tank leakage`` only when evidence supports an additional loss
+outside that supplier's boundary; a value of zero does not mean the whole gas
+supply chain is leak-free.
 See the shared `methane leakage boundary and verification notes
 <https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/methane_leakage.rst>`_.
 

@@ -5,6 +5,12 @@ it has not yet been published. Older entries, where present, retain their origin
 
 ## [1.9.6] - Unreleased
 
+- Review the documentation against current code, explain units and assumptions
+  in plain English, and add validation bar charts with sources and explicit
+  limits. Correct outdated descriptions of exports, repeated runs and scientific
+  accounting; preserve dated historical results as such.
+
+
 - Resolve overlapping bundled parameter records into disjoint scopes while preserving every effective static value and uncertainty distribution. Archive original records in `data/overlap_resolution_provenance.json`; regenerate old seeded arrays after this record cleanup.
 
 - Remove import-time global warning suppression and refresh API/documentation contracts; shared sulfur-table reductions use explicit pandas axis arguments.

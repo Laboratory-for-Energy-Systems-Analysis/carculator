@@ -1,5 +1,11 @@
 # Carculator family revival audit
 
+> Historical development record from 6 October 2026. Its findings, proposed work,
+> test counts and environment support describe that stage of development.
+> For current behaviour and evidence, use the [user guide](usage.rst),
+> [validation examples](validation_examples.rst) and [changelog](../CHANGELOG.md).
+
+
 Implementation roadmap: [Robustness and installation plan](ROBUSTNESS_PLAN.md).
 
 Audit date: 2026-10-06. Scope: the five core libraries, the existing passenger-car

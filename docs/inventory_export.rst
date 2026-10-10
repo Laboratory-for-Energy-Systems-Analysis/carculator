@@ -89,7 +89,7 @@ and ``array`` from :doc:`usage`:
 Brackets preserve the ``value`` dimension. Numeric labels other than zero and
 named samples such as ``reference`` are supported; use
 ``array.sel(value=["reference"])`` when that sensitivity sample is present.
-Multiple retained samples raise an error. Export does not average draws or
+Multiple selected samples raise an error. Export does not average draws or
 create uncertainty distributions or presamples arrays.
 
 SimaPro migration

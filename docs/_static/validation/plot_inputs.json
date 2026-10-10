@@ -1,0 +1,442 @@
+{
+  "review_date": "2026-10-10",
+  "purpose": "Replot stored results; no new model runs or parameter fits",
+  "sources_sha256": {
+    "carculator_utils/docs/_static/climate_refresh_comparison_20261009/climate_comparison.csv": "513befd1ece16380df728b785212098b28cbbc9c3b1c6c7eadd73e8f70af9048",
+    "carculator_utils/docs/_static/energy_validation_2025/qualification_20261009/comparisons.json": "cf70d5f30d62e7a5130f24094f66ff38149f10870ea61f0313e0a115cece9056",
+    "carculator_two_wheeler/docs/_static/petrol_efficiency_audit.json": "830ea94970badd8ed0deeb02dc7c92fb41b42575d884df945f3e01e4c4faab7d",
+    "carculator_two_wheeler/tests/fixtures/petrol_consumption_sources.json": "cb05d7461c568595836e26d692d80c4e00dd02d1d3d6ca0635ab9a807ff08356"
+  },
+  "figures": {
+    "climate_car": {
+      "title": "2025 life cycle climate scores \u00b7 Switzerland \u00b7 SSP2-NPi",
+      "unit": "g CO\u2082-eq / vehicle-km",
+      "series": [
+        "Previous background",
+        "Updated background"
+      ],
+      "note": "Background change only \u00b7 IPCC 2021 GWP100, excluding biogenic CO\u2082",
+      "rows": [
+        {
+          "label": "Lower-medium car\nBEV",
+          "first": 102.9088281591073,
+          "second": 112.0798295155474,
+          "change_percent": 8.911773188458438
+        },
+        {
+          "label": "Lower-medium car\nPetrol",
+          "first": 279.3276963841746,
+          "second": 284.64335089108977,
+          "change_percent": 1.903017343330049
+        }
+      ]
+    },
+    "climate_truck": {
+      "title": "2025 life cycle climate scores \u00b7 Switzerland \u00b7 SSP2-NPi",
+      "unit": "g CO\u2082-eq / vehicle-km",
+      "series": [
+        "Previous background",
+        "Updated background"
+      ],
+      "note": "Background change only \u00b7 IPCC 2021 GWP100, excluding biogenic CO\u2082",
+      "rows": [
+        {
+          "label": "18 t truck (urban delivery)\nBEV",
+          "first": 369.7721932286275,
+          "second": 411.2185587799806,
+          "change_percent": 11.208621500029103
+        },
+        {
+          "label": "18 t truck (urban delivery)\nDiesel",
+          "first": 1198.9810622457978,
+          "second": 1224.4024855160717,
+          "change_percent": 2.120252276767176
+        }
+      ]
+    },
+    "climate_bus": {
+      "title": "2025 life cycle climate scores \u00b7 Switzerland \u00b7 SSP2-NPi",
+      "unit": "g CO\u2082-eq / vehicle-km",
+      "series": [
+        "Previous background",
+        "Updated background"
+      ],
+      "note": "Background change only \u00b7 IPCC 2021 GWP100, excluding biogenic CO\u2082",
+      "rows": [
+        {
+          "label": "13 m city bus\nBEV (depot)",
+          "first": 393.3025107345576,
+          "second": 435.15189314809123,
+          "change_percent": 10.640507312138169
+        },
+        {
+          "label": "13 m city bus\nDiesel",
+          "first": 1468.581833138136,
+          "second": 1485.2823594904328,
+          "change_percent": 1.1371873174142566
+        }
+      ]
+    },
+    "climate_two_wheeler": {
+      "title": "2025 life cycle climate scores \u00b7 Switzerland \u00b7 SSP2-NPi",
+      "unit": "g CO\u2082-eq / vehicle-km",
+      "series": [
+        "Previous background",
+        "Updated background"
+      ],
+      "note": "Background change only \u00b7 IPCC 2021 GWP100, excluding biogenic CO\u2082",
+      "rows": [
+        {
+          "label": "Scooter <4 kW\nBEV",
+          "first": 38.2325817772119,
+          "second": 41.6313890074528,
+          "change_percent": 8.889818767789116
+        },
+        {
+          "label": "Scooter <4 kW\nPetrol",
+          "first": 77.6669868395147,
+          "second": 79.7327498228894,
+          "change_percent": 2.6597697006621734
+        }
+      ]
+    },
+    "climate_family": {
+      "title": "2025 life cycle climate scores \u00b7 Switzerland \u00b7 SSP2-NPi",
+      "unit": "g CO\u2082-eq / vehicle-km",
+      "series": [
+        "Previous background",
+        "Updated background"
+      ],
+      "note": "Background change only \u00b7 IPCC 2021 GWP100, excluding biogenic CO\u2082",
+      "rows": [
+        {
+          "label": "Lower-medium car\nBEV",
+          "first": 102.9088281591073,
+          "second": 112.0798295155474,
+          "change_percent": 8.911773188458438
+        },
+        {
+          "label": "Lower-medium car\nPetrol",
+          "first": 279.3276963841746,
+          "second": 284.64335089108977,
+          "change_percent": 1.903017343330049
+        },
+        {
+          "label": "18 t truck (urban delivery)\nBEV",
+          "first": 369.7721932286275,
+          "second": 411.2185587799806,
+          "change_percent": 11.208621500029103
+        },
+        {
+          "label": "18 t truck (urban delivery)\nDiesel",
+          "first": 1198.9810622457978,
+          "second": 1224.4024855160717,
+          "change_percent": 2.120252276767176
+        },
+        {
+          "label": "13 m city bus\nBEV (depot)",
+          "first": 393.3025107345576,
+          "second": 435.15189314809123,
+          "change_percent": 10.640507312138169
+        },
+        {
+          "label": "13 m city bus\nDiesel",
+          "first": 1468.581833138136,
+          "second": 1485.2823594904328,
+          "change_percent": 1.1371873174142566
+        },
+        {
+          "label": "Scooter <4 kW\nBEV",
+          "first": 38.2325817772119,
+          "second": 41.6313890074528,
+          "change_percent": 8.889818767789116
+        },
+        {
+          "label": "Scooter <4 kW\nPetrol",
+          "first": 77.6669868395147,
+          "second": 79.7327498228894,
+          "change_percent": 2.6597697006621734
+        }
+      ]
+    },
+    "car_electricity": {
+      "title": "Electric cars: WLTC model vs ADAC Ecotest",
+      "unit": "AC charging electricity (kWh / 100 km)",
+      "series": [
+        "Reported",
+        "Model (2025 inputs)"
+      ],
+      "note": "Saved 9 October 2026 runs \u00b7 screening comparisons; conditions are not fully matched",
+      "rows": [
+        {
+          "label": "VW ID.3 GTX",
+          "first": 16.3,
+          "second": 17.937732093549062,
+          "observation_id": "id3_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6499-vw-id3-gtx/vw-id3-gtx.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Volkswagen ID.3 GTX, 210 kW"
+        },
+        {
+          "label": "Hyundai Ioniq 6",
+          "first": 15.5,
+          "second": 18.086116497461038,
+          "observation_id": "ioniq6_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6302-hyundai-ioniq-6-774-kwh-uniq-paket-2wd/hyundai-ioniq-6-774-kwh-uniq-paket-2wd.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Hyundai Ioniq 6 77.4 kWh UNIQ 2WD, 168 kW"
+        },
+        {
+          "label": "Kia EV3",
+          "first": 17.1,
+          "second": 19.393324972683207,
+          "observation_id": "ev3_combined",
+          "source_url": "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/kia/ev3/sv1/336657/",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Kia EV3 58.3 kWh Earth, 150 kW"
+        },
+        {
+          "label": "Dacia Spring 65",
+          "first": 16.7,
+          "second": 13.281183594813257,
+          "observation_id": "adac_spring65_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6497-dacia-spring-electric-65-expression/dacia-spring-electric-65-expression.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Dacia Spring Electric 65 Expression"
+        },
+        {
+          "label": "Peugeot e-208",
+          "first": 16.0,
+          "second": 15.477533997237733,
+          "observation_id": "adac_e208_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6392-peugeot-e-208-156-gt/peugeot-e-208-156-gt.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Peugeot e-208 156 GT"
+        },
+        {
+          "label": "Kia EV9",
+          "first": 22.2,
+          "second": 23.232120545998946,
+          "observation_id": "adac_ev9_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6383-kia-ev9-gt-line-awd-6-sitzer/kia-ev9-gt-line-awd-6-sitzer.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Kia EV9 GT-Line AWD, six seats"
+        },
+        {
+          "label": "VW ID. Buzz",
+          "first": 23.3,
+          "second": 26.824247919414734,
+          "observation_id": "adac_idbuzz_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6479-vw-nutzfahrzeuge-id-buzz-lang-pro/vw-nutzfahrzeuge-id-buzz-lang-pro.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "VW ID. Buzz long-wheelbase Pro, six seats"
+        },
+        {
+          "label": "Fiat 500 RED",
+          "first": 15.9,
+          "second": 14.18526908634315,
+          "observation_id": "adac_fiat500_red_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6353-fiat-500e-238-kwh-red/fiat-500e-238-kwh-red.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Fiat 500e RED 23.8 kWh"
+        },
+        {
+          "label": "Fiat 500 La Prima",
+          "first": 17.1,
+          "second": 14.881240438019178,
+          "observation_id": "adac_fiat500_prima_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6342-fiat-500e-42-kwh-la-prima/fiat-500e-42-kwh-la-prima.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Fiat 500e La Prima 42 kWh"
+        },
+        {
+          "label": "Fiat 500 Cabrio",
+          "first": 17.4,
+          "second": 14.978203005416974,
+          "observation_id": "adac_fiat500_cabrio_combined",
+          "source_url": "https://assets.adac.de/image/upload/v1628669629/ADAC-eV/KOR/Text/PDF/Fiat_500e_Cabrio_Icon_i33k5k.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging",
+          "vehicle": "Fiat 500e Cabrio Icon 42 kWh"
+        }
+      ]
+    },
+    "car_fuel": {
+      "title": "Cars: model vs reported fuel consumption",
+      "unit": "Fuel consumption (L / 100 km)",
+      "series": [
+        "Reported",
+        "Model (2025 inputs)"
+      ],
+      "note": "Saved 9 October 2026 runs \u00b7 screening comparisons; conditions are not fully matched",
+      "rows": [
+        {
+          "label": "VW Golf petrol",
+          "first": 5.6,
+          "second": 6.79179947702241,
+          "observation_id": "golf_combined",
+          "source_url": "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw/golf/viii-facelift/332971/",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Volkswagen Golf 1.5 TSI Life, 85 kW, six-speed manual"
+        },
+        {
+          "label": "Toyota Corolla hybrid",
+          "first": 5,
+          "second": 5.003915814478085,
+          "observation_id": "corolla_combined",
+          "source_url": "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/toyota/corolla/e21-facelift/325908/",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Toyota Corolla Touring Sports 1.8 Hybrid Team Deutschland, 103 kW"
+        },
+        {
+          "label": "Toyota Yaris hybrid",
+          "first": 4.9,
+          "second": 4.417535329965393,
+          "observation_id": "adac_yaris130_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/AT6516-toyota-yaris-15-hybrid-130-style-plus-cvt/toyota-yaris-15-hybrid-130-style-plus-cvt.pdf",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Toyota Yaris 1.5 Hybrid 130 Style PLUS CVT"
+        },
+        {
+          "label": "Skoda Octavia diesel",
+          "first": 4.8,
+          "second": 4.8718370166854115,
+          "observation_id": "adac_octavia_diesel_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6162-skoda-octavia-combi-20-tdi-scr-style-dsg/skoda-octavia-combi-20-tdi-scr-style-dsg.pdf",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Skoda Octavia Combi 2.0 TDI SCR Style DSG"
+        },
+        {
+          "label": "Toyota Prius PHEV\ndepleted mode",
+          "first": 4.8,
+          "second": 5.386797022048639,
+          "observation_id": "adac_prius_phev_depleted",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6367-toyota-prius-20-plug-in-hybrid-advanced/toyota-prius-20-plug-in-hybrid-advanced.pdf",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Toyota Prius 2.0 Plug-in Hybrid Advanced"
+        },
+        {
+          "label": "Skoda Kodiaq diesel",
+          "first": 5.8,
+          "second": 5.850556902089425,
+          "observation_id": "adac_kodiaq_diesel_combined",
+          "source_url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6414-skoda-kodiaq-20-tdi-selection-dsg/skoda-kodiaq-20-tdi-selection-dsg.pdf",
+          "qualification": "screening",
+          "model_field": "model_fuel",
+          "vehicle": "Skoda Kodiaq 2.0 TDI Selection DSG"
+        }
+      ]
+    },
+    "bus_electricity": {
+      "title": "Gillig electric bus: three cycle comparisons",
+      "unit": "AC charging electricity (kWh / 100 km)",
+      "series": [
+        "Reported",
+        "Model (2025 inputs)"
+      ],
+      "note": "Saved 9 October 2026 runs \u00b7 screening comparisons; conditions are not fully matched",
+      "rows": [
+        {
+          "label": "Manhattan\nheld-out cycle",
+          "first": 188.8347053209258,
+          "second": 194.7391175900543,
+          "observation_id": "gillig_manhattan",
+          "source_url": "https://psta.net/wp-content/uploads/2025/11/gillig-technical-qualifications-no-price.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging"
+        },
+        {
+          "label": "OCBC\nused for auxiliary fit",
+          "first": 140.98912351865107,
+          "second": 146.2209130231604,
+          "observation_id": "gillig_ocbc",
+          "source_url": "https://psta.net/wp-content/uploads/2025/11/gillig-technical-qualifications-no-price.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging"
+        },
+        {
+          "label": "HD-UDDS\nused for auxiliary fit",
+          "first": 130.052990535274,
+          "second": 134.64149496921672,
+          "observation_id": "gillig_hd-udds",
+          "source_url": "https://psta.net/wp-content/uploads/2025/11/gillig-technical-qualifications-no-price.pdf",
+          "qualification": "screening",
+          "model_field": "model_charging"
+        }
+      ]
+    },
+    "two_wheeler_petrol": {
+      "title": "Petrol two-wheelers: generic classes vs manufacturer reports",
+      "unit": "Fuel consumption (L / 100 km)",
+      "series": [
+        "Manufacturer report",
+        "Generic 2025 model"
+      ],
+      "note": "Saved 8 October 2026 audit \u00b7 unmatched cycles and masses; no fitted efficiency",
+      "rows": [
+        {
+          "label": "Piaggio Liberty 50\nScooter <4 kW",
+          "first": 2.8011204481792715,
+          "second": 1.5489269396110055,
+          "observation_id": "piaggio-liberty50-euro4",
+          "qualification": "unmatched screening only",
+          "source_url": "https://wlassets.piaggio.com/wlassets/piaggio/gb/tech_spec/2020/Liberty_50/original/Liberty_50.pdf"
+        },
+        {
+          "label": "Honda PCX125\nScooter 4\u201311 kW",
+          "first": 2.1,
+          "second": 2.859497139811161,
+          "observation_id": "honda-pcx125-2025",
+          "qualification": "unmatched screening only",
+          "source_url": "https://hondanews.eu/gb/en/motorcycles/media/pressreleases/506369/25ym-honda-pcx125-press-kit"
+        },
+        {
+          "label": "Honda CB125R\nMotorcycle 4\u201311 kW",
+          "first": 2.197802197802198,
+          "second": 3.32841625697331,
+          "observation_id": "honda-cb125r-2024",
+          "qualification": "unmatched screening only",
+          "source_url": "https://hondanews.eu/eu/en/motorcycles/media/pressreleases/472259/2024-honda-cb125r"
+        },
+        {
+          "label": "Honda CB125F\nMotorcycle 4\u201311 kW",
+          "first": 1.4,
+          "second": 3.32841625697331,
+          "observation_id": "honda-cb125f-2024",
+          "qualification": "unmatched screening only",
+          "source_url": "https://hondanews.eu/eu/en/cars/media/pressreleases/470198/24ym-honda-cb125f"
+        },
+        {
+          "label": "Honda CB500 Hornet\nMotorcycle 11\u201335 kW",
+          "first": 3.5,
+          "second": 5.645579706955614,
+          "observation_id": "honda-cb500-hornet-2024",
+          "qualification": "unmatched screening only",
+          "source_url": "https://hondanews.eu/eu/en/motorcycles/media/pressreleases/452842/24ym-honda-cb500-hornet"
+        },
+        {
+          "label": "Yamaha MT-03\nMotorcycle 11\u201335 kW",
+          "first": 4,
+          "second": 5.645579706955614,
+          "observation_id": "yamaha-mt03-2025",
+          "qualification": "unmatched screening only",
+          "source_url": "https://cdn2.yamaha-motor.eu/prod/product-assets/2025/MT320/Factsheets/2025-MT320_en-GB.pdf"
+        }
+      ]
+    }
+  }
+}

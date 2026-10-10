@@ -3,6 +3,14 @@
 Modeling
 ========
 
+.. note::
+
+   This chapter combines equations used by the current model with source tables
+   and figures from the original studies. Historical tables are retained as
+   evidence of those studies, not as a complete listing of current defaults.
+   Use the installed input tables for current parameter values, and
+   :doc:`validation_examples` for dated comparisons and their limitations.
+
 This document describes the ``carculator`` model, assumptions
 and inventories as exhaustively as possible.
 
@@ -122,7 +130,9 @@ Manufacture year and emission standard
 
 Several emission standards are considered. For simplicity, it is assumed
 that the vehicle manufacture year corresponds to the registration year,
-as shown in :ref:`Table 2 <table-2>`.
+as shown in :ref:`Table 2 <table-2>`. The table records the model mapping and
+original study assumptions; its future-year entries are not a statement of
+current regulatory introduction dates.
 
 .. _table-2:
 
@@ -169,8 +179,10 @@ represented in :ref:`Figure 1 <figure-1>`.
 
    *Figure 1: Vehicle mass calculation workflow*
 
-This is an iterative process that stops when the curb mass of the
-vehicle converges, as illustrated in :ref:`Figure 2 <figure-2>`.
+Sizing is iterative because component mass and energy demand affect each other.
+Current convergence checks driving mass and, when constrained by range or
+capacity, battery mass; the detailed rules are given below.
+:ref:`Figure 2 <figure-2>` illustrates the original iterative approach.
 
 .. _figure-2:
 
@@ -182,19 +194,11 @@ vehicle converges, as illustrated in :ref:`Figure 2 <figure-2>`.
 Curb mass of the vehicle
 ++++++++++++++++++++++++
 
-This function calculates and sets the vehicle's mass properties:
-
-Curb mass: The mass of the vehicle and fuel, without people or cargo.
-Total cargo mass: The mass of the cargo and passengers.
-Driving mass: The sum of the curb mass and total cargo mass.
-
-Function steps:
-1. Set the curb mass as the product of the glider base mass and (1 - lightweighting).
-2. Create a list of mass components to be included in the curb mass calculation.
-3. Add the sum of these mass components to the curb mass.
-4. If a target mass is provided, override the vehicle mass with the target mass.
-5. Calculate the total cargo mass by summing the product of average passengers and average passenger mass, and the cargo mass.
-6. Calculate the driving mass by adding the curb mass and total cargo mass.
+Curb mass includes the vehicle and onboard fuel but excludes people and cargo.
+The glider is the body and chassis without the separately modelled powertrain
+and storage components. The model reduces its base mass according to the
+lightweighting input, then adds the components listed below. A target curb mass,
+when supplied, is met by adjusting the glider contribution.
 
 .. math::
 
@@ -231,29 +235,17 @@ fuel consumption, etc.), as described later in this section.
 Cargo and driving mass of the vehicle
 *************************************
 
-The cargo mass of the vehicle is the sum of the cargo mass and the
-passenger mass.
+The input ``cargo mass`` excludes people. ``total cargo mass`` adds the people
+onboard; ``driving mass`` then adds the vehicle itself:
 
 .. math::
 
-    m_{cargo} = m_{cargo} + m_{passenger}
+   m_{load} &= m_{cargo}+n_{passengers}m_{person} \\
+   m_{driving} &= m_{curb}+m_{load}.
 
-Where:
-
-- :math:`m_{cargo}` is the cargo mass, in kg,
-- and :math:`m_{passenger}` is the passenger mass.
-
-The driving mass of the vehicle is the sum of the curb mass and the cargo mass.
-
-.. math::
-
-    m_{driving} = m_{curb} + m_{cargo}
-
-Where:
-
-- :math:`m_{curb}` is the curb mass, in kg,
-- :math:`m_{cargo}` is the cargo mass, in kg,
-- and :math:`m_{driving}` is the driving mass, in kg.
+All masses are in kg and :math:`n_{passengers}` is the average number of people
+onboard. Keeping these quantities separate avoids counting the same load twice
+or including passenger mass in a manufacturing inventory.
 
 Light-weight rates
 ******************
@@ -402,70 +394,54 @@ by the driving cycle. Other resistances, such as the climbing effort,
 are instead determined by the driving cycle (but the vehicle mass also
 plays a role here).
 
-Here is how the different types of resistance are calculated:
+At each time step the model calculates forces in newtons:
 
-a. Rolling resistance:
+.. math::
 
-    F_rolling (N) = driving_mass (kg) * rr_coef (dimensionless) * g (m/s^2) * (velocity (m/s) > 0)
+   F_{roll} &= m g C_{rr}\,\mathbf{1}_{v>0} \\
+   F_{air} &= \tfrac12\rho C_d A_f v^2 \\
+   F_{grade} &= m g\sin(\theta)\,\mathbf{1}_{v>0} \\
+   F_{inertia} &= m a \\
+   F_{total} &= F_{roll}+F_{air}+F_{grade}+F_{inertia}.
 
-b. Air resistance:
+Here, :math:`m` is driving mass in kg, :math:`v` speed in m/s, :math:`a`
+acceleration in m/s², :math:`A_f` frontal area in m², and :math:`\theta` road
+angle in radians inside the calculation. Numeric gradient overrides are supplied
+in degrees and converted internally. :math:`C_{rr}` and :math:`C_d` are the
+rolling-resistance and drag coefficients. The indicator :math:`\mathbf{1}_{v>0}`
+is one while moving and zero while stopped.
 
-     F_air (N) = 0.5 * rho_air (kg/m^3) * drag_coef (dimensionless) * frontal_area (m^2) * velocity^2 (m^2/s^2)
+A force is not an energy. Multiplying by speed gives wheel power in watts;
+integrating positive power over time gives propulsion energy in joules:
 
+.. math::
 
-c. Gradient resistance:
+   P_{wheel,t} = F_{total,t}v_t,\qquad
+   E_{wheel,+} = \sum_t \max(P_{wheel,t},0)\Delta t.
 
-     F_gradient (N) = driving_mass (kg) * g (m/s^2) * sin(gradient (radians)) * (velocity (m/s) > 0)
+Negative wheel power represents braking or deceleration. Electrified vehicles
+can recover part of this energy, subject to the electric motor's power limit and
+the efficiencies of the transmission and electric drive. Combustion-engine or
+motor losses are applied at their respective power boundaries; a single constant
+wheel-to-tank efficiency is not assumed for every powertrain.
 
+Auxiliary power is integrated over time, including time spent stopped. For
+example, a constant 1 kW load over a one-hour, 50 km trip consumes
+0.02 kWh/km before any losses needed to supply it. The model's heating and
+cooling inputs determine additional loads as described below. Energy per distance
+is obtained by dividing integrated energy by cycle distance; output
+``TtW energy`` is in kJ/km.
 
-d. Inertia:
+For a BEV, let :math:`D` be positive DC energy drawn at the battery terminals
+and :math:`R` be regenerated DC energy returned there. Stored-energy depletion is
+:math:`D/\eta_d - R\eta_c`, where :math:`\eta_d` and :math:`\eta_c` are discharge
+and charge efficiencies. Their product is the battery round-trip efficiency;
+adding the two one-way losses is not the accounting used by the model.
+Charging electricity also includes charger losses. See :doc:`interpretation`
+for the three distinct energy outputs.
 
-     F_inertia (N) = driving_mass (kg) * acceleration (m/s^2)
-
-
-e. Total resistance:
-
-     F_total (N) = F_rolling (N) + F_air (N) + F_gradient (N) + F_inertia (N)
-
-
-f. Motive energy at wheels:
-
-     E_wheels (J) = max(F_total (N), 0)
-
-
-g. Motive energy:
-
-     E_motive (Wh) = E_wheels (J) / engine_efficiency (dimensionless) / transmission_efficiency (dimensionless) / fuel_cell_system_efficiency (dimensionless) * 2.778e-4 (Wh/J)
-
-
-h. Recuperated energy:
-
-    F_rolling (N) = driving_mass (kg) * rr_coef (dimensionless) * g (m/s^2) * (velocity (m/s) > 0)
-
-i. Auxiliary energy:
-
-    E_aux = aux_energy (Wh/km) = aux_power (W) + (p_cooling (W) / heat_pump_cop_cooling (dimensionless) * cooling_consumption (Wh/km)) + (p_heating (W) / heat_pump_cop_heating (dimensionless) * heating_consumption (Wh/km)) + p_battery_cooling (W) + p_battery_heating (W)
-
-In this representation, E_motive represents the motive energy per kilometer driven,
-E_recuperated represents the energy recuperated per kilometer driven, and E_aux represents
-the auxiliary energy consumption per kilometer driven.
-The results are returned in kilojoules/km (kJ/km).
-
-Once the energy required at the wheels is known, the
-model goes on to calculate the energy required at the tank level by
-considering additional losses along the drive train (i.e., axles,
-gearbox, and engine losses -- see Engine and transmission efficiency).
-The different types of resistance considered are depicted in
-:ref:`Figure 4 <figure-4>`, and the module calculation workflow
-is presented in :ref:`Figure 5 <figure-5>`.
-
-Powertrains that are partially or fully electrified have the possibility
-to recuperate a part of the energy spent for propulsion during
-deceleration or braking. The round-trip battery energy loss (which is
-the sum of the charge and discharge battery loss, described in :ref:`Figure 4 <figure-4>`)
-is subtracted from the recuperated energy. For hybrid vehicles (i.e.,
-HEV-p, HEV-d), this allows to downsize the combustion engine and improve
-the overall tank-to-wheel efficiency, as explained in :cite:`ct-1012`.
+The historical figures below illustrate the resistance terms and calculation
+sequence. Their parameter values are not a new validation of current defaults.
 
 .. _figure-4:
 
@@ -542,9 +518,9 @@ Where: :math:`T` is the driving cycle time [seconds] and D is the distance [m].
 A driving cycle is used to calculate the tank-to-wheel energy required
 by the vehicle to drive over one kilometer. For example, the WLTC
 driving cycle comprises a mix of urban, sub-urban and highway driving.
-It is assumed representative of average Swiss and European driving
-profile - although this would likely differ in the case of intensive
-mountain driving.
+WLTC is a standardized speed profile, not a measurement of every European
+trip. Congestion, mountain routes, temperature and driver behaviour can make
+a specific use case differ substantially; choose a suitable cycle for the study.
 
 :ref:`Figure 6 <figure-6>` exemplifies such calculation for a medium battery electric
 passenger car manufactured in 2020, using the WLTC driving cycle.
@@ -576,7 +552,7 @@ Where:
 - and :math:`F_{aux}` is the auxiliary energy.
 
 Fuel-cell and electric-drive assumptions require the same boundary checks as
-other powertrains. The current component priors are not a universal empirical
+other powertrains. The current component assumptions are not a universal empirical
 fuel-cell calibration; see :doc:`validity` for the evidence reviewed and limits.
 When opt-in combustion controls are enabled, their restart and terminal-buffer
 recharge fuel is also included in tank-to-wheel energy.
@@ -588,10 +564,10 @@ The conventional combustion maps derive from the effective tank-to-wheel
 relations of Hjelkrem et al. 2020 :cite:`ct-1133`. The shared implementation
 converts the source wheel-load axis consistently to its shaft-load convention;
 this decomposition is not an independently measured engine/transmission map.
-Current electric traction uses explicit motor/inverter and transmission priors
+Current electric traction uses explicit motor/inverter and transmission assumptions
 in the documented scopes, rather than fitting those components to each vehicle's
 aggregate consumption. Petrol full hybrids and depleted petrol PHEVs use the
-pinned Prius Atkinson engine curve. See :doc:`validity` for the adopted priors,
+pinned Prius Atkinson engine curve. See :doc:`validity` for the adopted assumptions,
 source-transfer limits and comparison results. The historical relation and
 figure below describe the original map derivation.
 Unfortunately, such relation is not given for compressed gas powertrains,
@@ -608,15 +584,12 @@ gives the tank-to-wheel efficiency).
 
    *Figure 8: Tank-to-wheel efficiency as a function of utilized power. Source: Hjelkrem et al. 2020.* :cite:`ct-1133`
 
-For diesel and gasoline hybrid vehicles, the approach to estimating
-the engine and transmission efficiencies is similar, but a small electric motor
-allows for energy recuperation and reducing the engine size, which leads to higher
-efficiency levels. The amount of energy recuperated is determined by the driving
-cycle as well as the round-trip efficiency between the wheels and the
-engine and cannot be superior to the power output of the engine. Further
-on, the share of recuperated energy over the total negative motive
-energy (i.e., the braking or deceleration energy) is used as a
-discounting factor for brake wear particle emissions.
+For hybrids, regeneration depends on the cycle, electric motor rating and
+conversion losses. The motor peak rating is independent of the combined
+powertrain rating. The fraction of braking energy recovered is also used when
+estimating brake-wear emissions. These calculations do not, by themselves,
+establish that a generic hybrid reproduces a particular manufacturer's control
+strategy; see :doc:`validity` and the shared combustion-control guide.
 
 Electric energy storage
 ***********************
@@ -679,9 +652,17 @@ at 0.15 kWh/kg (but benefits from a high cell-to-pack ratio)..
    +-----------------------------------------------------------------------------+-----------------------------------------------------------+----------------------------------------+----------------------------------------------------------+-----------------------------------------------+
 
 .. note::
-    The NMC battery cell used by default corresponds to a so-called NMC 6-2-2 chemistry: it exhibits three times the mass amount of *Ni*
-    compared to *Mn*, and *Co*, while *Mn* and *Co* are present in equal amount. Development aims at reducing the content of Cobalt and increasing the
-    Nickel share. A selection of other chemistry types can be chosen from.
+    The historical NMC-622 example denotes a nickel:manganese:cobalt atomic
+    ratio of 6:2:2 in the cathode, not a ratio of elemental masses. Current
+    defaults select NMC-622 at 2020, NMC-811 at 2025 and NMC-955 at 2030.
+    Chemistry can be selected explicitly through ``energy_storage``.
+
+    Chemistry labels are not interpolated with numerical parameters. The car
+    hook uses an explicit year lookup (NMC-111 at 2000/2005/2010/2015,
+    NMC-622 at 2020, NMC-811 at 2025, NMC-955 at 2030). Other years from 2000
+    onward fall back to NMC-955; years before 2000 use NMC-111. For an annual
+    time series, specify the intended chemistry for each year instead of
+    assuming a stepwise transition between the listed years.
 
 
 On account that:
@@ -695,7 +676,8 @@ On account that:
 .. note::
     **Important assumption**: The environmental burden associated with the
     manufacture of spare batteries is entirely allocated to the vehicle use.
-    The number of battery replacements is rounded up.
+    The current battery replacement factor can be fractional; it is not rounded
+    up to a whole replacement event.
 
 :ref:`Table 7 <table-7>` gives an overview of the number of battery replacements assumed
 for the different battery electric vehicles in ``carculator``.
@@ -717,43 +699,35 @@ for the different battery electric vehicles in ``carculator``.
 Users are encouraged to test the sensitivity of end-results on the
 number of battery replacements.
 
-The number of battery replacement is calculated as follows:
+For passenger cars, the replacement factor accounts for both lifetime distance
+and a maximum 18-year battery service period:
 
 .. math::
 
-    n_{batt_repl} = \frac{L_{veh}}{L_{batt}} - 1
+   n_{replacement}=\max\left(0,\frac{L_{vehicle}}{L_{battery}}-1,
+                             \frac{L_{vehicle}/D_{annual}}{18}-1\right).
 
-Where:
-
-- :math:`L_{veh}` is the lifetime of the vehicle [km],
-- and :math:`L_{batt}` is the lifetime of the battery [km].
+:math:`L_{vehicle}` and :math:`L_{battery}` are lifetime distances in km;
+:math:`D_{annual}` is annual distance in km/year. The initial battery is supplied
+once, in addition to this replacement factor. This is an allocation assumption,
+not a forecast of the exact date or number of physical pack replacements.
+The table above records the original study's configurations.
 
 Liquid and gaseous energy storage
 *********************************
 
-The energy stored in the fuel (oxidation energy stored), the mass of the fuel tank for diesel,
-gasoline and compressed gas vehicles are calculated.
-Here are the formulas and units used:
+Fuel energy is stored in **kWh**. With fuel mass :math:`m_f` in kg and lower
+heating value :math:`H` in MJ/kg:
 
-Calculate oxidation energy stored:
-    Oxidation energy stored (MWh) = fuel mass (kg) * LHV fuel (MJ/kg) / 3.6
+.. math::
 
-Calculate fuel tank mass for liquid fuels:
-    Fuel tank mass (kg) = oxidation energy stored (MWh) * fuel tank mass per energy (kg/MWh)
+   E_{fuel}=m_f H/3.6.
 
-Calculate fuel tank mass for compressed natural gas:
-    Fuel tank mass (kg) = oxidation energy stored (MWh) * CNG tank mass slope + CNG tank mass intercept
-
-The `set_energy_stored_properties` function calculates the oxidation energy stored in the fuel,
-based on the fuel mass and the lower heating value (LHV) of the fuel.
-The fuel mass (in kilograms) is multiplied by the LHV fuel (in megajoules per kilogram),
-and the result is divided by 3.6 to convert the energy to megawatt-hours (MWh).
-
-Next, the function calculates the mass of the fuel tank by multiplying the oxidation
-energy stored (in MWh) by the fuel tank mass per energy (in kilograms per MWh).
-
-Lastly, if the powertrain is an ICEV-g, the function adjusts the fuel tank mass based
-on the oxidation energy stored and the coefficients for the CNG tank mass slope and intercept.
+The factor 3.6 converts MJ to kWh, not to MWh. The base tank mass is
+``oxidation energy stored * fuel tank mass per energy``, with the latter
+coefficient in kg/kWh. The shared implementation adds the energy-dependent CNG
+tank slope and intercept where the gas-vehicle parameter records supply them.
+Fuel properties follow the selected blend.
 
 
 .. note::
@@ -851,7 +825,7 @@ Finally, the fuel cell stack mass is calculated as:
 Where:
 
 - :math:`P_{fcsys}` is the fuel cell system power [kW],
-- :math:`A_{fc}` is the fuel cell fuel cell power area density [kW/cm2],
+- :math:`A_{fc}` is the fuel cell power area density [mW/cm²],
 - and :math:`m_{fcstack}` is the fuel cell stack mass [kg].
 
 
@@ -871,21 +845,21 @@ The battery power is calculated as:
 Where:
 
 - :math:`P_{fcsys}` is the fuel cell system power [kW],
-- and :math:`r_{fcshare}` is the fuel cell system power share [%].
+- and :math:`r_{fcsys}` is the fuel cell system power share [0–1].
 
 The number of fuel cell replacements is based on the average distance driven
 with a set of fuel cells given their lifetime expressed in hours of use.
 The number is replacement is rounded *up* as we assume no allocation of burden
-with a second life. It is hence is calculated as:
+with a second life. The implementation clips the factor to 0–5 before rounding up:
 
 .. math::
 
-    n_{fcrep} = \frac{L_{veh}}{V_{avg} \times L_{fc}} - 1
+    n_{fcrep} = \left\lceil\operatorname{clip}\left(\frac{L_{veh}}{V_{avg} L_{fc}}-1,0,5\right)\right\rceil
 
 Where:
 
 - :math:`L_{veh}` is the lifetime of the vehicle [km],
-- :math:`V_{avg}` is the average speed of the driving cycle selected [km/h],
+- :math:`V_{avg}` is the average speed while moving in the selected driving cycle [km/h],
 - and :math:`L_{fc}` is the fuel cell lifetime in hours [h].
 
 Light-weighting
@@ -1084,7 +1058,7 @@ And the electricity stored in the battery is calculated as:
 Where:
 
 - :math:`E_{battery}` being battery capacity [kWh],
-- :math:`C_{cell}` is the cell energy density [kg/kWh],
+- :math:`C_{cell}` is the cell energy density [kWh/kg],
 - and :math:`m_{cell}` is the cell mass [kg].
 
 By deduction, the balance of plant mass is:
@@ -1107,8 +1081,9 @@ Finally, the range autonomy is calculated as:
 Where:
 
 - :math:`C_{battery}` is the battery capacity [kWh],
-- :math:`r_{discharge}` is the discharge depth [%],
-- and :math:`F_{ttw}` is the tank-to-wheel energy consumption [kWh/km].
+- :math:`r_{discharge}` is the usable depth-of-discharge fraction [0–1],
+- and :math:`F_{ttw}` is stored-energy consumption in kWh/km: divide the
+  ``TtW energy`` output in kJ/km by 3600 before using this equation.
 
 
 Similarly, plug-in hybrid vehicles are dimensioned to obtain an energy
@@ -1167,7 +1142,7 @@ described in the next section.
     - :math:`E_{battery}` being battery capacity [kWh],
     - :math:`P_{fcsys}` is the fuel cell system power [kW],
     - :math:`r_{fcsys}` is the fuel cell system power share [%],
-    - and :math:`r_{discharge}` is the discharge depth [%].
+    - and :math:`r_{discharge}` is the usable depth-of-discharge fraction [0–1].
 
     The battery mass is calculated as for battery electric vehicles, considering the cell energy density.
     For example, for a small fuel cell vehicle with a fuel cell system power of 65 kW,
@@ -1230,17 +1205,17 @@ where:
 .. math::
 
 
-    range_{combustion} (km) = \frac{oxidation\_energy\_stored (MWh) \times 3600}{TtW\_energy_{combustion} (kWh/km)}
+    range_{combustion} (km) = \frac{oxidation\_energy\_stored (kWh) \times 3600}{TtW\_energy_{combustion} (kJ/km)}
 
-    range_{electric} (km) = \frac{electric\_energy\_stored (MWh) \times 3600}{TtW\_energy_{electric} (kWh/km)}
+    range_{electric} (km) = \frac{electric\_energy\_stored (kWh) \times 3600}{TtW\_energy_{electric} (kJ/km)}
 
-    range_{total} (km) = range{combustion} + range{electric}
+    range_{total} (km) = range_{combustion} + range_{electric}
 
 
 Where:
 
-- :math:`F_{ttw_phev_e}` is the tank-to-wheel energy consumption [kWh/km] of the electric PHEV,
-- :math:`F_{ttw_phev_c}` is the tank-to-wheel energy consumption [kk/km] of the combustion PHEV,
+- :math:`F_{ttw_phev_e}` is the tank-to-wheel energy consumption [kJ/km] of the electric PHEV,
+- :math:`F_{ttw_phev_c}` is the tank-to-wheel energy consumption [kJ/km] of the combustion PHEV,
 - :math:`m_{curb_phev_e}` is the curb weight [kg] of the electric PHEV,
 - and :math:`m_{curb_phev_c}` is the curb weight [kg] of the combustion PHEV.
 
@@ -1374,9 +1349,9 @@ The amount of sulfur dioxide released by the vehicle over one km [kg/km] is calc
 
 Where:
 
-- :math:`r_{S}` is the sulfur content per kg of fuel [kg SO2/kg fuel],
+- :math:`r_{S}` is the sulfur content per kg of fuel [kg S/kg fuel],
 - :math:`F_{fuel}` is the fuel consumption of the vehicle [kg/km],
-- and :math:`64/32` is the ratio between the molar mass of SO2 and the molar mass of O2.
+- and :math:`64/32` is the ratio between the molar mass of SO2 and the molar mass of sulfur (S).
 
 Country-specific fuel blends are sourced from the IEA's Extended World
 Energy Balances database :cite:`ct-1045`. By default, the biofuel used is assumed
@@ -1711,10 +1686,10 @@ The respective amounts of brake and tire wear emissions in urban, rural
 and motorway driving conditions are weighted, to represent the driving
 cycle used. The weight coefficients sum to 1 and the coefficients
 considered are presented in :ref:`Table 19 <table-19>`. They have been calculated by
-analyzing the speed profile of each driving cycle, with the exception of
-two-wheelers, for which no driving cycle is used (i.e., the energy
-consumption is from reported values) and where simple assumptions are
-made in that regard instead.
+analyzing the speed profiles used in the original study. The table is a
+historical summary, not a current list of all cycle-dependent coefficients.
+Current two-wheeler energy calculations also use driving cycles; their earlier
+use of owner-reported consumption should not be inferred from this table.
 
 .. _table-19:
 
@@ -1906,7 +1881,7 @@ km/h, beyond which the combustion engine is used.
 The total noise level (in A-weighted decibels) is calculated using the
 following equation:
 
-.. math:: L_{W,\ dBA} = 10*\log\left( 10^{\frac{L_{W,R}}{10}} \right) + 10*log(10^{\frac{L_{W,P}}{10}})
+.. math:: L_{W,\ dBA} = 10\log_{10}\left(10^{L_{W,R}/10}+10^{L_{W,P}/10}\right)
 
 The total sound power level is converted into Watts (or joules per
 second), using the following equation:
@@ -1956,33 +1931,29 @@ Life Year, respectively.
 Electricity mix calculation
 ***************************
 
-Electricity supply mix are calculated based on the weighting from the
-distribution the lifetime kilometers of the vehicles over the years of
-use. For example, should a BEV enter the fleet in Poland in 2020, most
-LCA models of passenger vehicles would use the electricity mix for
-Poland corresponding to that year, which corresponds to the row of the
-year 2020 in :ref:`Table 24 <table-24>`, based on ENTSO-E's TYNDP 2020 projections
-(National Trends scenario) :cite:`ct-1120`. ``carculator`` calculates instead the
-average electricity mix obtained from distributing the annual kilometers
-driven along the vehicle lifetime, assuming an equal number of
-kilometers is driven each year. Therefore, with a lifetime of 200,000 km
-and an annual mileage of 12,000 kilometers, the projected electricity
-mixes to consider between 2020 and 2035 for Poland are shown in :ref:`Table 24 <table-24>`.
-Using the kilometer-distributed average of the projected mixes
-between 2020 and 2035 results in the electricity mix presented in the
-last row of :ref:`Table 24 <table-24>`. The difference in terms of technology contribution
-and unitary GHG-intensity between the electricity mix of 2020 and the
-electricity mix based on the annual kilometer distribution is
-significant (-23%). The merit of this approach ultimately depends on
-whether the projections will be realized or not.
+Electricity generation shares are averaged over each vehicle and sample's
+operating lifetime, assuming equal annual distance. The default uses national
+Ember observations followed by GECO 2025 Reference projections. Other GECO
+pathways and a TYNDP 2026 option can be selected explicitly. These generation
+choices are separate from the background-impact scenario. In particular,
+``scenario="static"`` does not freeze national generation shares.
 
-It is also important to remember that the unitary GHG emissions of each
-electricity-producing technology changes over time, as the background
-database ecoinvent has been transformed by premise :cite:`ct-1121`: for example,
-photovoltaic panels become more efficient, as well as some of the
-combustion-based technologies (e.g., natural gas). For more information
-about the transformation performed on the background life cycle
-database, refer to :cite:`ct-1121`.
+The operating lifetime is lifetime distance divided by annual distance; the
+calculation retains whole years and uses at least one year. Refreshed generation
+shares are held at their final values after 2070. Background technology impact
+coefficients are selected for the manufacturing year, with their own time
+horizon; this is not a year-by-year dynamic LCIA calculation.
+
+See the shared `electricity guide
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/electricity_scenarios.rst>`_
+for geographic coverage and scenario assumptions, and its
+`lifetime calculation
+<https://github.com/Laboratory-for-Energy-Systems-Analysis/carculator_utils/blob/master/docs/electricity_lifetime.rst>`_
+for averaging and custom mixes.
+
+**Historical illustration:** the Poland table below uses TYNDP 2020 and the
+original study's lifetime assumptions. It illustrates averaging but does not
+contain the current default generation mix or current climate coefficients.
 
 .. _table-24:
 
@@ -2221,176 +2192,79 @@ are listed in :ref:`Table 26 <table-26>`.
 Life cycle impact assessment
 ----------------------------
 
-To build the inventory of every vehicle, ``carculator`` populates a
-three-dimensional array ``A`` (i.e., a tensor) such as:
+The inventory uses a labelled array ``A`` with four axes: **sample, product,
+activity and year**. A sample is a set of uncertain inputs, not an iteration of
+the sizing procedure. The product and activity axes have the same length and
+include the background suppliers and foreground processes needed for the model.
 
-.. math:: \ A = \left\lbrack a_{\text{ijk}} \right\rbrack,\ i = 1,\ \ldots,\ L,\ j = 1,\ \ldots,\ M,\ k = 1,\ \ldots,\ N
+For each year and sample, the model solves the linear system
 
-The second and third dimensions (i.e., ``M`` and ``N``) have the same
-length. They correspond to product and natural flow exchanges between
-supplying activities (i.e., ``M``) and receiving activities (i.e., ``N``).
-The first dimension (i.e., ``L``) stores model iterations. Its length
-depends on whether the analysis is static or if an uncertainty analysis
-is performed (e.g., Monte Carlo).
+.. math::
 
-Given a final demand vector ``f`` (e.g., 1 kilometer driven with a
-specific vehicle, represented by a vector filled with zeroes and the
-value 1 at the position corresponding to the index ``j`` of the driving
-activity in dimension M) of length equal to that of the second dimension
-of ``A`` (i.e., ``M``), ``carculator`` calculates the scaling factor ``s`` so
-that:
+   A s = f,\qquad h = B s.
 
-.. math:: s = A^{- 1}f
+:math:`f` specifies demand for a vehicle or transport service; :math:`s` contains
+the required activity amounts; :math:`h` contains impact scores. The result is
+normalized to vehicle-km, passenger-km or tonne-km as requested.
 
-Finally, the scaling factor ``s`` is multiplied with a characterization
-matrix ``B``. This matrix contains midpoint characterization factors for a
-number of impact assessment methods (as rows) for every activity in ``A``
-(as columns).
+``B`` has axes **year, impact category and activity**. It contains precomputed
+supply-chain impact coefficients for background activities and characterization
+factors for elementary flows represented in the inventory. It is **not a raw
+biosphere-exchange matrix**. Its ordering must match ``A`` and the input index.
 
-As described earlier, the tool chooses between several
-characterization matrices ``B``, which contain pre-calculated values for
-activities for a given year, depending on the year of production of the
-vehicle as well as the REMIND climate scenario considered (i.e.,
-"SSP2-Baseline", "SSP2-PkBudg1150" or "SSP2-PkBudg500"). Midpoint and
-endpoint (i.e., human health, ecosystem impacts and resources use)
-indicators include those of the ReCiPe 2008 v.1.13 impact assessment
-method, as well as those of EF 3.1. Inventories can also be
-exported through Brightpath as Brightway Excel, SimaPro CSV or foreground-only
-openLCA JSON-LD. After matching external providers and elementary flows in the
-destination database, users can apply the methods available there. See
-:doc:`inventory_export` for supported ecoinvent targets and linking limitations.
+The bundled background was rebuilt from ecoinvent 3.12 cutoff with premise.
+Supported background scenarios are ``SSP2-NPi``, ``SSP2-PkBudg1000``,
+``SSP2-PkBudg650`` and ``static``. The old 1150/500 names are rejected.
+ReCiPe supplies midpoint and endpoint collections; EF 3.1 supplies midpoint
+indicators. In the ``recipe`` midpoint collection, ``climate change`` specifically
+uses IPCC 2021 GWP100 excluding biogenic CO2. See :doc:`interpretation` for units
+and the separate category that includes biogenic CO2.
+
+See :doc:`inventory_export` for Brightway Excel, SimaPro CSV and foreground-only
+openLCA JSON-LD exports. The destination application needs matching background
+providers and elementary flows. A successfully written file does not prove
+that those links have been resolved in the destination database.
 
 Presentation of results
 ***********************
 
-Life-cycle impacts are presented across the following categories/life-cycle phases:
+The ``impact`` axis groups contributions by their supplying processes:
 
-- direct - exhaust
-- direct - non-exhaust
-- energy chain
-- powertrain
-- glider
-- energy storage
-- maintenance
-- end-of-life
-- road
+.. list-table:: Contribution groups
+   :header-rows: 1
+   :widths: 25 75
 
-A comprehensive presentation of life-cycle assessment (LCA) results for passenger cars should offer insights into various aspects that contribute to the overall environmental impact. Each category or life-cycle phase addresses a different set of environmental impacts, and assessing them individually helps to paint a complete picture. Below is an extended description of each category or life-cycle phase:
+   * - Group
+     - What is assigned to it
+   * - ``direct - exhaust``
+     - Emissions released during fuel combustion. The current grouping also
+       assigns noise flows to this label; it is not a literal exhaust-only group.
+   * - ``direct - non-exhaust``
+     - Direct flows outside the exhaust, including wear emissions and refrigerant
+       losses; see the methane guide for additional leakage.
+   * - ``energy chain``
+     - The fuel and charging-electricity supply processes.
+   * - ``powertrain``
+     - Engine, motor, transmission and related component suppliers.
+   * - ``glider``
+     - Body, chassis, assembly and associated supply processes.
+   * - ``energy storage``
+     - Battery, fuel-tank and fuel-cell suppliers, including allocated replacements.
+   * - ``charger``
+     - Separately represented charging infrastructure.
+   * - ``maintenance``
+     - Maintenance suppliers and refrigerant replenishment.
+   * - ``EoL``
+     - Separately represented end-of-life treatment processes.
+   * - ``road``
+     - Road infrastructure suppliers.
 
-Direct - Exhaust
-++++++++++++++++
+These are modelled contributions, not measured quantities. They follow supplier
+names in the shared ``impact_source_categories.yaml`` mapping. A complete
+manufacturing proxy can include delivery or disposal internally, so the groups
+are not a perfect separation into physical life-cycle stages. In particular,
+a zero in ``EoL`` does not prove that disposal is absent from every supplier.
 
-Description: This category evaluates the environmental impacts associated with the direct emissions
-from the vehicle's exhaust system, including greenhouse gases (GHGs),
-particulate matter (PM), and volatile organic compounds (VOCs).
-
-Substances measured:
-
-* Carbon dioxide (CO2)
-* Nitrogen oxides (NOx)
-* Particulate matter (PM)
-* Hydrocarbons
-* VOCs
-
-Note that not all substance contribute to all impact categories.
-For example, NOx and VOCs contribute to the formation of ozone, but not to climate change.
-
-Direct - Non-Exhaust
-++++++++++++++++++++
-
-Description: This section focuses on emissions and impacts not related to
-the exhaust system, such as brake and tire wear, as well as emissions
-from air conditioning.
-
-Parameters measured:
-
-* PM from brake, tire, road and engine wear, as well as re-suspended dust
-* Refrigerant losses (e.g., R143a) from air conditioning
-
-Energy Chain
-++++++++++++
-
-Description: Assesses the environmental impacts associated with the production,
-transportation, and distribution of the energy source used in the vehicle,
-be it gasoline, electricity, hydrogen, or any other.
-
-Parameters Measured:
-
-* Energy source extraction impacts
-* Transportation emissions
-* Energy generation, transmission and distribution emissions
-
-Powertrain
-++++++++++
-
-Description: This part examines the environmental burden from the manufacturing,
-operation, and disposal of the vehicle's engine and transmission systems.
-
-Parameters Measured:
-
-* Raw material extraction
-* Manufacturing emissions
-* Operational efficiency
-
-Glider
-++++++
-
-Description: The glider refers to the body, chassis, and interior components
-of the car. This phase assesses the impact of these elements over the
-vehicle's lifetime.
-
-Parameters Measured:
-
-* Materials used (aluminum, steel, plastics)
-* Manufacturing emissions
-* Aerodynamics and its impact on fuel/energy consumption
-
-Energy Storage
-++++++++++++++
-
-Description: This category is particularly relevant for electric and hybrid
-vehicles and looks at the environmental impacts associated with batteries.
-
-Parameters Measured:
-
-* Resource extraction for battery materials
-* Battery production
-
-Battery disposal or recycling is included in the end-of-life category.
-
-Maintenance
-+++++++++++
-
-Description: This phase focuses on the environmental impacts associated
-with maintaining the vehicle, including oil changes, part replacements,
-and repairs.
-
-Parameters Measured:
-
-* Mass of the vehicle
-
-End-of-Life
-+++++++++++
-
-Description: Assesses the environmental impacts when the vehicle is no
-longer in use. This includes dismantling, recycling, and disposal processes.
-
-Parameters Measured:
-
-* Mass of vehicle's components
-* Battery
-* Emissions from landfilling, scrapping and recycling  processes
-
-Road
-++++
-
-Description: This category considers the environmental impacts related to
-the infrastructure supporting the vehicle, such as road construction
-and maintenance. Those are scaled on the basis of the vehicle's mass.
-
-Parameters Measured:
-
-* Mass of the vehicle
-* Material consumption for road construction
-* Emissions from maintenance machinery
-* Runoff pollution
+Select one impact category before summing these contributions. See
+:doc:`interpretation` and :doc:`validation_examples` for climate units and
+examples of useful comparisons.

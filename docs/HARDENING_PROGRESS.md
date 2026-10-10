@@ -1,5 +1,11 @@
 # Hardening implementation record
 
+> Historical development record from 6 October 2026. Its findings, proposed work,
+> test counts and environment support describe that stage of development.
+> For current behaviour and evidence, use the [user guide](usage.rst),
+> [validation examples](validation_examples.rst) and [changelog](../CHANGELOG.md).
+
+
 Date: 2026-10-06. This is an unreleased first implementation of the
 [robustness roadmap](ROBUSTNESS_PLAN.md), following the
 [seven-repository audit](REVIVAL_AUDIT.md). It is not a claim that every roadmap

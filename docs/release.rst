@@ -33,7 +33,7 @@ with ``NMC-532`` (Ni:Mn:Co = 5:3:2). Use ``NMC-532`` in explicit
 ``energy_storage`` selections and chemistry-specific custom parameter names.
 This changes the inventory chemistry; it is not an alias for the old recipe.
 Capacity, cell-mass-share, cycle-life and cost values retain the existing
-engineering priors under the new name, rather than a new empirical calibration.
+engineering assumptions under the new name, rather than a new empirical calibration.
 Historical validation snapshots retain their original labels. Use matching
 updated vehicle and ``carculator_utils`` checkouts for this background refresh.
 

@@ -1,0 +1,8 @@
+label,first,second,observation_id,source_url,qualification,model_field,vehicle
+VW Golf petrol,5.6,6.79179947702241,golf_combined,https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/vw/golf/viii-facelift/332971/,screening,model_fuel,"Volkswagen Golf 1.5 TSI Life, 85 kW, six-speed manual"
+Toyota Corolla hybrid,5,5.003915814478085,corolla_combined,https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/toyota/corolla/e21-facelift/325908/,screening,model_fuel,"Toyota Corolla Touring Sports 1.8 Hybrid Team Deutschland, 103 kW"
+Toyota Yaris hybrid,4.9,4.417535329965393,adac_yaris130_combined,https://assets.adac.de/image/upload/Autodatenbank/Autotest/AT6516-toyota-yaris-15-hybrid-130-style-plus-cvt/toyota-yaris-15-hybrid-130-style-plus-cvt.pdf,screening,model_fuel,Toyota Yaris 1.5 Hybrid 130 Style PLUS CVT
+Skoda Octavia diesel,4.8,4.8718370166854115,adac_octavia_diesel_combined,https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6162-skoda-octavia-combi-20-tdi-scr-style-dsg/skoda-octavia-combi-20-tdi-scr-style-dsg.pdf,screening,model_fuel,Skoda Octavia Combi 2.0 TDI SCR Style DSG
+"Toyota Prius PHEV
+depleted mode",4.8,5.386797022048639,adac_prius_phev_depleted,https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6367-toyota-prius-20-plug-in-hybrid-advanced/toyota-prius-20-plug-in-hybrid-advanced.pdf,screening,model_fuel,Toyota Prius 2.0 Plug-in Hybrid Advanced
+Skoda Kodiaq diesel,5.8,5.850556902089425,adac_kodiaq_diesel_combined,https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6414-skoda-kodiaq-20-tdi-selection-dsg/skoda-kodiaq-20-tdi-selection-dsg.pdf,screening,model_fuel,Skoda Kodiaq 2.0 TDI Selection DSG
