@@ -51,6 +51,12 @@ Inventory calculation
 .. automodule:: carculator.inventory
     :members:
 
+Temporal lifecycle policy
+-------------------------
+
+.. autoclass:: carculator_utils.temporal.TemporalPolicy
+    :members:
+
 Inventory export
 ----------------
 

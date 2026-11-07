@@ -44,6 +44,7 @@ User's Guide
    interpretation
    validation_examples
    inventory_export
+   temporal_lca
    modeling
    structure
    validity

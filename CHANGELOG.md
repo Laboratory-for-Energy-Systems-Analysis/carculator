@@ -4,6 +4,9 @@ Notable user-facing changes to `carculator`.
 
 ## [Unreleased]
 
+- Document optional calendar-year lifecycle schedules and impacts, including
+  annual ICEV/HEV/PHEV/FCEV maintenance, two-year BEV maintenance, component
+  replacement timing, final disposal and the remaining embedded boundaries.
 - Calibrate FCEV car buffers from the late-2020 Toyota Mirai's matched nominal
   energy, complete mass and ten-second discharge rating. Couple sizing to
   vehicle mass/power and reject undersized explicit capacities. Preserve
