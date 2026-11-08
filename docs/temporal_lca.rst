@@ -33,10 +33,10 @@ characterized result::
    impacts = inventory.calculate_temporal_impacts()
    audit = inventory.temporal_coverage()
 
-``year`` remains the vehicle cohort year. ``calendar_year`` is the year in
-which an event is assigned.  The impact result also has a ``lifecycle_stage``
-dimension with manufacturing, use, maintenance, replacement and end-of-life
-stages.  ``normalization="vehicle"`` is the default;
+``year`` remains the vehicle cohort year and denotes its first operating year.
+``calendar_year`` is the year in which an event is assigned. The impact result
+also has a ``lifecycle_stage`` dimension with manufacturing, use, maintenance,
+replacement and end-of-life stages. ``normalization="vehicle"`` is the default;
 ``normalization="functional_unit"`` divides by lifetime vehicle-kilometres.
 
 Passenger-car maintenance frequency
@@ -96,19 +96,19 @@ Timing by component and exchange type
      - Recurrence basis
    * - Glider, lightweighting and assembly
      - Manufacturing
-     - Cohort year
+     - Year -1, before first use
      - Once per vehicle
    * - Combustion engine, motor, inverter, converter and power distribution
      - Manufacturing
-     - Cohort year
+     - Year -2, before final assembly
      - Once per vehicle
    * - On-board charger and fuel or hydrogen tanks
      - Manufacturing
-     - Cohort year
+     - Year -2, before final assembly
      - Once per vehicle
    * - Initial traction battery
      - Manufacturing
-     - Cohort year
+     - Year -2, before final assembly
      - Once per vehicle
    * - Traction-battery replacements
      - Replacement
@@ -117,7 +117,7 @@ Timing by component and exchange type
      - Modelled replacement count, including fractional legacy counts
    * - Initial fuel-cell stack and balance of plant
      - Manufacturing
-     - Cohort year
+     - Year -2, before final assembly
      - Once per vehicle
    * - Fuel-cell replacements
      - Replacement
@@ -148,6 +148,11 @@ Timing by component and exchange type
      - End of life
      - One year after the final operating year
      - Once at final end of life
+
+Year zero is the first operating year. The -1 and -2 buckets express ordering
+at annual resolution, not exact factory lead times. Glider suppliers remain
+with final assembly in year -1; separately exposed components are assigned to
+year -2 by default.
 
 Manufacturing can be moved or spread before the cohort year with component
 profiles::
